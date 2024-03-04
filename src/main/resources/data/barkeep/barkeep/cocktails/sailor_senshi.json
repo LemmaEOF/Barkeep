@@ -1,0 +1,23 @@
+{
+  "drinks": [
+	{
+	  "tag": "barkeep:white_rums",
+	  "parts": 2
+	},
+	{
+	  "drink": "barkeep:ramune",
+	  "parts": 1
+	},
+	{
+	  "drink": "barkeep:blue_raspberry_syrup",
+	  "parts": 2
+	}
+  ],
+  "preparation": "stirred",
+  "glass": "barkeep:rocks",
+  "garniture": [
+	{
+	  "tag": "barkeep:maraschino_cherries"
+	}
+  ]
+}

@@ -1,37 +1,32 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "barkeep",
 	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Barkeep",
+	"description": "A decorative cocktail and bartending mod.",
 	"authors": [
-		"Me!"
+		"LemmaEOF"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/LemmaEOF/Barkeep"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"license": "BSD-3",
+	"icon": "assets/barkeep/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"gay.lemmaeof.barkeep.Barkeep"
 		],
 		"client": [
-			"com.example.ExampleModClient"
+			"gay.lemmaeof.barkeep.BarkeepClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
-		{
-			"config": "modid.client.mixins.json",
-			"environment": "client"
-		}
+		"barkeep.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.0",
-		"minecraft": "~1.20.4",
+		"minecraft": "~1.20.1",
 		"java": ">=17",
 		"fabric-api": "*"
 	},

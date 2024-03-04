@@ -1,0 +1,6 @@
+{
+  "shaker_shake": {
+	"sounds": ["barkeep:shaker_shake1","barkeep:shaker_shake2","barkeep:shaker_shake3"],
+	"subtitle": "subtitle.barkeep.shaker_shake"
+  }
+}
