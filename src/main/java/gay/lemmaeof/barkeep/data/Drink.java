@@ -3,10 +3,13 @@ package gay.lemmaeof.barkeep.data;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.entry.RegistryElementCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.TextColor;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.dynamic.Codecs;
 
 import java.util.List;
@@ -28,4 +31,14 @@ public record Drink(Optional<TextColor> color, int proof, List<FlavorNote> flavo
 			FlavorNote.CODEC.listOf().fieldOf("flavor_notes").forGetter(Drink::flavorNotes)
 	).apply(instance, Drink::new));
 	public static final Codec<RegistryEntry<Drink>> REGISTRY_ENTRY_CODEC = RegistryElementCodec.of(BarkeepRegistries.DRINKS, CODEC);
+
+	public Identifier getId(DynamicRegistryManager manager) {
+		Identifier id = manager.get(BarkeepRegistries.DRINKS).getId(this);
+		if (id == null) return new Identifier(Barkeep.MODID, "water");
+		return id;
+	}
+
+	public String getTranslationKey(DynamicRegistryManager manager) {
+		return getId(manager).toTranslationKey("drink");
+	}
 }

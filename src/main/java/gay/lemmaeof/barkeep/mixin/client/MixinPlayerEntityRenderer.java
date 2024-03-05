@@ -20,13 +20,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class MixinPlayerEntityRenderer extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
-	//TODO: tune this properly
+	//TODO: any more fine-tuning?
 	private static final PoseFunction<AbstractClientPlayerEntity> POSE_FUNC = (rightArm, leftArm, entity, arm) -> {
 		float progress = entity.getItemUseTime();
 		ModelPart upperArm = arm == Arm.RIGHT? leftArm : rightArm;
 		ModelPart lowerArm = arm == Arm.RIGHT? rightArm : leftArm;
-		upperArm.yaw = arm == Arm.RIGHT? 0.8F : -0.8F;
-		upperArm.pitch = (float) (Math.sin(progress) * 0.3f) - 1.25f;
+		upperArm.yaw = (float) ((Math.sin(progress) * 0.3f) + 0.7F) * (arm == Arm.RIGHT? 1 : -1);
+		upperArm.pitch = (float) (Math.sin(progress) * 0.3f) - 1.5f;
 		lowerArm.yaw = arm == Arm.RIGHT? -0.8F : 0.8F;
 		lowerArm.pitch = (float) (Math.sin(progress) * 0.3f) - 0.65f;
 	};

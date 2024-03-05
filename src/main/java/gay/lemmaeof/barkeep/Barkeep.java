@@ -1,5 +1,6 @@
 package gay.lemmaeof.barkeep;
 
+import gay.lemmaeof.barkeep.init.BarkeepBlocks;
 import gay.lemmaeof.barkeep.init.BarkeepItems;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.init.BarkeepSounds;
@@ -14,6 +15,7 @@ public class Barkeep implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		BarkeepBlocks.init();
 		BarkeepItems.init();
 		BarkeepRegistries.init();
 		BarkeepSounds.init();

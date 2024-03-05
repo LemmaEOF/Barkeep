@@ -13,3 +13,4 @@ Barkeep is a decorative bartending mod. Pour drinks, mix cocktails, and decorate
 
 ## Sound Credits
 - Shaker shaking: cut from [Martini_Shaker.aif](https://freesound.org/people/bhweber/sounds/148168/) by bhweber
+- Drink pouring: cut from [Pouring_Martini.aif](https://freesound.org/people/bhweber/sounds/148167/) by bhweber

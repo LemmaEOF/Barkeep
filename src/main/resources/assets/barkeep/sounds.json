@@ -1,4 +1,12 @@
 {
+  "drink_pour": {
+	"sounds": ["barkeep:drink_pour1","barkeep:drink_pour2","barkeep:drink_pour3"],
+	"subtitle": "subtitle.barkeep.drink_pour"
+  },
+  "shaker_open": {
+	"sounds": ["barkeep:shaker_open1","barkeep:shaker_open2","barkeep:shaker_open3"],
+	"subtitle": "subtitle.barkeep.shaker_open"
+  },
   "shaker_shake": {
 	"sounds": ["barkeep:shaker_shake1","barkeep:shaker_shake2","barkeep:shaker_shake3"],
 	"subtitle": "subtitle.barkeep.shaker_shake"

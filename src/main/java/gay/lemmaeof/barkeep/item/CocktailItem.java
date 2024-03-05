@@ -46,7 +46,8 @@ public class CocktailItem extends Item {
 
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		return 200 - (hasCocktail(stack)? 0 : getCocktail(stack).getGarniture().size() * 30);
+		//TODO: garniture stored on the glass - cocktails now have preferred garniture that reduce use time even more
+		return 200 - (hasCocktail(stack)? 0 : getCocktail(stack).getPreferredGarniture().size() * 30);
 	}
 
 	@Override

@@ -6,7 +6,7 @@
 	},
 	{
 	  "drink": "barkeep:ramune",
-	  "parts": 1
+	  "parts": 6.75
 	},
 	{
 	  "drink": "barkeep:blue_raspberry_syrup",
@@ -15,7 +15,7 @@
   ],
   "preparation": "stirred",
   "glass": "barkeep:rocks",
-  "garniture": [
+  "preferred_garniture": [
 	{
 	  "tag": "barkeep:maraschino_cherries"
 	}

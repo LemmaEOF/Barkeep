@@ -1,31 +1,36 @@
 package gay.lemmaeof.barkeep.data;
 
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
+import net.minecraft.util.Identifier;
 
 import java.util.List;
 import java.util.Map;
 
 //TODO: muddling
 public class RecipeCocktail implements Cocktail {
-	private Map<DrinkIngredient, Integer> drinks;
-	private List<Ingredient> garniture;
+	private final Identifier id;
+	private final Map<DrinkIngredient, Integer> drinks;
+	private final List<Ingredient> preferredGarniture;
 	private Preparation preparation;
 	private int color;
-	private float volume;
+	private int volume;
 	private float alcohol;
 	private Text name;
-	private Map<FlavorNote, Float> flavorProfile;
+	private Map<FlavorNote, Integer> flavorProfile;
 	private List<StatusEffectInstance> effects;
 
-	public RecipeCocktail(Map<DrinkIngredient, Integer> drinks, List<Ingredient> garniture, Preparation preparation,
-						  TextColor color, float volume, float alcohol, Text name, Map<FlavorNote, Float> flavorProfile,
+	public RecipeCocktail(Identifier id, Map<DrinkIngredient, Integer> drinks, List<Ingredient> preferredGarniture, Preparation preparation,
+						  TextColor color, int volume, float alcohol, Text name, Map<FlavorNote, Integer> flavorProfile,
 						  List<StatusEffectInstance> effects) {
+		this.id = id;
 		this.drinks = drinks;
-		this.garniture = garniture;
+		this.preferredGarniture = preferredGarniture;
 		this.preparation = preparation;
 		this.color = color.getRgb();
 		this.volume = volume;
@@ -35,13 +40,13 @@ public class RecipeCocktail implements Cocktail {
 		this.effects = effects;
 	}
 
-	public boolean matches() {
+	public boolean matches(Map<Drink, Integer> drinks, DynamicRegistryManager manager) {
 		return false; //TODO: impl
 	}
 
 	@Override
-	public List<Item> getGarniture() {
-		return garniture.stream().map(ing -> ing.getMatchingStacks()[0].getItem()).toList();
+	public List<Ingredient> getPreferredGarniture() {
+		return preferredGarniture;
 	}
 
 	@Override
@@ -50,7 +55,7 @@ public class RecipeCocktail implements Cocktail {
 	}
 
 	@Override
-	public float getVolume() {
+	public int getVolume() {
 		return volume;
 	}
 
@@ -65,7 +70,7 @@ public class RecipeCocktail implements Cocktail {
 	}
 
 	@Override
-	public Map<FlavorNote, Float> getFlavorProfile() {
+	public Map<FlavorNote, Integer> getFlavorProfile() {
 		return flavorProfile;
 	}
 
@@ -74,10 +79,13 @@ public class RecipeCocktail implements Cocktail {
 		return effects;
 	}
 
+	@Override
+	public NbtElement toTag(DynamicRegistryManager manager) {
+		return NbtString.of(id.toString());
+	}
+
 	public enum Preparation {
 		SHAKEN,
-		STIRRED,
-		SHAKEN_ROCKS,
-		STIRRED_ROCKS
+		STIRRED
 	}
 }
