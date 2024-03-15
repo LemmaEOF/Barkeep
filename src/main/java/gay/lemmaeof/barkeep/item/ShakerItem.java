@@ -5,6 +5,7 @@ import gay.lemmaeof.barkeep.block.ShakerBlock;
 import gay.lemmaeof.barkeep.data.Cocktail;
 import gay.lemmaeof.barkeep.data.CocktailManager;
 import gay.lemmaeof.barkeep.data.Drink;
+import gay.lemmaeof.barkeep.data.RecipeCocktail;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.init.BarkeepSounds;
 import net.minecraft.block.BlockState;
@@ -73,7 +74,7 @@ public class ShakerItem extends SneakyBlockItem {
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (!world.isClient) {
 			DynamicRegistryManager manager = user.getWorld().getRegistryManager();
-			Cocktail cocktail = CocktailManager.INSTANCE.findCocktail(getDrinks(stack, manager));
+			Cocktail cocktail = CocktailManager.INSTANCE.findCocktail(getDrinks(stack, manager), RecipeCocktail.Preparation.SHAKEN);
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), BarkeepSounds.SHAKER_OPEN, SoundCategory.PLAYERS, 0.5F, user.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			stack.getNbt().put("cocktail", cocktail.toTag(manager));
 			stack.getNbt().remove("drinks");

@@ -1,9 +1,13 @@
 package gay.lemmaeof.barkeep.data;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +17,10 @@ import java.util.List;
 public class DrinkIngredient {
 	Entry[] entries;
 	Drink[] matchingDrinks;
+
+	private DrinkIngredient(Entry[] entries) {
+		this.entries = entries;
+	}
 
 	public Drink[] getMatchingDrinks(DynamicRegistryManager manager) {
 		if (matchingDrinks != null) return matchingDrinks;
@@ -62,6 +70,34 @@ public class DrinkIngredient {
 				ret.add(drink.value());
 			}
 			return ret;
+		}
+	}
+
+	public static DrinkIngredient fromJson(JsonElement json, DynamicRegistryManager manager) {
+		List<Entry> entries = new ArrayList<>();
+		if (json.isJsonArray()) {
+			for (JsonElement elem : json.getAsJsonArray()) {
+				entries.add(getEntry(elem.getAsJsonObject(), manager));
+			}
+		} else if (json.isJsonObject()) {
+			entries.add(getEntry(json.getAsJsonObject(), manager));
+		} else {
+			throw new IllegalArgumentException("Drink ingredient must be an array or object of arrays");
+		}
+		return new DrinkIngredient(entries.toArray(new Entry[0]));
+	}
+
+	private static Entry getEntry(JsonObject json, DynamicRegistryManager manager) {
+		if (JsonHelper.hasJsonObject(json, "drink") && !json.has("tag")) {
+			String value = JsonHelper.getString(json, "drink");
+			Drink drink = manager.get(BarkeepRegistries.DRINKS).get(new Identifier(value));
+			if (drink == null) throw new IllegalArgumentException("Unknown drink: " + value);
+			return new DrinkEntry(drink);
+		} else if (JsonHelper.hasJsonObject(json, "tag") && !json.has("drink")) {
+			TagKey<Drink> tag = TagKey.of(BarkeepRegistries.DRINKS, new Identifier(JsonHelper.getString(json, "tag")));
+			return new TagEntry(tag);
+		} else {
+			throw new IllegalArgumentException("Drink ingredient must contain either 'drink' or 'tag' value");
 		}
 	}
 }

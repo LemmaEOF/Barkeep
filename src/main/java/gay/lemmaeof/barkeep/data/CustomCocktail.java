@@ -1,13 +1,11 @@
 package gay.lemmaeof.barkeep.data;
 
-import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.util.ColorUtil;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 
@@ -49,7 +47,7 @@ public class CustomCocktail implements Cocktail {
 		for (int i = 0; i < Math.min(Math.ceil(alcohol), 8); i++) {
 			FlavorNote note = allNotes.get(i);
 			if (flavorWeights.containsKey(note)) {
-				effects.add(new StatusEffectInstance(note.getEffect(), (int) (300 * flavorWeights.get(note))));
+				effects.add(new StatusEffectInstance(note.getEffect(), 300 * flavorWeights.get(note)));
 			}
 		}
 	}

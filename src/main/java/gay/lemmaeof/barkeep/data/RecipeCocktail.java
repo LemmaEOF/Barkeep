@@ -8,40 +8,63 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.StringIdentifiable;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
-//TODO: muddling
+//TODO: muddling, packets
 public class RecipeCocktail implements Cocktail {
 	private final Identifier id;
-	private final Map<DrinkIngredient, Integer> drinks;
+	private final Map<DrinkIngredient, Integer> drinkInputs;
 	private final List<Ingredient> preferredGarniture;
-	private Preparation preparation;
-	private int color;
-	private int volume;
-	private float alcohol;
-	private Text name;
-	private Map<FlavorNote, Integer> flavorProfile;
-	private List<StatusEffectInstance> effects;
+	private final Preparation preparation;
+	private final int color;
+	private final int volume;
+	private final float alcohol;
+	private final Text name;
+	private final Map<FlavorNote, Integer> flavorProfile;
+	private final List<StatusEffectInstance> effects;
 
-	public RecipeCocktail(Identifier id, Map<DrinkIngredient, Integer> drinks, List<Ingredient> preferredGarniture, Preparation preparation,
-						  TextColor color, int volume, float alcohol, Text name, Map<FlavorNote, Integer> flavorProfile,
+	public RecipeCocktail(Identifier id, Map<DrinkIngredient, Integer> drinkInputs, List<Ingredient> preferredGarniture, Preparation preparation,
+						  Text name, int color, int volume, float alcohol, Map<FlavorNote, Integer> flavorProfile,
 						  List<StatusEffectInstance> effects) {
 		this.id = id;
-		this.drinks = drinks;
+		this.drinkInputs = drinkInputs;
 		this.preferredGarniture = preferredGarniture;
 		this.preparation = preparation;
-		this.color = color.getRgb();
+		this.name = name;
+		this.color = color;
 		this.volume = volume;
 		this.alcohol = alcohol;
-		this.name = name;
 		this.flavorProfile = flavorProfile;
 		this.effects = effects;
 	}
 
-	public boolean matches(Map<Drink, Integer> drinks, DynamicRegistryManager manager) {
-		return false; //TODO: impl
+	//TODO: oh god what have I done - can this be optimized? feels O(n^2)-ish
+	//TODO: this might get fucky with tags? that might be a skill issue on the data packer's side though
+	//TODO: just have lists of ingredients and drinks that need to be checked off and say no if there's any left after
+	public boolean matches(Map<Drink, Integer> drinks, Preparation preparation, DynamicRegistryManager manager) {
+		//quick-exit if preparation is wrong or there's *clearly* mismatched drinks
+		if (drinks.size() != drinkInputs.size() || preparation != this.preparation) return false;
+		//iterate through all ingredients - they need to test each drink so they're higher-prio
+		INGREDIENTS: for (DrinkIngredient ing : drinkInputs.keySet()) {
+			//iterate all drinks in the container
+			for (Drink drink : drinks.keySet()) {
+				//test to make sure they're the right drink
+				if (ing.test(drink, manager)) {
+					//they're the right drink! test to make sure it's the right amount
+					//if they are then continue to the next outer loop iter, otherwise keep looking
+					if (Objects.equals(drinkInputs.get(ing), drinks.get(drink))) continue INGREDIENTS;
+				}
+			}
+			//went through all the drinks and didn't find the right one
+			return false;
+		}
+		//should be good!
+		return true;
 	}
 
 	@Override
@@ -84,8 +107,29 @@ public class RecipeCocktail implements Cocktail {
 		return NbtString.of(id.toString());
 	}
 
-	public enum Preparation {
-		SHAKEN,
-		STIRRED
+	//TODO: other preparations?
+	public enum Preparation implements StringIdentifiable {
+		SHAKEN("shaken"),
+		STIRRED("stirred"),
+		DRY_SHAKEN("dry_shaken"),
+		BLENDED("blended");
+
+		private final String name;
+
+		Preparation(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String asString() {
+			return name;
+		}
+
+		public static Preparation forName(String name) {
+			for (Preparation prep : values()) {
+				if (prep.name.equals(name.toLowerCase(Locale.ROOT))) return prep;
+			}
+			throw new IllegalArgumentException("No known preparation named " + name);
+		}
 	}
 }

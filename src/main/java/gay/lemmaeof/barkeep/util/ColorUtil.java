@@ -15,6 +15,7 @@ public class ColorUtil {
 	}
 
 	public static int getDrinkColor(Map<TextColor, Integer> colorWeights, int colorVolume) {
+		if (colorVolume == 0) return 0xFFFFFF;
 		float[] colorMix = new float[Mixbox.LATENT_SIZE];
 		for (TextColor color : colorWeights.keySet()) {
 			float[] latent = Mixbox.rgbToLatent(color.getRgb());

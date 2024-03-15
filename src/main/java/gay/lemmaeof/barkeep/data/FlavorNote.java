@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//TODO: More flavor notes? Aromatic?
+//TODO: More flavor notes? Aromatic? Data-drive?
 public enum FlavorNote implements StringIdentifiable {
 	SWEET("sweet", StatusEffects.SPEED),
 	SOUR("sour", StatusEffects.REGENERATION),
