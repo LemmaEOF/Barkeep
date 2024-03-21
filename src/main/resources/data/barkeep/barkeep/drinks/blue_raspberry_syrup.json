@@ -1,5 +1,6 @@
 {
   "color": "blue",
+  "color_strength": 3,
   "flavor_notes": [
     "sweet"
   ]

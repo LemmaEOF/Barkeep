@@ -21,17 +21,17 @@ public class CustomCocktail implements Cocktail {
 
 	public CustomCocktail(Map<Drink, Integer> drinks) {
 		this.drinks = drinks;
-		int colorVolume = 0;
+		float colorVolume = 0;
 		float currentAlcohol = 0;
 		Map<FlavorNote, Integer> flavorWeights = new HashMap<>();
-		Map<TextColor, Integer> colorWeights = new HashMap<>();
+		Map<TextColor, Float> colorWeights = new HashMap<>();
 		for (Drink drink : drinks.keySet()) {
 			int units = drinks.get(drink);
 			volume += units;
 			currentAlcohol += (units/4f) * (drink.proof() / 200f);
-			if (drink.color().isPresent()) {
-				colorVolume += units;
-				colorWeights.put(drink.color().get(), colorWeights.getOrDefault(drink.color().get(), 0) + units);
+			if (drink.colorStrength() > 0) {
+				colorVolume += units * drink.colorStrength();
+				colorWeights.put(drink.color(), colorWeights.getOrDefault(drink.color(), 0f) + units * drink.colorStrength());
 			}
 			for (FlavorNote note : drink.flavorNotes()) {
 				flavorWeights.put(note, flavorWeights.getOrDefault(note, 0) + units);

@@ -30,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-//TODO: proper cocktails and not just custom
 public class CocktailManager extends JsonDataLoader implements IdentifiableResourceReloadListener {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static CocktailManager INSTANCE;
@@ -51,7 +50,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 	protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
 		cocktails.clear();
 
-		//TODO: this is a bit of a mess due to how things need to be calculated lmao
+		//TODO: this is a bit of a mess due to how things need to be calculated lmao, move some to RecipeCocktail/other methods?
 		for (Identifier id : prepared.keySet()) {
 			JsonObject json = prepared.get(id).getAsJsonObject();
 
@@ -87,8 +86,8 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 
 			//color define/calc check
 			int color = 0xFFFFFF;
-			Map<TextColor, Integer> colorWeights = new HashMap<>();
-			int colorVolume = 0;
+			Map<TextColor, Float> colorWeights = new HashMap<>();
+			float colorVolume = 0;
 			boolean calcColor = false;
 			if (JsonHelper.hasString(json, "color")) {
 				color = TextColor.parse(JsonHelper.getString(json, "color")).getRgb();
@@ -131,9 +130,9 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 				int drinkVol = ingredients.get(ing);
 				Drink drink = ing.getMatchingDrinks(registryManager)[0];
 				if (calcColor) {
-					if (drink.color().isPresent()) {
-						colorWeights.put(drink.color().get(), drinkVol);
-						colorVolume += drinkVol;
+					if (drink.colorStrength() > 0) {
+						colorWeights.put(drink.color(), drinkVol * drink.colorStrength());
+						colorVolume += drinkVol * drink.colorStrength();
 					}
 				}
 				if (calcVolume) {
@@ -234,7 +233,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 			Registry<Drink> drinkRegistry = registryManager.get(BarkeepRegistries.DRINKS);
 			Map<Drink, Integer> drinks = new HashMap<>();
 			for (String key : cocktailTag.getKeys()) {
-				Drink drink = drinkRegistry.getOrEmpty(new Identifier(key)).orElse(new Drink(Optional.empty(), 0, List.of()));
+				Drink drink = drinkRegistry.getOrEmpty(new Identifier(key)).orElse(new Drink(TextColor.fromRgb(0xFFFFFF), 0, 0, List.of()));
 				int volume = cocktailTag.getInt(key);
 				drinks.put(drink, volume);
 			}
@@ -250,14 +249,14 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 		else if (tag.contains("cocktail", NbtElement.COMPOUND_TYPE)) {
 			NbtCompound cocktailTag = tag.getCompound("cocktail");
 			Registry<Drink> drinkRegistry = registryManager.get(BarkeepRegistries.DRINKS);
-			Map<TextColor, Integer> colorWeights = new HashMap<>();
+			Map<TextColor, Float> colorWeights = new HashMap<>();
 			int colorVolume = 0;
 			for (String key : cocktailTag.getKeys()) {
-				Drink drink = drinkRegistry.getOrEmpty(new Identifier(key)).orElse(new Drink(Optional.empty(), 0, List.of()));
-				if (drink.color().isPresent()) {
+				Drink drink = drinkRegistry.getOrEmpty(new Identifier(key)).orElse(new Drink(TextColor.fromRgb(0xFFFFFF), 0F, 0, List.of()));
+				if (drink.colorStrength() > 0) {
 					int volume = cocktailTag.getInt(key);
-					colorWeights.put(drink.color().get(), volume);
-					colorVolume += volume;
+					colorWeights.put(drink.color(), volume * drink.colorStrength());
+					colorVolume += volume * drink.colorStrength();
 				}
 			}
 			return ColorUtil.getDrinkColor(colorWeights, colorVolume);

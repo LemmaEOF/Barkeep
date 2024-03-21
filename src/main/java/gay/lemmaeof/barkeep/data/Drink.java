@@ -15,7 +15,7 @@ import net.minecraft.util.dynamic.Codecs;
 import java.util.List;
 import java.util.Optional;
 
-public record Drink(Optional<TextColor> color, int proof, List<FlavorNote> flavorNotes) {
+public record Drink(TextColor color, float colorStrength, int proof, List<FlavorNote> flavorNotes) {
 	public static final Codec<Integer> PROOF = Codecs.rangedInt(0, 200);
 	public static final Codec<Optional<TextColor>> DRINK_COLOR = Codec.STRING.comapFlatMap(color -> {
 		if (color.equals("clear")) return DataResult.success(Optional.empty());
@@ -26,7 +26,8 @@ public record Drink(Optional<TextColor> color, int proof, List<FlavorNote> flavo
 		else return color.get().getName();
 	});
 	public static final Codec<Drink> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			DRINK_COLOR.fieldOf("color").orElse(Optional.empty()).forGetter(Drink::color),
+			TextColor.CODEC.fieldOf("color").orElse(TextColor.fromRgb(0xFFFFFF)).forGetter(Drink::color),
+			Codecs.POSITIVE_FLOAT.fieldOf("color_strength").orElse(1f).forGetter(Drink::colorStrength),
 			PROOF.fieldOf("proof").orElse(0).forGetter(Drink::proof),
 			FlavorNote.CODEC.listOf().fieldOf("flavor_notes").forGetter(Drink::flavorNotes)
 	).apply(instance, Drink::new));
