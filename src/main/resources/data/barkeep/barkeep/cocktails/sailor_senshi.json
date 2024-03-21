@@ -1,7 +1,7 @@
 {
   "drinks": [
 	{
-	  "tag": "barkeep:white_rums",
+	  "drink": "barkeep:white_rum",
 	  "parts": 2
 	},
 	{

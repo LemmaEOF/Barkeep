@@ -57,7 +57,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 			//drink ingredients define
 			Map<DrinkIngredient, Integer> ingredients = new HashMap<>();
 			if (JsonHelper.hasArray(json, "drinks")) {
-				for (JsonElement elem : JsonHelper.getArray(json, "drink")) {
+				for (JsonElement elem : JsonHelper.getArray(json, "drinks")) {
 					JsonObject obj = JsonHelper.asObject(elem, "drink entry");
 					DrinkIngredient ing = DrinkIngredient.fromJson(obj, registryManager);
 					int amount = (int) Math.floor(JsonHelper.getFloat(obj, "parts") * 4);
@@ -250,7 +250,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 			NbtCompound cocktailTag = tag.getCompound("cocktail");
 			Registry<Drink> drinkRegistry = registryManager.get(BarkeepRegistries.DRINKS);
 			Map<TextColor, Float> colorWeights = new HashMap<>();
-			int colorVolume = 0;
+			float colorVolume = 0;
 			for (String key : cocktailTag.getKeys()) {
 				Drink drink = drinkRegistry.getOrEmpty(new Identifier(key)).orElse(new Drink(TextColor.fromRgb(0xFFFFFF), 0F, 0, List.of()));
 				if (drink.colorStrength() > 0) {

@@ -16,18 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 public record Drink(TextColor color, float colorStrength, int proof, List<FlavorNote> flavorNotes) {
+	public static final Codec<Float> NONNEGATIVE_FLOAT = Codecs.validate(
+			Codec.FLOAT,
+			value -> value >= 0 ? DataResult.success(value) : DataResult.error(() -> "Value must be non-negative: " + value)
+	);
 	public static final Codec<Integer> PROOF = Codecs.rangedInt(0, 200);
-	public static final Codec<Optional<TextColor>> DRINK_COLOR = Codec.STRING.comapFlatMap(color -> {
-		if (color.equals("clear")) return DataResult.success(Optional.empty());
-		TextColor textColor = TextColor.parse(color);
-		return textColor != null ? DataResult.success(java.util.Optional.of(textColor)) : DataResult.error(() -> "String is not a valid color name or hex color code");
-	}, color -> {
-		if (color.isEmpty()) return "clear";
-		else return color.get().getName();
-	});
 	public static final Codec<Drink> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			TextColor.CODEC.fieldOf("color").orElse(TextColor.fromRgb(0xFFFFFF)).forGetter(Drink::color),
-			Codecs.POSITIVE_FLOAT.fieldOf("color_strength").orElse(1f).forGetter(Drink::colorStrength),
+			NONNEGATIVE_FLOAT.fieldOf("color_strength").orElse(1f).forGetter(Drink::colorStrength),
 			PROOF.fieldOf("proof").orElse(0).forGetter(Drink::proof),
 			FlavorNote.CODEC.listOf().fieldOf("flavor_notes").forGetter(Drink::flavorNotes)
 	).apply(instance, Drink::new));

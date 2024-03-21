@@ -88,12 +88,12 @@ public class DrinkIngredient {
 	}
 
 	private static Entry getEntry(JsonObject json, DynamicRegistryManager manager) {
-		if (JsonHelper.hasJsonObject(json, "drink") && !json.has("tag")) {
+		if (JsonHelper.hasString(json, "drink") && !json.has("tag")) {
 			String value = JsonHelper.getString(json, "drink");
 			Drink drink = manager.get(BarkeepRegistries.DRINKS).get(new Identifier(value));
 			if (drink == null) throw new IllegalArgumentException("Unknown drink: " + value);
 			return new DrinkEntry(drink);
-		} else if (JsonHelper.hasJsonObject(json, "tag") && !json.has("drink")) {
+		} else if (JsonHelper.hasString(json, "tag") && !json.has("drink")) {
 			TagKey<Drink> tag = TagKey.of(BarkeepRegistries.DRINKS, new Identifier(JsonHelper.getString(json, "tag")));
 			return new TagEntry(tag);
 		} else {
