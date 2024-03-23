@@ -1,5 +1,6 @@
 package gay.lemmaeof.barkeep.block;
 
+import gay.lemmaeof.barkeep.block.entity.JiggerCupBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -21,6 +22,6 @@ public class JiggerCupBlock extends Block implements BlockEntityProvider {
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		return null;
+		return new JiggerCupBlockEntity(pos, state);
 	}
 }

@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "barkeep:item/temp_amaro_nonino",
+		"layer1": "barkeep:item/temp_drink_bottle"
+	}
+}

@@ -1,0 +1,6 @@
+{
+  "variants": {
+	"filled=false": {"model": "barkeep:block/mason_jar"},
+	"filled=true": {"model": "barkeep:block/mason_jar_full"}
+  }
+}

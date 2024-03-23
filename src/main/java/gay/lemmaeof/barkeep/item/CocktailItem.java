@@ -1,12 +1,17 @@
 package gay.lemmaeof.barkeep.item;
 
+import gay.lemmaeof.barkeep.block.CocktailGlassBlock;
+import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
 import gay.lemmaeof.barkeep.data.Cocktail;
 import gay.lemmaeof.barkeep.data.CocktailManager;
+import gay.lemmaeof.barkeep.init.BarkeepItems;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
@@ -14,13 +19,15 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CocktailItem extends Item {
-	public CocktailItem(Settings settings) {
-		super(settings);
+public class CocktailItem extends SneakyBlockItem {
+	public CocktailItem(Block block, Settings settings) {
+		super(block, settings);
 	}
 
 	@Override
@@ -38,7 +45,6 @@ public class CocktailItem extends Item {
 		return UseAction.DRINK;
 	}
 
-
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (hasCocktail(stack)) {
@@ -46,6 +52,8 @@ public class CocktailItem extends Item {
 			for (StatusEffectInstance effect : cocktail.getEffects()) {
 				user.addStatusEffect(new StatusEffectInstance(effect.getEffectType(), effect.getDuration()));
 			}
+			stack.getNbt().remove("cocktail");
+			return stack;
 		}
 		return super.finishUsing(stack, world, user);
 	}
@@ -85,5 +93,18 @@ public class CocktailItem extends Item {
 		DefaultedList<ItemStack> stacks = DefaultedList.of();
 		Inventories.readNbt(stack.getOrCreateNbt().getCompound("garniture"), stacks);
 		return stacks;
+	}
+
+	@Override
+	protected boolean postPlacement(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
+		if (BarkeepItems.TEST_COCKTAIL.hasCocktail(stack)) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof CocktailGlassBlockEntity glass) {
+				glass.setCocktail(BarkeepItems.TEST_COCKTAIL.getCocktail(stack));
+				world.setBlockState(pos, state.with(CocktailGlassBlock.FILLED, true));
+				return true;
+			}
+		}
+		return false;
 	}
 }

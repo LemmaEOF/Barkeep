@@ -37,6 +37,8 @@ public class JiggerCupDrinkContainer implements DrinkContainer {
 
 	@Override
 	public int tryPour(int quarterParts) {
-		return getDrink() != null? size : 0;
+		if (getDrink() == null) return 0;
+		stack.getOrCreateNbt().remove("drink");
+		return size;
 	}
 }

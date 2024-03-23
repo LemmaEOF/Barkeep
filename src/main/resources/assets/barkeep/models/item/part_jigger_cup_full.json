@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "barkeep:item/part_jigger_cup",
+		"layer1": "barkeep:item/jigger_cup_drink"
+	}
+}

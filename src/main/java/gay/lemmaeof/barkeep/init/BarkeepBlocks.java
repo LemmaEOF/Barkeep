@@ -1,8 +1,10 @@
 package gay.lemmaeof.barkeep.init;
 
 import gay.lemmaeof.barkeep.Barkeep;
+import gay.lemmaeof.barkeep.block.CocktailGlassBlock;
 import gay.lemmaeof.barkeep.block.JiggerCupBlock;
 import gay.lemmaeof.barkeep.block.ShakerBlock;
+import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
 import gay.lemmaeof.barkeep.block.entity.JiggerCupBlockEntity;
 import gay.lemmaeof.barkeep.block.entity.ShakerBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -21,6 +23,13 @@ public class BarkeepBlocks {
 	public static final JiggerCupBlock THREE_QUARTER_PART_JIGGER_CUP = register("three_quarter_part_jigger_cup", new JiggerCupBlock(3, jiggerCup()));
 	public static final JiggerCupBlock PART_JIGGER_CUP = register("part_jigger_cup", new JiggerCupBlock(4, jiggerCup()));
 	public static final JiggerCupBlock TWO_PART_JIGGER_CUP = register("two_part_jigger_cup", new JiggerCupBlock(8, jiggerCup()));
+	public static final CocktailGlassBlock TEST_COCKTAIL_GLASS = register("test_cocktail_glass", new CocktailGlassBlock(
+			FabricBlockSettings.create()
+					.nonOpaque()
+					.breakInstantly()
+					.dynamicBounds()
+					.offset(AbstractBlock.OffsetType.XZ)
+	));
 
 	public static final BlockEntityType<ShakerBlockEntity> SHAKER_BE = register("shaker", ShakerBlockEntity::new, SHAKER);
 
@@ -31,6 +40,8 @@ public class BarkeepBlocks {
 			PART_JIGGER_CUP,
 			TWO_PART_JIGGER_CUP)
 			;
+
+	public static final BlockEntityType<CocktailGlassBlockEntity> COCKTAIL_GLASS_BE = register("cocktail_glass", CocktailGlassBlockEntity::new, TEST_COCKTAIL_GLASS);
 
 	public static void init() {
 

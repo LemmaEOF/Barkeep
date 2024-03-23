@@ -1,23 +1,23 @@
 {
-  "drinks": [
-	{
-	  "drink": "barkeep:white_rum",
-	  "parts": 2
-	},
-	{
-	  "drink": "barkeep:ramune",
-	  "parts": 6.75
-	},
-	{
-	  "drink": "barkeep:blue_raspberry_syrup",
-	  "parts": 2
-	}
-  ],
-  "preparation": "stirred",
-  "glass": "barkeep:rocks",
-  "preferred_garniture": [
-	{
-	  "tag": "barkeep:maraschino_cherries"
-	}
-  ]
+	"drinks": [
+		{
+			"drink": "barkeep:white_rum",
+			"parts": 2
+		},
+		{
+			"drink": "barkeep:ramune",
+			"parts": 6.75
+		},
+		{
+			"drink": "barkeep:blue_raspberry_syrup",
+			"parts": 2
+		}
+	],
+	"preparation": "stirred",
+	"glass": "barkeep:rocks",
+	"preferred_garniture": [
+		{
+			"tag": "barkeep:maraschino_cherries"
+		}
+	]
 }

@@ -1,8 +1,22 @@
 {
-  "block.barkeep.shaker": "Shaker",
-  "block.barkeep.quarter_part_jigger_cup": "¼-Part Jigger Cup",
-  "block.barkeep.half_part_jigger_cup": "½-Part Jigger Cup",
-  "block.barkeep.three_quarter_part_jigger_cup": "¾-Part Jigger Cup",
-  "block.barkeep.part_jigger_cup": "1-Part Jigger Cup",
-  "block.barkeep.two_part_jigger_cup": "2-Part Jigger Cup"
+	"block.barkeep.shaker": "Shaker",
+	"block.barkeep.quarter_part_jigger_cup": "¼-Part Jigger Cup",
+	"block.barkeep.half_part_jigger_cup": "½-Part Jigger Cup",
+	"block.barkeep.three_quarter_part_jigger_cup": "¾-Part Jigger Cup",
+	"block.barkeep.part_jigger_cup": "1-Part Jigger Cup",
+	"block.barkeep.two_part_jigger_cup": "2-Part Jigger Cup",
+	"block.barkeep.test_cocktail_glass": "Cocktail Glass",
+	"cocktail.barkeep.paper_plane": "Paper Plane",
+	"cocktail.barkeep.sailor_senshi": "Sailor Senshi",
+	"drink.barkeep.aperol": "Aperol",
+	"drink.barkeep.amaro_nonino": "Amaro Nonino",
+	"drink.barkeep.blue_raspberry_syrup": "Blue Raspberry Syrup",
+	"drink.barkeep.bourbon": "Bourbon",
+	"drink.barkeep.lemon_juice": "Lemon Juice",
+	"drink.barkeep.ramune": "Ramume",
+	"drink.barkeep.water": "Water",
+	"drink.barkeep.white_rum": "White Rum",
+	"item.barkeep.bottled_drink": "Bottle of %s",
+	"itemGroup.barkeep.equipment": "Barkeep Equipment",
+	"itemGroup.barkeep.cocktails": "Barkeep Cocktails"
 }

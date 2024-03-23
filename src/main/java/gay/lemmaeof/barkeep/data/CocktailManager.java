@@ -225,7 +225,10 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 
 	@Nullable
 	public Cocktail getCocktail(ItemStack stack) {
-		NbtCompound tag = stack.getNbt();
+		return getCocktail(stack.getNbt());
+	}
+
+	public Cocktail getCocktail(NbtCompound tag) {
 		if (tag == null) return null;
 		if (tag.contains("cocktail", NbtElement.STRING_TYPE)) return getCocktail(new Identifier(tag.getString("cocktail")));
 		else if (tag.contains("cocktail", NbtElement.COMPOUND_TYPE)) {
@@ -262,6 +265,10 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 			return ColorUtil.getDrinkColor(colorWeights, colorVolume);
 		}
 		return 0xFFFFFF;
+	}
+
+	public Collection<Identifier> getCocktailIds() {
+		return cocktails.keySet();
 	}
 
 	@Override

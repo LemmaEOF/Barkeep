@@ -1,0 +1,22 @@
+{
+	"drinks": [
+		{
+			"drink": "barkeep:bourbon",
+			"parts": 0.75
+		},
+		{
+			"drink": "barkeep:amaro_nonino",
+			"parts": 0.75
+		},
+		{
+			"drink": "barkeep:aperol",
+			"parts": 0.75
+		},
+		{
+			"drink": "barkeep:lemon_juice",
+			"parts": 0.75
+		}
+	],
+	"preparation": "shaken",
+	"color": "#af756c"
+}

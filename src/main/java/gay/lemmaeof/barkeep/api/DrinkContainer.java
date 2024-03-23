@@ -38,5 +38,6 @@ public interface DrinkContainer {
 	 * @param quarterParts The amount of drink to pour, in quarter-parts.
 	 * @return The amount of drink successfully poured, in quarter-parts.
 	 */
+	//TODO: this is a bit sloppy, refine API later or is it not a big deal?
 	int tryPour(int quarterParts);
 }

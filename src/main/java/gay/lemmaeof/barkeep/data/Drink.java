@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryElementCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.TextColor;
@@ -28,6 +29,10 @@ public record Drink(TextColor color, float colorStrength, int proof, List<Flavor
 			FlavorNote.CODEC.listOf().fieldOf("flavor_notes").forGetter(Drink::flavorNotes)
 	).apply(instance, Drink::new));
 	public static final Codec<RegistryEntry<Drink>> REGISTRY_ENTRY_CODEC = RegistryElementCodec.of(BarkeepRegistries.DRINKS, CODEC);
+
+	public static RegistryKey<Drink> key(Identifier id) {
+		return RegistryKey.of(BarkeepRegistries.DRINKS, id);
+	}
 
 	public Identifier getId(DynamicRegistryManager manager) {
 		Identifier id = manager.get(BarkeepRegistries.DRINKS).getId(this);

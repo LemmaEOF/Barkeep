@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+		"layer0": "barkeep:item/half_part_jigger_cup"
+  },
+	"overrides": [
+		{
+			"predicate": { "barkeep:filled":  1 },
+			"model": "barkeep:item/half_part_jigger_cup_full"
+		}
+	]
+}
