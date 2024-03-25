@@ -8,6 +8,7 @@ import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.RecipeCocktail;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.init.BarkeepSounds;
+import gay.lemmaeof.barkeep.init.BarkeepTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -46,6 +47,10 @@ public class ShakerItem extends SneakyBlockItem {
 			player.playSound(BarkeepSounds.DRINK_POUR, 0.5F, player.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			addDrink(stack, drink, poured, manager);
 			return true;
+		} else if (otherStack.isIn(BarkeepTags.ICE) && !stack.getOrCreateNbt().getBoolean("iced")) {
+			//TODO: sound
+			stack.getNbt().putBoolean("iced", true);
+			stack.decrement(1);
 		}
 		return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
 	}
@@ -74,10 +79,12 @@ public class ShakerItem extends SneakyBlockItem {
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (!world.isClient) {
 			DynamicRegistryManager manager = user.getWorld().getRegistryManager();
-			Cocktail cocktail = CocktailManager.INSTANCE.findCocktail(getDrinks(stack, manager), RecipeCocktail.Preparation.SHAKEN);
+			boolean iced = stack.getOrCreateNbt().getBoolean("iced");
+			Cocktail cocktail = CocktailManager.INSTANCE.findCocktail(getDrinks(stack, manager), iced? RecipeCocktail.Preparation.SHAKEN : RecipeCocktail.Preparation.DRY_SHAKEN);
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), BarkeepSounds.SHAKER_OPEN, SoundCategory.PLAYERS, 0.5F, user.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			stack.getNbt().put("cocktail", cocktail.toTag(manager));
 			stack.getNbt().remove("drinks");
+			stack.getNbt().remove("iced");
 			return stack;
 		}
 		return super.finishUsing(stack, world, user);
@@ -95,9 +102,24 @@ public class ShakerItem extends SneakyBlockItem {
 			DynamicRegistryManager manager = world.getRegistryManager();
 			Map<Drink, Integer> drinks = getDrinks(stack, manager);
 			for (Drink drink : drinks.keySet()) {
-				tooltip.add(Text.literal("  - ").append(Text.translatable(drink.getTranslationKey(manager))));
+				//TODO: this is very much only designed for english rn, figure out a way to do proper pluralization later
+				int quarters = drinks.get(drink);
+				String parts = getPartNumber(quarters);
+				String plural = quarters <= 4? "" : "s";
+				tooltip.add(Text.translatable("tooltip.barkeep.drink_amount", parts, plural).append(Text.translatable(drink.getTranslationKey(manager))));
 			}
 		}
+	}
+
+	private String getPartNumber(int quarters) {
+		int whole = quarters / 4;
+		String fraction = switch(quarters % 4) {
+			case 1 -> "¼";
+			case 2 -> "½";
+			case 3 -> "¾";
+			default -> "";
+		};
+		return whole > 0? whole + fraction : fraction;
 	}
 
 	@Override

@@ -1,9 +1,6 @@
 package gay.lemmaeof.barkeep;
 
-import gay.lemmaeof.barkeep.init.BarkeepBlocks;
-import gay.lemmaeof.barkeep.init.BarkeepItems;
-import gay.lemmaeof.barkeep.init.BarkeepRegistries;
-import gay.lemmaeof.barkeep.init.BarkeepSounds;
+import gay.lemmaeof.barkeep.init.*;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -19,5 +16,6 @@ public class Barkeep implements ModInitializer {
 		BarkeepItems.init();
 		BarkeepRegistries.init();
 		BarkeepSounds.init();
+		BarkeepTags.init();
 	}
 }

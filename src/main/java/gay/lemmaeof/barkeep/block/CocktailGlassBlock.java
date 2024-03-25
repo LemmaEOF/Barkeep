@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 //TODO: multiple types of glass
 public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 	//TODO: BER instead of block model? would let me do fancy animations and variable drink sizes, and we need one anyway for garniture
+	//TODO: oh if it's a BER I should make shaken drinks more opaque bc they're aerated
 	public static final BooleanProperty FILLED = BooleanProperty.of("filled");
 	public static final VoxelShape SHAPE = Block.createCuboidShape(5, 0, 5, 11, 10, 11);
 

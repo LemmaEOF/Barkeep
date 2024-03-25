@@ -18,5 +18,6 @@
 	"drink.barkeep.white_rum": "White Rum",
 	"item.barkeep.bottled_drink": "Bottle of %s",
 	"itemGroup.barkeep.equipment": "Barkeep Equipment",
-	"itemGroup.barkeep.cocktails": "Barkeep Cocktails"
+	"itemGroup.barkeep.cocktails": "Barkeep Cocktails",
+	"tooltip.barkeep.drink_amount": "  - %s part%s "
 }

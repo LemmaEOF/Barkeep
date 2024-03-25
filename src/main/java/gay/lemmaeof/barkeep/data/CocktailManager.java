@@ -139,7 +139,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 					volume += drinkVol;
 				}
 				if (calcAlcohol) {
-					alcohol += (drinkVol/4f) * (drink.proof() / 200f);
+					alcohol += (drinkVol/4f) * (drink.proof() / 100f);
 				}
 				if (calcFlavorProfile) {
 					for (FlavorNote note : drink.flavorNotes()) {
@@ -185,7 +185,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 				for (int i = 0; i < Math.min(Math.ceil(alcohol), 8); i++) {
 					FlavorNote note = allNotes.get(i);
 					if (flavorWeights.containsKey(note)) {
-						effects.add(new StatusEffectInstance(note.getEffect(), 300 * flavorWeights.get(note)));
+						effects.add(new StatusEffectInstance(note.getEffect(), 600 * flavorWeights.get(note)));
 					}
 				}
 			}

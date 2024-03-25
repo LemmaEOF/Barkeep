@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 //TODO: muddling, packets
+//TODO: split into recipe/instance for the sake of Not Having Everything Super Overcomplicated And Duplicated?
 public class RecipeCocktail implements Cocktail {
 	private final Identifier id;
 	private final Map<DrinkIngredient, Integer> drinkInputs;

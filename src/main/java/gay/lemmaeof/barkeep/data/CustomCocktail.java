@@ -11,6 +11,7 @@ import net.minecraft.text.TextColor;
 
 import java.util.*;
 
+//TODO: track preparation for aesthetic/mechanical differences
 public class CustomCocktail implements Cocktail {
 	private final Map<Drink, Integer> drinks;
 	private final int color;
@@ -28,7 +29,7 @@ public class CustomCocktail implements Cocktail {
 		for (Drink drink : drinks.keySet()) {
 			int units = drinks.get(drink);
 			volume += units;
-			currentAlcohol += (units/4f) * (drink.proof() / 200f);
+			currentAlcohol += (units/4f) * (drink.proof() / 100f);
 			if (drink.colorStrength() > 0) {
 				colorVolume += units * drink.colorStrength();
 				colorWeights.put(drink.color(), colorWeights.getOrDefault(drink.color(), 0f) + units * drink.colorStrength());
@@ -47,7 +48,7 @@ public class CustomCocktail implements Cocktail {
 		for (int i = 0; i < Math.min(Math.ceil(alcohol), 8); i++) {
 			FlavorNote note = allNotes.get(i);
 			if (flavorWeights.containsKey(note)) {
-				effects.add(new StatusEffectInstance(note.getEffect(), 300 * flavorWeights.get(note)));
+				effects.add(new StatusEffectInstance(note.getEffect(), 600 * flavorWeights.get(note)));
 			}
 		}
 	}
