@@ -3,6 +3,7 @@ package gay.lemmaeof.barkeep.data;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.StringIdentifiable;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,13 +27,13 @@ public enum FlavorNote implements StringIdentifiable {
 	private static final Map<String, FlavorNote> BY_NAME = Arrays.stream(values())
 			.collect(Collectors.toMap(f -> sanitize(f.name), f -> f));
 	private final String name;
-	private final StatusEffect effect;
+	private final RegistryEntry<StatusEffect> effect;
 
 	private static String sanitize(String name) {
 		return name.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
 	}
 
-	FlavorNote(String name, StatusEffect effect) {
+	FlavorNote(String name, RegistryEntry<StatusEffect> effect) {
 		this.name = name;
 		this.effect = effect;
 	}
@@ -42,7 +43,7 @@ public enum FlavorNote implements StringIdentifiable {
 		return name;
 	}
 
-	public StatusEffect getEffect() {
+	public RegistryEntry<StatusEffect> getEffect() {
 		return effect;
 	}
 

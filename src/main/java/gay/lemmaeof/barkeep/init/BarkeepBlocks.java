@@ -17,14 +17,14 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class BarkeepBlocks {
-	public static final ShakerBlock SHAKER = register("shaker", new ShakerBlock(FabricBlockSettings.create()));
+	public static final ShakerBlock SHAKER = register("shaker", new ShakerBlock(AbstractBlock.Settings.create()));
 	public static final JiggerCupBlock QUARTER_PART_JIGGER_CUP = register("quarter_part_jigger_cup", new JiggerCupBlock(1, jiggerCup()));
 	public static final JiggerCupBlock HALF_PART_JIGGER_CUP = register("half_part_jigger_cup", new JiggerCupBlock(2, jiggerCup()));
 	public static final JiggerCupBlock THREE_QUARTER_PART_JIGGER_CUP = register("three_quarter_part_jigger_cup", new JiggerCupBlock(3, jiggerCup()));
 	public static final JiggerCupBlock PART_JIGGER_CUP = register("part_jigger_cup", new JiggerCupBlock(4, jiggerCup()));
 	public static final JiggerCupBlock TWO_PART_JIGGER_CUP = register("two_part_jigger_cup", new JiggerCupBlock(8, jiggerCup()));
 	public static final CocktailGlassBlock TEST_COCKTAIL_GLASS = register("test_cocktail_glass", new CocktailGlassBlock(
-			FabricBlockSettings.create()
+			AbstractBlock.Settings.create()
 					.nonOpaque()
 					.breakInstantly()
 					.dynamicBounds()
@@ -57,7 +57,7 @@ public class BarkeepBlocks {
 
 	private static AbstractBlock.Settings jiggerCup() {
 		//TODO: sounds
-		return FabricBlockSettings.create()
+		return AbstractBlock.Settings.create()
 				.breakInstantly()
 				.nonOpaque()
 				.offset(AbstractBlock.OffsetType.XZ)

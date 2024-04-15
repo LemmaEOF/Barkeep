@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.util.ColorUtil;
@@ -18,6 +19,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
@@ -69,7 +71,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 			List<Ingredient> garniture = new ArrayList<>();
 			if (JsonHelper.hasArray(json, "preferred_garniture")) {
 				for (JsonElement elem : JsonHelper.getArray(json, "preferred_garniture")) {
-					garniture.add(Ingredient.fromJson(elem));
+					garniture.add(Ingredient.DISALLOW_EMPTY_CODEC.parse(JsonOps.INSTANCE, elem).getOrThrow());
 				}
 			}
 
@@ -79,7 +81,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 			//name define/calc
 			Text name;
 			if (JsonHelper.hasElement(json, "name")) {
-				name = Text.Serializer.fromJson(JsonHelper.getElement(json, "name"));
+				name = Text.Serialization.fromJsonTree(JsonHelper.getElement(json, "name"), registryManager);
 			} else {
 				name = Text.translatable(id.toTranslationKey("cocktail"));
 			}
@@ -90,7 +92,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 			float colorVolume = 0;
 			boolean calcColor = false;
 			if (JsonHelper.hasString(json, "color")) {
-				color = TextColor.parse(JsonHelper.getString(json, "color")).getRgb();
+				color = TextColor.parse(JsonHelper.getString(json, "color")).getOrThrow().getRgb();
 			} else {
 				calcColor = true;
 			}
@@ -167,8 +169,7 @@ public class CocktailManager extends JsonDataLoader implements IdentifiableResou
 					if (elem.isJsonObject()) {
 						JsonObject eff = elem.getAsJsonObject();
 						Identifier effId = new Identifier(JsonHelper.getString(eff, "id"));
-						StatusEffect effect = Registries.STATUS_EFFECT.get(effId);
-						if (effect == null) throw new IllegalArgumentException("No status effect " + effId);
+						RegistryEntry<StatusEffect> effect = Registries.STATUS_EFFECT.getEntry(effId).orElseThrow();
 						int duration = JsonHelper.getInt(eff, "duration");
 						int amplifier = JsonHelper.getInt(eff, "amplifier", 0);
 						boolean ambient = JsonHelper.getBoolean(eff, "ambient", false);

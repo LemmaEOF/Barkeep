@@ -6,6 +6,7 @@ import gay.lemmaeof.barkeep.init.BarkeepBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 
 public class CocktailGlassBlockEntity extends BlockEntity {
@@ -24,14 +25,14 @@ public class CocktailGlassBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
+	public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+		super.readNbt(nbt, lookup);
 		this.cocktail = CocktailManager.INSTANCE.getCocktail(nbt);
 	}
 
 	@Override
-	protected void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
+	protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+		super.writeNbt(nbt, lookup);
 		if (cocktail != null) {
 			nbt.put("cocktail", cocktail.toTag(this.world.getRegistryManager()));
 		}

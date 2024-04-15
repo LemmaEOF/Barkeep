@@ -11,6 +11,7 @@ import gay.lemmaeof.barkeep.init.BarkeepSounds;
 import gay.lemmaeof.barkeep.init.BarkeepTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
@@ -19,6 +20,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -31,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ShakerItem extends SneakyBlockItem {
 	public ShakerItem(ShakerBlock block, Settings settings) {
@@ -96,10 +100,10 @@ public class ShakerItem extends SneakyBlockItem {
 	}
 
 	@Override
-	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		super.appendTooltip(stack, world, tooltip, context);
-		if (world != null && context.isAdvanced()) {
-			DynamicRegistryManager manager = world.getRegistryManager();
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+		super.appendTooltip(stack, context, tooltip, type);
+		if (type.isAdvanced()) {
+			RegistryWrapper.WrapperLookup manager = context.getRegistryLookup();
 			Map<Drink, Integer> drinks = getDrinks(stack, manager);
 			for (Drink drink : drinks.keySet()) {
 				//TODO: this is very much only designed for english rn, figure out a way to do proper pluralization later
@@ -129,18 +133,19 @@ public class ShakerItem extends SneakyBlockItem {
 
 	//replace all these with item components when we get to 1.20.5
 
-	private Map<Drink, Integer> getDrinks(ItemStack stack, DynamicRegistryManager manager) {
+	private Map<Drink, Integer> getDrinks(ItemStack stack, RegistryWrapper.WrapperLookup manager) {
 		if (!stack.hasNbt() || !stack.getNbt().contains("drinks", NbtElement.COMPOUND_TYPE)) return new HashMap<>();
-		Registry<Drink> drinkRegistry = manager.get(BarkeepRegistries.DRINKS);
+		RegistryWrapper<Drink> drinkRegistry = manager.getWrapperOrThrow(BarkeepRegistries.DRINKS);
 		NbtCompound tag = stack.getNbt().getCompound("drinks");
 		Map<Drink, Integer> ret = new HashMap<>();
 		for (String key : tag.getKeys()) {
-			ret.put(drinkRegistry.get(new Identifier(key)), tag.getInt(key));
+			Drink drink = Drink.get(manager, new Identifier(key)).orElseThrow();
+			ret.put(drinkRegistry.getOrThrow(RegistryKey.of(BarkeepRegistries.DRINKS, new Identifier(key))).value(), tag.getInt(key));
 		}
 		return ret;
 	}
 
-	private void addDrink(ItemStack stack, Drink drink, int volume, DynamicRegistryManager manager) {
+	private void addDrink(ItemStack stack, Drink drink, int volume, RegistryWrapper.WrapperLookup manager) {
 		NbtCompound tag = stack.getOrCreateSubNbt("drinks");
 		String key = drink.getId(manager).toString();
 		tag.putInt(key, tag.getInt(key) + volume);

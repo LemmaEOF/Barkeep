@@ -7,6 +7,7 @@ import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryElementCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.TextColor;
@@ -17,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record Drink(TextColor color, float colorStrength, int proof, List<FlavorNote> flavorNotes) {
-	public static final Codec<Float> NONNEGATIVE_FLOAT = Codecs.validate(
-			Codec.FLOAT,
+	public static final Codec<Float> NONNEGATIVE_FLOAT = Codec.FLOAT.validate(
 			value -> value >= 0 ? DataResult.success(value) : DataResult.error(() -> "Value must be non-negative: " + value)
 	);
 	public static final Codec<Integer> PROOF = Codecs.rangedInt(0, 200);
@@ -32,6 +32,15 @@ public record Drink(TextColor color, float colorStrength, int proof, List<Flavor
 
 	public static RegistryKey<Drink> key(Identifier id) {
 		return RegistryKey.of(BarkeepRegistries.DRINKS, id);
+	}
+
+	public static Optional<Drink> get(RegistryWrapper.WrapperLookup lookup, Identifier id) {
+		Optional<RegistryWrapper.Impl<Drink>> registry = lookup.getOptionalWrapper(BarkeepRegistries.DRINKS);
+		if (registry.isPresent()) {
+			Optional<RegistryEntry.Reference<Drink>> drinkRef = registry.get().getOptional(key(id));
+			if (drinkRef.isPresent()) return Optional.of(drinkRef.get().value());
+		}
+		return Optional.empty();
 	}
 
 	public Identifier getId(DynamicRegistryManager manager) {
