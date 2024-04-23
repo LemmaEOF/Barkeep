@@ -66,7 +66,6 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-		ItemStack stack = player.getStackInHand(hand);
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CocktailGlassBlockEntity glass && player.isSneaking() && glass.getCocktail() != null) {
 			ItemStack giveStack = new ItemStack(BarkeepItems.TEST_COCKTAIL);
