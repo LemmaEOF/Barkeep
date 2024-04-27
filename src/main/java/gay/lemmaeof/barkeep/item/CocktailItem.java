@@ -3,7 +3,8 @@ package gay.lemmaeof.barkeep.item;
 import gay.lemmaeof.barkeep.block.CocktailGlassBlock;
 import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
 import gay.lemmaeof.barkeep.data.Cocktail;
-import gay.lemmaeof.barkeep.data.CocktailManager;
+import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
+import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -52,7 +53,7 @@ public class CocktailItem extends SneakyBlockItem {
 			for (StatusEffectInstance effect : cocktail.getEffects()) {
 				user.addStatusEffect(new StatusEffectInstance(effect.getEffectType(), effect.getDuration()));
 			}
-			stack.getNbt().remove("cocktail");
+			stack.remove(BarkeepComponents.COCKTAIL);
 			return stack;
 		}
 		return super.finishUsing(stack, world, user);
@@ -82,17 +83,15 @@ public class CocktailItem extends SneakyBlockItem {
 	}
 
 	private boolean hasCocktail(ItemStack stack) {
-		return CocktailManager.INSTANCE.hasCocktail(stack);
+		return stack.contains(BarkeepComponents.COCKTAIL);
 	}
 
 	private Cocktail getCocktail(ItemStack stack) {
-		return CocktailManager.INSTANCE.getCocktail(stack);
+		return stack.get(BarkeepComponents.COCKTAIL).cocktail();
 	}
 
 	private List<ItemStack> getGarniture(ItemStack stack) {
-		DefaultedList<ItemStack> stacks = DefaultedList.of();
-		Inventories.readNbt(stack.getOrCreateNbt().getCompound("garniture"), stacks);
-		return stacks;
+		return stack.get(BarkeepComponents.COCKTAIL).garniture();
 	}
 
 	@Override

@@ -12,9 +12,10 @@ public class Barkeep implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		BarkeepRegistries.init();
+		BarkeepComponents.init();
 		BarkeepBlocks.init();
 		BarkeepItems.init();
-		BarkeepRegistries.init();
 		BarkeepSounds.init();
 		BarkeepTags.init();
 	}

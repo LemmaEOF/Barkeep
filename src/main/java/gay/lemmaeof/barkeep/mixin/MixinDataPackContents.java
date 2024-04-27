@@ -1,6 +1,6 @@
 package gay.lemmaeof.barkeep.mixin;
 
-import gay.lemmaeof.barkeep.data.CocktailManager;
+import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.server.DataPackContents;
@@ -16,6 +16,6 @@ public class MixinDataPackContents {
 	private void createCocktailManager(DynamicRegistryManager.Immutable registryManager, FeatureSet enabledFeatures,
 									   CommandManager.RegistrationEnvironment environment, int functionPermissionLevel,
 									   CallbackInfo info) {
-		CocktailManager.register(registryManager);
+		CocktailRecipeManager.register(registryManager);
 	}
 }

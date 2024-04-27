@@ -1,103 +1,56 @@
 package gay.lemmaeof.barkeep.data;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
-import net.minecraft.registry.DynamicRegistryManager;
+import gay.lemmaeof.barkeep.util.MoreCodecs;
+import net.minecraft.registry.RegistryCodecs;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
+import net.minecraft.registry.entry.RegistryEntryList;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class DrinkIngredient {
-	Entry[] entries;
-	Drink[] matchingDrinks;
+	public static final Codec<DrinkIngredient> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			RegistryCodecs.entryList(BarkeepRegistries.DRINKS).fieldOf("drinks").forGetter(DrinkIngredient::getDrinks),
+			MoreCodecs.PARTS.fieldOf("parts").forGetter(DrinkIngredient::getQuarters)
+	).apply(instance, DrinkIngredient::new));
 
-	private DrinkIngredient(Entry[] entries) {
-		this.entries = entries;
+	private final RegistryEntryList<Drink> drinks;
+	private final int quarters;
+	private Drink[] matchingDrinks = null;
+
+	public DrinkIngredient(RegistryEntryList<Drink> drinks, int quarters) {
+		this.drinks = drinks;
+		this.quarters = quarters;
 	}
 
-	public Drink[] getMatchingDrinks(DynamicRegistryManager manager) {
+	public Drink[] getMatchingDrinks() {
 		if (matchingDrinks != null) return matchingDrinks;
-		List<Drink> drinks = new ArrayList<>();
-		for (Entry entry : entries) {
-			drinks.addAll(entry.getMatchingDrinks(manager));
+		List<Drink> matching = new ArrayList<>();
+		for (RegistryEntry<Drink> drink : drinks) {
+			matching.add(drink.value());
 		}
-		matchingDrinks = drinks.toArray(new Drink[0]);
+		matchingDrinks = matching.toArray(new Drink[0]);
 		return matchingDrinks;
 	}
 
-	public boolean test(Drink drink, DynamicRegistryManager manager) {
-		for (Drink d : getMatchingDrinks(manager)) {
-			if (d == drink) return true;
+	public RegistryEntryList<Drink> getDrinks() {
+		return drinks;
+	}
+
+	public int getQuarters() {
+		return quarters;
+	}
+
+	public boolean test(Drink drink, int quarters) {
+		if (quarters != this.quarters) return false;
+		Drink[] drinks = getMatchingDrinks();
+		for (Drink test : drinks) {
+			if (test == drink) return true;
 		}
 		return false;
 	}
 
-	public interface Entry {
-		Collection<Drink> getMatchingDrinks(DynamicRegistryManager manager);
-	}
-
-	private static class DrinkEntry implements Entry {
-		private final Drink drink;
-
-		public DrinkEntry(Drink drink) {
-			this.drink = drink;
-		}
-
-		@Override
-		public Collection<Drink> getMatchingDrinks(DynamicRegistryManager manager) {
-			return Collections.singleton(drink);
-		}
-	}
-
-	private static class TagEntry implements Entry {
-		private final TagKey<Drink> tag;
-
-		public TagEntry(TagKey<Drink> tag) {
-			this.tag = tag;
-		}
-
-		@Override
-		public Collection<Drink> getMatchingDrinks(DynamicRegistryManager manager) {
-			List<Drink> ret = new ArrayList<>();
-			for (RegistryEntry<Drink> drink : manager.get(BarkeepRegistries.DRINKS).iterateEntries(tag)) {
-				ret.add(drink.value());
-			}
-			return ret;
-		}
-	}
-
-	public static DrinkIngredient fromJson(JsonElement json, DynamicRegistryManager manager) {
-		List<Entry> entries = new ArrayList<>();
-		if (json.isJsonArray()) {
-			for (JsonElement elem : json.getAsJsonArray()) {
-				entries.add(getEntry(elem.getAsJsonObject(), manager));
-			}
-		} else if (json.isJsonObject()) {
-			entries.add(getEntry(json.getAsJsonObject(), manager));
-		} else {
-			throw new IllegalArgumentException("Drink ingredient must be an array or object of arrays");
-		}
-		return new DrinkIngredient(entries.toArray(new Entry[0]));
-	}
-
-	private static Entry getEntry(JsonObject json, DynamicRegistryManager manager) {
-		if (JsonHelper.hasString(json, "drink") && !json.has("tag")) {
-			String value = JsonHelper.getString(json, "drink");
-			Drink drink = manager.get(BarkeepRegistries.DRINKS).get(new Identifier(value));
-			if (drink == null) throw new IllegalArgumentException("Unknown drink: " + value);
-			return new DrinkEntry(drink);
-		} else if (JsonHelper.hasString(json, "tag") && !json.has("drink")) {
-			TagKey<Drink> tag = TagKey.of(BarkeepRegistries.DRINKS, new Identifier(JsonHelper.getString(json, "tag")));
-			return new TagEntry(tag);
-		} else {
-			throw new IllegalArgumentException("Drink ingredient must contain either 'drink' or 'tag' value");
-		}
-	}
 }

@@ -2,8 +2,10 @@ package gay.lemmaeof.barkeep.init;
 
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
-import gay.lemmaeof.barkeep.data.CocktailManager;
+import gay.lemmaeof.barkeep.data.CocktailRecipe;
+import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
+import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.impl.BottleDrinkContainer;
 import gay.lemmaeof.barkeep.impl.JiggerCupDrinkContainer;
 import gay.lemmaeof.barkeep.item.BottledDrinkItem;
@@ -55,9 +57,9 @@ public class BarkeepItems {
 			.displayName(Text.translatable("itemGroup.barkeep.cocktails"))
 			.icon(() -> new ItemStack(TEST_COCKTAIL))
 			.entries((context, entries) -> {
-				for (Identifier id : CocktailManager.INSTANCE.getCocktailIds()) {
+				for (Identifier id : CocktailRecipeManager.INSTANCE.getCocktailIds()) {
 					ItemStack stack = new ItemStack(TEST_COCKTAIL);
-					stack.getOrCreateNbt().putString("cocktail", id.toString());
+					stack.set(BarkeepComponents.COCKTAIL, CocktailRecipeManager.INSTANCE.createSampleCocktail(id));
 					entries.add(stack);
 				}
 			})

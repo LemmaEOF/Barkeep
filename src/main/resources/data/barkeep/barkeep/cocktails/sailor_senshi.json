@@ -1,15 +1,15 @@
 {
 	"drinks": [
 		{
-			"drink": "barkeep:white_rum",
+			"drinks": "barkeep:white_rum",
 			"parts": 2
 		},
 		{
-			"drink": "barkeep:ramune",
+			"drinks": "barkeep:ramune",
 			"parts": 6.75
 		},
 		{
-			"drink": "barkeep:blue_raspberry_syrup",
+			"drinks": "barkeep:blue_raspberry_syrup",
 			"parts": 2
 		}
 	],

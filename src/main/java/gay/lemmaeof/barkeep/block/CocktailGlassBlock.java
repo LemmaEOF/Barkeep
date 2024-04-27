@@ -2,7 +2,9 @@ package gay.lemmaeof.barkeep.block;
 
 import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
 import gay.lemmaeof.barkeep.data.Cocktail;
-import gay.lemmaeof.barkeep.data.CocktailManager;
+import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
+import gay.lemmaeof.barkeep.data.component.CocktailComponent;
+import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepItems;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,6 +22,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
 
 //TODO: multiple types of glass
 public class CocktailGlassBlock extends Block implements BlockEntityProvider {
@@ -51,12 +55,12 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CocktailGlassBlockEntity glass) {
 			if (stack.isOf(BarkeepItems.SHAKER) && glass.getCocktail() == null) {
-				Cocktail cocktail = CocktailManager.INSTANCE.getCocktail(stack);
+				CocktailComponent cocktail = stack.get(BarkeepComponents.COCKTAIL);
 				if (cocktail != null) {
 					//TODO: sound
-					glass.setCocktail(cocktail);
+					glass.setCocktail(cocktail.cocktail());
 					world.setBlockState(pos, state.with(FILLED, true));
-					stack.getNbt().remove("cocktail");
+					stack.remove(BarkeepComponents.COCKTAIL);
 					return ItemActionResult.SUCCESS;
 				}
 			}
@@ -69,8 +73,9 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CocktailGlassBlockEntity glass && player.isSneaking() && glass.getCocktail() != null) {
 			ItemStack giveStack = new ItemStack(BarkeepItems.TEST_COCKTAIL);
-			giveStack.getOrCreateNbt().put("cocktail", glass.getCocktail().toTag(world.getRegistryManager()));
-			player.setStackInHand(hand, giveStack);
+			giveStack.set(BarkeepComponents.COCKTAIL, new CocktailComponent(glass.getCocktail(), new ArrayList<>()));
+			//TODO: is this safe? investigate as soon as this builds/works
+			player.setStackInHand(Hand.MAIN_HAND, giveStack);
 			world.removeBlock(pos, false);
 			return ActionResult.SUCCESS;
 		}

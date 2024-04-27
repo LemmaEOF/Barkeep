@@ -1,7 +1,7 @@
 package gay.lemmaeof.barkeep.block.entity;
 
 import gay.lemmaeof.barkeep.data.Cocktail;
-import gay.lemmaeof.barkeep.data.CocktailManager;
+import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.init.BarkeepBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -27,7 +27,7 @@ public class CocktailGlassBlockEntity extends BlockEntity {
 	@Override
 	public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
 		super.readNbt(nbt, lookup);
-		this.cocktail = CocktailManager.INSTANCE.getCocktail(nbt);
+		this.cocktail = CocktailRecipeManager.INSTANCE.getCocktail(nbt);
 	}
 
 	@Override

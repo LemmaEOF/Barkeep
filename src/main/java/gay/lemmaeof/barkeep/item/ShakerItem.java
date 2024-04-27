@@ -3,10 +3,12 @@ package gay.lemmaeof.barkeep.item;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.block.ShakerBlock;
 import gay.lemmaeof.barkeep.data.Cocktail;
-import gay.lemmaeof.barkeep.data.CocktailManager;
+import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
-import gay.lemmaeof.barkeep.data.RecipeCocktail;
-import gay.lemmaeof.barkeep.init.BarkeepRegistries;
+import gay.lemmaeof.barkeep.data.CocktailRecipe;
+import gay.lemmaeof.barkeep.data.component.CocktailComponent;
+import gay.lemmaeof.barkeep.data.component.MixerContentsComponent;
+import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepSounds;
 import gay.lemmaeof.barkeep.init.BarkeepTags;
 import net.minecraft.block.BlockState;
@@ -18,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
@@ -29,10 +30,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class ShakerItem extends SneakyBlockItem {
 	public ShakerItem(ShakerBlock block, Settings settings) {
@@ -43,16 +44,17 @@ public class ShakerItem extends SneakyBlockItem {
 	public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
 		DynamicRegistryManager manager = player.getWorld().getRegistryManager();
 		DrinkContainer container = DrinkContainer.ITEM_LOOKUP.find(otherStack, manager);
+		MixerContentsComponent comp = stack.get(BarkeepComponents.MIXER_CONTENTS);
 		if (container != null) {
 			Drink drink = container.getDrink();
 			int poured = container.tryPour(container.getVolume());
 			player.playSound(BarkeepSounds.DRINK_POUR, 0.5F, player.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			addDrink(stack, drink, poured, manager);
 			return true;
-		} else if (otherStack.isIn(BarkeepTags.ICE) && !stack.getOrCreateNbt().getBoolean("iced")) {
+		} else if (otherStack.isIn(BarkeepTags.ICE) && !comp.iced()) {
 			//TODO: sound
-			stack.getNbt().putBoolean("iced", true);
-			stack.decrement(1);
+			stack.set(BarkeepComponents.MIXER_CONTENTS, comp.withIce(true));
+			otherStack.decrement(1);
 		}
 		return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
 	}
@@ -81,12 +83,11 @@ public class ShakerItem extends SneakyBlockItem {
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (!world.isClient) {
 			DynamicRegistryManager manager = user.getWorld().getRegistryManager();
-			boolean iced = stack.getOrCreateNbt().getBoolean("iced");
-			Cocktail cocktail = CocktailManager.INSTANCE.findCocktail(getDrinks(stack, manager), iced? RecipeCocktail.Preparation.SHAKEN : RecipeCocktail.Preparation.DRY_SHAKEN);
+			boolean iced = stack.get(BarkeepComponents.MIXER_CONTENTS).iced();
+			Cocktail cocktail = CocktailRecipeManager.INSTANCE.createCocktail(getDrinks(stack), iced? CocktailRecipe.Preparation.SHAKEN : CocktailRecipe.Preparation.DRY_SHAKEN);
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), BarkeepSounds.SHAKER_OPEN, SoundCategory.PLAYERS, 0.5F, user.getWorld().random.nextFloat() * 0.1F + 0.9F);
-			stack.getNbt().put("cocktail", cocktail.toTag(manager));
-			stack.getNbt().remove("drinks");
-			stack.getNbt().remove("iced");
+			stack.set(BarkeepComponents.MIXER_CONTENTS, MixerContentsComponent.empty());
+			stack.set(BarkeepComponents.COCKTAIL, new CocktailComponent(cocktail, new ArrayList<>()));
 			return stack;
 		}
 		return super.finishUsing(stack, world, user);
@@ -101,8 +102,9 @@ public class ShakerItem extends SneakyBlockItem {
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		super.appendTooltip(stack, context, tooltip, type);
 		if (type.isAdvanced()) {
-			RegistryWrapper.WrapperLookup manager = context.getRegistryLookup();
-			Map<Drink, Integer> drinks = getDrinks(stack, manager);
+			//TODO: fix later once I figure out how wrapper lookup can not Fucking Suck
+			DynamicRegistryManager manager = (DynamicRegistryManager) context.getRegistryLookup();
+			Map<Drink, Integer> drinks = getDrinks(stack);
 			for (Drink drink : drinks.keySet()) {
 				//TODO: this is very much only designed for english rn, figure out a way to do proper pluralization later
 				int quarters = drinks.get(drink);
@@ -131,25 +133,19 @@ public class ShakerItem extends SneakyBlockItem {
 
 	//replace all these with item components when we get to 1.20.5
 
-	private Map<Drink, Integer> getDrinks(ItemStack stack, RegistryWrapper.WrapperLookup manager) {
-		if (!stack.hasNbt() || !stack.getNbt().contains("drinks", NbtElement.COMPOUND_TYPE)) return new HashMap<>();
-		RegistryWrapper<Drink> drinkRegistry = manager.getWrapperOrThrow(BarkeepRegistries.DRINKS);
-		NbtCompound tag = stack.getNbt().getCompound("drinks");
-		Map<Drink, Integer> ret = new HashMap<>();
-		for (String key : tag.getKeys()) {
-			Drink drink = Drink.get(manager, new Identifier(key)).orElseThrow();
-			ret.put(drinkRegistry.getOrThrow(RegistryKey.of(BarkeepRegistries.DRINKS, new Identifier(key))).value(), tag.getInt(key));
-		}
-		return ret;
+	private Map<Drink, Integer> getDrinks(ItemStack stack) {
+		MixerContentsComponent comp = stack.get(BarkeepComponents.MIXER_CONTENTS);
+		if (comp == null) return new HashMap<>();
+		return comp.getDrinks();
 	}
 
-	private void addDrink(ItemStack stack, Drink drink, int volume, RegistryWrapper.WrapperLookup manager) {
-		NbtCompound tag = stack.getOrCreateSubNbt("drinks");
-		String key = drink.getId(manager).toString();
-		tag.putInt(key, tag.getInt(key) + volume);
+	//TODO: switch to wrapperlookup when I figure out how to make that not suck (might be impossible it sucks)
+	private void addDrink(ItemStack stack, Drink drink, int volume, DynamicRegistryManager manager) {
+		MixerContentsComponent comp = stack.get(BarkeepComponents.MIXER_CONTENTS);
+		stack.set(BarkeepComponents.MIXER_CONTENTS, comp.withDrink(drink, volume, manager));
 	}
 
 	private boolean hasDrinks(ItemStack stack) {
-		return (stack.hasNbt() && stack.getNbt().contains("drinks", NbtElement.COMPOUND_TYPE));
+		return (stack.contains(BarkeepComponents.MIXER_CONTENTS) && !stack.get(BarkeepComponents.MIXER_CONTENTS).getDrinks().isEmpty());
 	}
 }

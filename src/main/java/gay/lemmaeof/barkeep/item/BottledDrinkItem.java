@@ -27,6 +27,7 @@ public class BottledDrinkItem extends Item {
 	}
 
 	public int getRemainingVolume(ItemStack stack) {
+		//TODO: drink container component
 		if (!stack.hasNbt()) return getMaxCapacity();
 		return getMaxCapacity() - stack.getOrCreateNbt().getInt("amount_poured");
 	}
