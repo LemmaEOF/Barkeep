@@ -89,11 +89,4 @@ public class Cocktail {
 		return Text.translatable("cocktail.barkeep.custom");
 	}
 
-	public NbtElement toTag(DynamicRegistryManager manager) {
-		NbtCompound ret = new NbtCompound();
-		for (Drink drink : drinks.keySet()) {
-			ret.putInt(drink.getId(manager).toString(), drinks.get(drink));
-		}
-		return ret;
-	}
 }

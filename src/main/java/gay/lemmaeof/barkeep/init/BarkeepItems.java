@@ -2,10 +2,8 @@ package gay.lemmaeof.barkeep.init;
 
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
-import gay.lemmaeof.barkeep.data.CocktailRecipe;
-import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
+import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
-import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.impl.BottleDrinkContainer;
 import gay.lemmaeof.barkeep.impl.JiggerCupDrinkContainer;
 import gay.lemmaeof.barkeep.item.BottledDrinkItem;

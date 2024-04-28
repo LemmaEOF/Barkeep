@@ -1,6 +1,8 @@
 package gay.lemmaeof.barkeep.item;
 
 import gay.lemmaeof.barkeep.data.Drink;
+import gay.lemmaeof.barkeep.data.component.DrinkContainerComponent;
+import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,7 +15,7 @@ public class BottledDrinkItem extends Item {
 	private final int maxCapacity;
 
 	public BottledDrinkItem(RegistryKey<Drink> drink, int maxCapacity, Settings settings) {
-		super(settings);
+		super(settings.component(BarkeepComponents.DRINK_CONTAINER, new DrinkContainerComponent(drink, maxCapacity)));
 		this.drink = drink;
 		this.maxCapacity = maxCapacity;
 	}
@@ -27,9 +29,17 @@ public class BottledDrinkItem extends Item {
 	}
 
 	public int getRemainingVolume(ItemStack stack) {
-		//TODO: drink container component
-		if (!stack.hasNbt()) return getMaxCapacity();
-		return getMaxCapacity() - stack.getOrCreateNbt().getInt("amount_poured");
+		if (!stack.contains(BarkeepComponents.DRINK_CONTAINER)) return 0;
+		return stack.get(BarkeepComponents.DRINK_CONTAINER).amount();
+	}
+
+	public int pour(ItemStack stack, int amount) {
+		if (getRemainingVolume(stack) == amount) {
+			stack.remove(BarkeepComponents.DRINK_CONTAINER);
+		} else {
+			stack.set(BarkeepComponents.DRINK_CONTAINER, stack.get(BarkeepComponents.DRINK_CONTAINER).withPoured(amount));
+		}
+		return amount;
 	}
 
 	@Override

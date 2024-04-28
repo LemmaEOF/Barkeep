@@ -1,4 +1,4 @@
-package gay.lemmaeof.barkeep.data;
+package gay.lemmaeof.barkeep.data.recipe;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +8,8 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import gay.lemmaeof.barkeep.Barkeep;
+import gay.lemmaeof.barkeep.data.Cocktail;
+import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -28,7 +30,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static CocktailRecipeManager INSTANCE;
 	private final DynamicRegistryManager registryManager;
-	private final Map<Identifier, CocktailRecipe> recipes = new HashMap<>();
+	private final Map<Identifier, CocktailRecipeEntry> recipes = new HashMap<>();
 	private final RegistryOps<JsonElement> ops;
 
 	public static void register(DynamicRegistryManager registryManager) {
@@ -51,15 +53,15 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 
 			DataResult<Pair<CocktailRecipe, JsonElement>> result = CocktailRecipe.CODEC.decode(ops, json);
 			if (result.isSuccess()) {
-				recipes.put(id, result.getOrThrow().getFirst());
+				recipes.put(id, new CocktailRecipeEntry(id, result.getOrThrow().getFirst()));
 			} else {
 				Barkeep.LOGGER.info("Error parsing cocktail {}: {}", id, result.error().toString());
 			}
 		}
 	}
 
-	public Optional<CocktailRecipe> findCocktail(Map<Drink, Integer> drinks, CocktailRecipe.Preparation preparation) {
-		return recipes.values().stream().filter(cocktail -> cocktail.matches(drinks, preparation)).findFirst();
+	public Optional<CocktailRecipeEntry> findCocktail(Map<Drink, Integer> drinks, CocktailRecipe.Preparation preparation) {
+		return recipes.values().stream().filter(cocktail -> cocktail.recipe().matches(drinks, preparation)).findFirst();
 	}
 
 	public CocktailComponent createSampleCocktail(Identifier id) {
@@ -72,7 +74,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 		return null;
 	}
 
-	public CocktailRecipe getRecipe(Identifier id) {
+	public CocktailRecipeEntry getRecipe(Identifier id) {
 		return recipes.get(id);
 	}
 

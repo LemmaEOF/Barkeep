@@ -1,6 +1,6 @@
 package gay.lemmaeof.barkeep.mixin;
 
-import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
+import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.server.DataPackContents;

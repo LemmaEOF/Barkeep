@@ -1,7 +1,6 @@
 package gay.lemmaeof.barkeep;
 
 import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
-import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.init.BarkeepBlocks;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
@@ -15,7 +14,6 @@ import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.DataComponentType;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Identifier;
 
 public class BarkeepClient implements ClientModInitializer {
@@ -39,8 +37,8 @@ public class BarkeepClient implements ClientModInitializer {
 			return 0xFFFFFF;
 		}, BarkeepItems.TEST_COCKTAIL);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			if (mc.world != null && stack.hasNbt() && stack.getNbt().contains("drink", NbtElement.STRING_TYPE) && tintIndex == 1) {
-				Drink drink = mc.world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(new Identifier(stack.getOrCreateNbt().getString("drink")));
+			if (mc.world != null && stack.contains(BarkeepComponents.DRINK_CONTAINER) && tintIndex == 1) {
+				Drink drink = mc.world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
 				if (drink != null) return drink.color().getRgb();
 			}
 			return 0xFFFFFF;
@@ -52,11 +50,11 @@ public class BarkeepClient implements ClientModInitializer {
 				BarkeepItems.TWO_PART_JIGGER_CUP
 		);
 		ModelPredicateProviderRegistry.register(BarkeepItems.TEST_COCKTAIL, FILLED_ID, filled(BarkeepComponents.COCKTAIL));
-		ModelPredicateProviderRegistry.register(BarkeepItems.QUARTER_PART_JIGGER_CUP, FILLED_ID, filled("drink"));
-		ModelPredicateProviderRegistry.register(BarkeepItems.HALF_PART_JIGGER_CUP, FILLED_ID, filled("drink"));
-		ModelPredicateProviderRegistry.register(BarkeepItems.THREE_QUARTER_PART_JIGGER_CUP, FILLED_ID, filled("drink"));
-		ModelPredicateProviderRegistry.register(BarkeepItems.PART_JIGGER_CUP, FILLED_ID, filled("drink"));
-		ModelPredicateProviderRegistry.register(BarkeepItems.TWO_PART_JIGGER_CUP, FILLED_ID, filled("drink"));
+		ModelPredicateProviderRegistry.register(BarkeepItems.QUARTER_PART_JIGGER_CUP, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
+		ModelPredicateProviderRegistry.register(BarkeepItems.HALF_PART_JIGGER_CUP, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
+		ModelPredicateProviderRegistry.register(BarkeepItems.THREE_QUARTER_PART_JIGGER_CUP, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
+		ModelPredicateProviderRegistry.register(BarkeepItems.PART_JIGGER_CUP, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
+		ModelPredicateProviderRegistry.register(BarkeepItems.TWO_PART_JIGGER_CUP, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
 	}
 
 	private ClampedModelPredicateProvider filled(DataComponentType<?> key) {

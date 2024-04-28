@@ -25,7 +25,8 @@ public record Drink(TextColor color, float colorStrength, int proof, List<Flavor
 			MoreCodecs.PROOF.fieldOf("proof").orElse(0).forGetter(Drink::proof),
 			FlavorNote.CODEC.listOf().fieldOf("flavor_notes").forGetter(Drink::flavorNotes)
 	).apply(instance, Drink::new));
-	public static final Codec<RegistryEntry<Drink>> REGISTRY_ENTRY_CODEC = RegistryElementCodec.of(BarkeepRegistries.DRINKS, CODEC);
+	public static final Codec<RegistryKey<Drink>> REGISTRY_KEY_CODEC = RegistryKey.createCodec(BarkeepRegistries.DRINKS);
+	public static final Codec<RegistryEntry<Drink>> REGISTRY_ENTRY_CODEC = RegistryElementCodec.of(BarkeepRegistries.DRINKS, CODEC, false);
 
 	public static RegistryKey<Drink> key(Identifier id) {
 		return RegistryKey.of(BarkeepRegistries.DRINKS, id);

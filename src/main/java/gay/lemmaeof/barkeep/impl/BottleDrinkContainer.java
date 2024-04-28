@@ -34,7 +34,6 @@ public class BottleDrinkContainer implements DrinkContainer {
 	@Override
 	public int tryPour(int quarterParts) {
 		int ret = Math.min(quarterParts, getVolume());
-		stack.getOrCreateNbt().putInt("amount_poured", stack.getOrCreateNbt().getInt("amount_poured") + ret);
-		return ret;
+		return bottle.pour(stack, ret);
 	}
 }

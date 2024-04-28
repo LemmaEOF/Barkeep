@@ -2,6 +2,7 @@ package gay.lemmaeof.barkeep.impl;
 
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.data.Drink;
+import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.item.JiggerCupItem;
 import net.minecraft.item.ItemStack;
@@ -26,8 +27,8 @@ public class JiggerCupDrinkContainer implements DrinkContainer {
 
 	@Override
 	public Drink getDrink() {
-		if (!stack.hasNbt() || !stack.getNbt().contains("drink", NbtElement.STRING_TYPE)) return null;
-		return manager.get(BarkeepRegistries.DRINKS).get(new Identifier(stack.getNbt().getString("drink")));
+		if (!stack.contains(BarkeepComponents.DRINK_CONTAINER)) return null;
+		return manager.get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class JiggerCupDrinkContainer implements DrinkContainer {
 	@Override
 	public int tryPour(int quarterParts) {
 		if (getDrink() == null) return 0;
-		stack.getOrCreateNbt().remove("drink");
+		stack.remove(BarkeepComponents.DRINK_CONTAINER);
 		return size;
 	}
 }

@@ -1,8 +1,6 @@
 package gay.lemmaeof.barkeep.block;
 
 import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
-import gay.lemmaeof.barkeep.data.Cocktail;
-import gay.lemmaeof.barkeep.data.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepItems;

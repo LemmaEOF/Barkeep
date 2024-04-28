@@ -3,6 +3,8 @@ package gay.lemmaeof.barkeep.item;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.block.JiggerCupBlock;
 import gay.lemmaeof.barkeep.data.Drink;
+import gay.lemmaeof.barkeep.data.component.DrinkContainerComponent;
+import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +34,7 @@ public class JiggerCupItem extends SneakyBlockItem {
 		DrinkContainer thisContainer = DrinkContainer.ITEM_LOOKUP.find(stack, manager);
 		DrinkContainer targetContainer = DrinkContainer.ITEM_LOOKUP.find(slot.getStack(), manager);
 		if (thisContainer.getDrink() == null && targetContainer != null && targetContainer.getVolume() >= size) {
-			stack.getOrCreateNbt().putString("drink", manager.get(BarkeepRegistries.DRINKS).getId(targetContainer.getDrink()).toString());
+			stack.set(BarkeepComponents.DRINK_CONTAINER, new DrinkContainerComponent(manager.get(BarkeepRegistries.DRINKS).getKey(targetContainer.getDrink()).get(), size));
 			targetContainer.tryPour(size);
 			player.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, 0.5f, player.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			return true;

@@ -1,15 +1,16 @@
-package gay.lemmaeof.barkeep.data;
+package gay.lemmaeof.barkeep.data.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import gay.lemmaeof.barkeep.data.Drink;
+import gay.lemmaeof.barkeep.data.DrinkIngredient;
+import gay.lemmaeof.barkeep.data.FlavorNote;
 import gay.lemmaeof.barkeep.util.MoreCodecs;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.text.TextColor;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.dynamic.Codecs;
 
@@ -18,7 +19,7 @@ import java.util.function.UnaryOperator;
 
 //TODO: muddling, packets
 public record CocktailRecipe(List<DrinkIngredient> drinkInputs, List<Ingredient> preferredGarniture,
-							 Preparation preparation, Optional<Text> name, Optional<TextColor> colorOverride,
+							 Preparation preparation, Optional<Text> nameOverride, Optional<TextColor> colorOverride,
 							 Optional<Integer> volumeOverride, Optional<Float> alcoholOverride,
 							 Optional<Map<FlavorNote, Integer>> flavorProfileOverride,
 							 Optional<List<StatusEffectInstance>> effectsOverride) {
@@ -26,7 +27,7 @@ public record CocktailRecipe(List<DrinkIngredient> drinkInputs, List<Ingredient>
 			DrinkIngredient.CODEC.listOf().fieldOf("drinks").forGetter(CocktailRecipe::drinkInputs),
 			Ingredient.DISALLOW_EMPTY_CODEC.listOf().fieldOf("preferred_garniture").forGetter(CocktailRecipe::preferredGarniture),
 			StringIdentifiable.createCodec(Preparation::values).fieldOf("preparation").forGetter(CocktailRecipe::preparation),
-			TextCodecs.CODEC.optionalFieldOf("name").forGetter(CocktailRecipe::name),
+			TextCodecs.CODEC.optionalFieldOf("name").forGetter(CocktailRecipe::nameOverride),
 			TextColor.CODEC.optionalFieldOf("color").forGetter(CocktailRecipe::colorOverride),
 			Codecs.POSITIVE_INT.optionalFieldOf("volume").forGetter(CocktailRecipe::volumeOverride),
 			MoreCodecs.NONNEGATIVE_FLOAT.optionalFieldOf("alcohol").forGetter(CocktailRecipe::alcoholOverride),
