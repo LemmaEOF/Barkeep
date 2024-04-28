@@ -14,7 +14,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-//TODO: impl properly
 public class JiggerCupBlockEntity extends BlockEntity implements DrinkContainer {
 	private Identifier currentDrink;
 	private int currentVolume;
@@ -40,16 +39,6 @@ public class JiggerCupBlockEntity extends BlockEntity implements DrinkContainer 
 		this.currentVolume = 0;
 		this.currentDrink = null;
 		return Math.min(quarterParts, getSize());
-	}
-
-	@Override
-	protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-		super.writeNbt(nbt, registryLookup);
-	}
-
-	@Override
-	protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-		super.readNbt(nbt, registryLookup);
 	}
 
 	private int getSize() {

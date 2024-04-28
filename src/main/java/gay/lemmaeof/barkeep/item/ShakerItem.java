@@ -3,6 +3,7 @@ package gay.lemmaeof.barkeep.item;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.block.ShakerBlock;
 import gay.lemmaeof.barkeep.data.Cocktail;
+import gay.lemmaeof.barkeep.data.recipe.CocktailPreparation;
 import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.recipe.CocktailRecipe;
@@ -48,10 +49,19 @@ public class ShakerItem extends SneakyBlockItem {
 			player.playSound(BarkeepSounds.DRINK_POUR, 0.5F, player.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			addDrink(stack, drink, poured, manager);
 			return true;
-		} else if (otherStack.isIn(BarkeepTags.ICE) && !comp.iced()) {
-			//TODO: sound
-			stack.set(BarkeepComponents.MIXER_CONTENTS, comp.withIce(true));
-			otherStack.decrement(1);
+		} else if (otherStack.isIn(BarkeepTags.ICE)) {
+			if (comp != null) {
+				if (!comp.iced()) {
+					//TODO: sound
+					stack.set(BarkeepComponents.MIXER_CONTENTS, comp.withIce(true));
+					otherStack.decrement(1);
+					return true;
+				}
+			}  else {
+				stack.set(BarkeepComponents.MIXER_CONTENTS, new MixerContentsComponent(new HashMap<>(), true));
+				otherStack.decrement(1);
+				return true;
+			}
 		}
 		return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
 	}
@@ -79,9 +89,8 @@ public class ShakerItem extends SneakyBlockItem {
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (!world.isClient) {
-			DynamicRegistryManager manager = user.getWorld().getRegistryManager();
 			boolean iced = stack.get(BarkeepComponents.MIXER_CONTENTS).iced();
-			Cocktail cocktail = CocktailRecipeManager.INSTANCE.createCocktail(getDrinks(stack), iced? CocktailRecipe.Preparation.SHAKEN : CocktailRecipe.Preparation.DRY_SHAKEN);
+			Cocktail cocktail = CocktailRecipeManager.INSTANCE.createCocktail(getDrinks(stack), iced? CocktailPreparation.SHAKEN : CocktailPreparation.DRY_SHAKEN);
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), BarkeepSounds.SHAKER_OPEN, SoundCategory.PLAYERS, 0.5F, user.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			stack.set(BarkeepComponents.MIXER_CONTENTS, MixerContentsComponent.empty());
 			stack.set(BarkeepComponents.COCKTAIL, new CocktailComponent(cocktail, new ArrayList<>()));
@@ -128,8 +137,6 @@ public class ShakerItem extends SneakyBlockItem {
 		return super.postPlacement(pos, world, player, stack, state);
 	}
 
-	//replace all these with item components when we get to 1.20.5
-
 	private Map<Drink, Integer> getDrinks(ItemStack stack) {
 		MixerContentsComponent comp = stack.get(BarkeepComponents.MIXER_CONTENTS);
 		if (comp == null) return new HashMap<>();
@@ -139,6 +146,7 @@ public class ShakerItem extends SneakyBlockItem {
 	//TODO: switch to wrapperlookup when I figure out how to make that not suck (might be impossible it sucks)
 	private void addDrink(ItemStack stack, Drink drink, int volume, DynamicRegistryManager manager) {
 		MixerContentsComponent comp = stack.get(BarkeepComponents.MIXER_CONTENTS);
+		if (comp == null) comp = new MixerContentsComponent(new HashMap<>(), false);
 		stack.set(BarkeepComponents.MIXER_CONTENTS, comp.withDrink(drink, volume, manager));
 	}
 

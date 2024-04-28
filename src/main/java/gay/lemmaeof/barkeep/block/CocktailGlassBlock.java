@@ -61,23 +61,15 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 					stack.remove(BarkeepComponents.COCKTAIL);
 					return ItemActionResult.SUCCESS;
 				}
+			} else if (stack.isEmpty() && player.isSneaking() && glass.getCocktail() != null) {
+				ItemStack giveStack = new ItemStack(BarkeepItems.TEST_COCKTAIL);
+				giveStack.set(BarkeepComponents.COCKTAIL, glass.getCocktailComponent());
+				player.setStackInHand(hand, giveStack);
+				world.removeBlock(pos, false);
+				return ItemActionResult.SUCCESS;
 			}
 		}
 		return ItemActionResult.FAIL;
-	}
-
-	@Override
-	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof CocktailGlassBlockEntity glass && player.isSneaking() && glass.getCocktail() != null) {
-			ItemStack giveStack = new ItemStack(BarkeepItems.TEST_COCKTAIL);
-			giveStack.set(BarkeepComponents.COCKTAIL, new CocktailComponent(glass.getCocktail(), new ArrayList<>()));
-			//TODO: is this safe? investigate as soon as this builds/works
-			player.setStackInHand(Hand.MAIN_HAND, giveStack);
-			world.removeBlock(pos, false);
-			return ActionResult.SUCCESS;
-		}
-		return ActionResult.PASS;
 	}
 
 	@Override

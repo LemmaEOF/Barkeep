@@ -57,7 +57,7 @@ public class BarkeepItems {
 			.entries((context, entries) -> {
 				for (Identifier id : CocktailRecipeManager.INSTANCE.getCocktailIds()) {
 					ItemStack stack = new ItemStack(TEST_COCKTAIL);
-					stack.set(BarkeepComponents.COCKTAIL, CocktailRecipeManager.INSTANCE.createSampleCocktail(id));
+					stack.set(BarkeepComponents.COCKTAIL, CocktailRecipeManager.INSTANCE.getSampleCocktail(id));
 					entries.add(stack);
 				}
 			})

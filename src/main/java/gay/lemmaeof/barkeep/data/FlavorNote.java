@@ -1,6 +1,7 @@
 package gay.lemmaeof.barkeep.data;
 
 
+import com.mojang.serialization.Codec;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -23,7 +24,7 @@ public enum FlavorNote implements StringIdentifiable {
 	DRY("dry", StatusEffects.JUMP_BOOST),
 	SPARKLING("sparkling", StatusEffects.WATER_BREATHING);
 
-	public static final com.mojang.serialization.Codec<FlavorNote> CODEC = StringIdentifiable.createCodec(FlavorNote::values);
+	public static final Codec<FlavorNote> CODEC = StringIdentifiable.createCodec(FlavorNote::values);
 	private static final Map<String, FlavorNote> BY_NAME = Arrays.stream(values())
 			.collect(Collectors.toMap(f -> sanitize(f.name), f -> f));
 	private final String name;
