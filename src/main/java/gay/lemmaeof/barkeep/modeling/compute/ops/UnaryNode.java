@@ -1,13 +1,13 @@
 package gay.lemmaeof.barkeep.modeling.compute.ops;
 
-import gay.lemmaeof.barkeep.modeling.context.Context;
-import gay.lemmaeof.barkeep.modeling.compute.ComputeNode;
-import gay.lemmaeof.barkeep.modeling.compute.CataComputeNode;
-
-import java.util.List;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.util.List;
+
+import gay.lemmaeof.barkeep.modeling.compute.CataComputeNode;
+import gay.lemmaeof.barkeep.modeling.compute.ComputeNode;
+import gay.lemmaeof.barkeep.modeling.context.Context;
 
 public abstract class UnaryNode<T> implements CataComputeNode<T> {
 	private ComputeNode<T> child;
@@ -35,9 +35,9 @@ public abstract class UnaryNode<T> implements CataComputeNode<T> {
 			return null;
 		}
 		try {
-			var self = MethodHandles.lookup().findSpecial(getClass(), "applyUnary", MethodType.methodType(Object.class, Object.class), getClass());
+			var self = MethodHandles.lookup().bind(this, "applyUnary", MethodType.methodType(Object.class, Object.class));
 			return MethodHandles.collectArguments(
-				MethodHandles.insertArguments(self, 0, this),
+				self,
 				0,
 				childHandle
 			);

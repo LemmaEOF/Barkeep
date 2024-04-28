@@ -1,9 +1,9 @@
 package gay.lemmaeof.barkeep.modeling.compute;
 
-import gay.lemmaeof.barkeep.modeling.context.Context;
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+
+import gay.lemmaeof.barkeep.modeling.context.Context;
 
 public record ConstantNode<T>(T value) implements ComputeNode<T> {
 	@Override

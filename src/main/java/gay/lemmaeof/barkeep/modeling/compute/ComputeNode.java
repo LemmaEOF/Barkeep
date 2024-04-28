@@ -1,10 +1,10 @@
 package gay.lemmaeof.barkeep.modeling.compute;
 
-import gay.lemmaeof.barkeep.modeling.context.Context;
+import java.lang.invoke.MethodHandle;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.invoke.MethodHandle;
+import gay.lemmaeof.barkeep.modeling.context.Context;
 
 public interface ComputeNode<T> {
 	T getResult(Context context);

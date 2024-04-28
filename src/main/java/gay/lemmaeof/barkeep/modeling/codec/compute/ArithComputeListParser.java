@@ -2,6 +2,7 @@
 package gay.lemmaeof.barkeep.modeling.codec.compute;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import com.google.gson.JsonElement;
@@ -29,7 +30,7 @@ public record ArithComputeListParser(
 	public static ArithComputeListParser DIV = new ArithComputeListParser(null, InverseNode::new, DivNode::new);
 	
 	@Override
-	public ComputeNode<Double> parse(Iterable<JsonElement> children, Function<JsonElement, ComputeNode<Double>> recur, StaticContext _ignored) {
+	public ComputeNode<Double> parse(List<JsonElement> children, Function<JsonElement, ComputeNode<Double>> recur, StaticContext _ignored) {
 		if (!children.iterator().hasNext()) {
 			if (value == null) {
 				throw new JsonParseException("Math operator expected 1+ elements, got 0!");

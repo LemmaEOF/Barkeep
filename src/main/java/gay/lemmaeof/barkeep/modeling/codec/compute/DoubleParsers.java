@@ -18,6 +18,17 @@ public class DoubleParsers {
 	public static Map<String, ComputeListParser<Double>> LIST_PARSERS = new HashMap<>();
 	public static List<PartialComputeLeafParser<Double>> LEAF_PARSERS = new ArrayList<>();
 	
+	static {
+		LIST_PARSERS.put("+", ArithComputeListParser.ADD);
+		LIST_PARSERS.put("-", ArithComputeListParser.SUB);
+		LIST_PARSERS.put("*", ArithComputeListParser.MUL);
+		LIST_PARSERS.put("/", ArithComputeListParser.DIV);
+		LIST_PARSERS.put("event", EventComputeListParser.INSTANCE);
+		
+		LEAF_PARSERS.add(StateLeafParser.INSTANCE);
+		LEAF_PARSERS.add(ParameterLeafParser.INSTANCE);
+	}
+	
 	public static ComputeNode<Double> doParse(JsonElement elt, StaticContext staticContext) {
 		try {
 			switch (elt) {
@@ -25,7 +36,11 @@ public class DoubleParsers {
 				if (arr.isEmpty()) {
 					throw new JsonParseException("Illegal empty list in computation!");
 				}
-				var name = arr.get(0);
+				var first = arr.get(0);
+				if (!(first instanceof JsonPrimitive prim) || !prim.isString()) {
+					throw new JsonParseException("First element of application should be a string!");
+				}
+				var name = prim.getAsString();
 				if (!LIST_PARSERS.containsKey(name)) {
 					throw new JsonParseException("Unknown computation function: " + name + "!");
 				}

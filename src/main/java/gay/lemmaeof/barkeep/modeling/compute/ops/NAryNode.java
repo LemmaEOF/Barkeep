@@ -1,13 +1,10 @@
 package gay.lemmaeof.barkeep.modeling.compute.ops;
 
-import gay.lemmaeof.barkeep.modeling.context.Context;
-import gay.lemmaeof.barkeep.modeling.compute.ComputeNode;
-import gay.lemmaeof.barkeep.modeling.compute.CataComputeNode;
-
-import java.util.List;
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
+
+import gay.lemmaeof.barkeep.modeling.compute.CataComputeNode;
+import gay.lemmaeof.barkeep.modeling.compute.ComputeNode;
+import gay.lemmaeof.barkeep.modeling.context.Context;
 
 public abstract class NAryNode<T> implements CataComputeNode<T> {
 	private Iterable<ComputeNode<T>> children;
