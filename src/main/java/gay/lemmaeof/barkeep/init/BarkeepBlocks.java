@@ -2,9 +2,11 @@ package gay.lemmaeof.barkeep.init;
 
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.block.CocktailGlassBlock;
+import gay.lemmaeof.barkeep.block.DrinkingBirdBlock;
 import gay.lemmaeof.barkeep.block.JiggerCupBlock;
 import gay.lemmaeof.barkeep.block.ShakerBlock;
 import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
+import gay.lemmaeof.barkeep.block.entity.DrinkingBirdBlockEntity;
 import gay.lemmaeof.barkeep.block.entity.JiggerCupBlockEntity;
 import gay.lemmaeof.barkeep.block.entity.ShakerBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -12,6 +14,8 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -30,9 +34,9 @@ public class BarkeepBlocks {
 					.dynamicBounds()
 					.offset(AbstractBlock.OffsetType.XZ)
 	));
+	public static final DrinkingBirdBlock DRINKING_BIRD = register("drinking_bird", new DrinkingBirdBlock(AbstractBlock.Settings.create()), new Item.Settings());
 
 	public static final BlockEntityType<ShakerBlockEntity> SHAKER_BE = register("shaker", ShakerBlockEntity::new, SHAKER);
-
 	public static final BlockEntityType<JiggerCupBlockEntity> JIGGER_CUP_BE = register("jigger_cup", JiggerCupBlockEntity::new,
 			QUARTER_PART_JIGGER_CUP,
 			HALF_PART_JIGGER_CUP,
@@ -40,8 +44,8 @@ public class BarkeepBlocks {
 			PART_JIGGER_CUP,
 			TWO_PART_JIGGER_CUP)
 			;
-
 	public static final BlockEntityType<CocktailGlassBlockEntity> COCKTAIL_GLASS_BE = register("cocktail_glass", CocktailGlassBlockEntity::new, TEST_COCKTAIL_GLASS);
+	public static final BlockEntityType<DrinkingBirdBlockEntity> DRINKING_BIRD_BE = register("drinking_bird", DrinkingBirdBlockEntity::new, DRINKING_BIRD);
 
 	public static void init() {
 
@@ -53,6 +57,12 @@ public class BarkeepBlocks {
 
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.BlockEntityFactory<T> factory, Block... blocks) {
 		return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Barkeep.MODID, name), BlockEntityType.Builder.create(factory, blocks).build(null));
+	}
+
+	private static <T extends Block> T register(String name, T block, Item.Settings settings) {
+		T ret = Registry.register(Registries.BLOCK, new Identifier(Barkeep.MODID, name), block);
+		Registry.register(Registries.ITEM, new Identifier(Barkeep.MODID, name), new BlockItem(ret, settings));
+		return ret;
 	}
 
 	private static AbstractBlock.Settings jiggerCup() {

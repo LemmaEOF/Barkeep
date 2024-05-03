@@ -48,6 +48,7 @@ public class BarkeepItems {
 				entries.add(BOTTLED_BOURBON);
 				entries.add(BOTTLED_LEMON_JUICE);
 				entries.add(TEST_COCKTAIL);
+				entries.add(BarkeepBlocks.DRINKING_BIRD);
 			})
 			.build());
 

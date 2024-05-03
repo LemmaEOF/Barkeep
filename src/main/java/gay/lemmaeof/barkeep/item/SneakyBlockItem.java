@@ -12,7 +12,11 @@ public class SneakyBlockItem extends BlockItem {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		if (context.getPlayer() == null || !context.getPlayer().isSneaking()) return ActionResult.PASS;
+		if (!shouldPlace(context)) return ActionResult.PASS;
 		return super.useOnBlock(context);
+	}
+
+	protected boolean shouldPlace(ItemUsageContext context) {
+		return context.getPlayer() != null && context.getPlayer().isSneaking();
 	}
 }

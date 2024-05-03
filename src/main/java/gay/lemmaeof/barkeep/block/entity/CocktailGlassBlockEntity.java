@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
+//TODO: components on BEs are still kinda half-baked, put in real NBT
 public class CocktailGlassBlockEntity extends BlockEntity {
 
 	public CocktailGlassBlockEntity(BlockPos pos, BlockState state) {
@@ -22,7 +23,9 @@ public class CocktailGlassBlockEntity extends BlockEntity {
 	}
 
 	public Cocktail getCocktail() {
-		return getCocktailComponent().cocktail();
+		CocktailComponent comp = getCocktailComponent();
+		if (comp == null) return null;
+		return comp.cocktail();
 	}
 
 	public void setCocktail(Cocktail cocktail) {

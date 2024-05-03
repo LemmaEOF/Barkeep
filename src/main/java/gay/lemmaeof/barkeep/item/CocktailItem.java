@@ -12,6 +12,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -26,6 +27,12 @@ import java.util.List;
 public class CocktailItem extends SneakyBlockItem {
 	public CocktailItem(Block block, Settings settings) {
 		super(block, settings);
+	}
+
+	@Override
+	protected boolean shouldPlace(ItemUsageContext context) {
+		if (!context.getStack().contains(BarkeepComponents.COCKTAIL)) return true;
+		return super.shouldPlace(context);
 	}
 
 	@Override
