@@ -6,8 +6,10 @@ This list isn't final and may change at any time - I just need to have an idea o
 - Margarita (obviously)
 - Sailor senshi (bias)
 - Paper plane(?)
-  - would require bourbon which would require corn and the Implications
+  - Would require bourbon which would require corn and the Implications
 - Manhattan
+- Old Fashioned
+  - With whisky instead of bourbon?
 
 ## Drinks
 - Malt drinks (generally, base ingredient for other stuff)
@@ -33,6 +35,9 @@ This list isn't final and may change at any time - I just need to have an idea o
   - Chocolate
   - Orange
   - Quarters are the smallest unit so have fun putting twelve dashes of angostura bitters in your manhattan!
+- Whisky (from wheat)
+- Bourbon(?)
+  - The Implications Of Corn
 
 ## Ingredients and Garniture
 - Lemons
@@ -41,3 +46,7 @@ This list isn't final and may change at any time - I just need to have an idea o
 - Grapes
 - Maraschino Cherries
 - Mint
+- Corn(?)
+  - Uuuuuggggghhhhh
+  - Corn is such a pluripotent crop I'd need to add so much
+  - Honestly if I do this I might just port It's Poppin'! into Barkeep as an easter egg

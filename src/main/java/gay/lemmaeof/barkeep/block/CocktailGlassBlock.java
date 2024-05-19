@@ -4,6 +4,7 @@ import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepItems;
+import gay.lemmaeof.barkeep.init.BarkeepTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -65,6 +66,9 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 					stack.remove(BarkeepComponents.COCKTAIL);
 					return ItemActionResult.SUCCESS;
 				}
+			} else if (stack.isIn(BarkeepTags.GARNITURE)) {
+				glass.addGarnish(stack.split(1));
+				return ItemActionResult.SUCCESS;
 			} else if (stack.isEmpty() && player.isSneaking() && glass.getCocktail() != null) {
 				ItemStack giveStack = new ItemStack(BarkeepItems.ROCKS_GLASS);
 				giveStack.set(BarkeepComponents.COCKTAIL, glass.getCocktailComponent());
