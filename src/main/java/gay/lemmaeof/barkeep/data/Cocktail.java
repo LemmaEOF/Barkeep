@@ -92,8 +92,7 @@ public class Cocktail {
 		//take just the <x> most present flavor notes for effects,
 		//<x> being the number of half-ounces of alcohol rounded up
 		//I tried before with full ounces of alcohol but that made getting more effects *really hard*
-		List<FlavorNote> drinkNotes = Arrays.stream(FlavorNote.values())
-				.filter(flavorWeights::containsKey)
+		List<FlavorNote> drinkNotes = flavorWeights.keySet().stream()
 				.sorted(
 						Comparator.comparingInt(note -> -1 * flavorProfile.getOrDefault(note, 0))
 				)
