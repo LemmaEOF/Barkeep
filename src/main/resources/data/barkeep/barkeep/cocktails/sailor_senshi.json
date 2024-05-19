@@ -14,7 +14,7 @@
 		}
 	],
 	"preparation": "stirred",
-	"glass": "barkeep:rocks",
+	"standard_glass": "barkeep:double_rocks_glass",
 	"preferred_garniture": [
 		{
 			"tag": "barkeep:maraschino_cherries"

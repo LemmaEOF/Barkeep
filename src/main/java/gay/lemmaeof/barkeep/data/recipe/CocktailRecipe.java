@@ -7,7 +7,9 @@ import gay.lemmaeof.barkeep.data.DrinkIngredient;
 import gay.lemmaeof.barkeep.data.FlavorNote;
 import gay.lemmaeof.barkeep.util.MoreCodecs;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.Item;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.text.TextColor;
@@ -18,13 +20,14 @@ import java.util.*;
 import java.util.function.UnaryOperator;
 
 //TODO: muddling, packets
-public record CocktailRecipe(List<DrinkIngredient> drinkInputs, List<Ingredient> preferredGarniture,
+public record CocktailRecipe(List<DrinkIngredient> drinkInputs, Item standardGlass, List<Ingredient> preferredGarniture,
 							 CocktailPreparation preparation, Optional<Text> nameOverride, Optional<TextColor> colorOverride,
 							 Optional<Integer> volumeOverride, Optional<Float> alcoholOverride,
 							 Optional<Map<FlavorNote, Integer>> flavorProfileOverride,
 							 Optional<List<StatusEffectInstance>> effectsOverride) {
 	public static final Codec<CocktailRecipe> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			DrinkIngredient.CODEC.listOf().fieldOf("drinks").forGetter(CocktailRecipe::drinkInputs),
+			Registries.ITEM.getCodec().fieldOf("standard_glass").forGetter(CocktailRecipe::standardGlass),
 			Ingredient.DISALLOW_EMPTY_CODEC.listOf().fieldOf("preferred_garniture").orElse(List.of()).forGetter(CocktailRecipe::preferredGarniture),
 			CocktailPreparation.CODEC.fieldOf("preparation").forGetter(CocktailRecipe::preparation),
 			TextCodecs.CODEC.optionalFieldOf("name").forGetter(CocktailRecipe::nameOverride),

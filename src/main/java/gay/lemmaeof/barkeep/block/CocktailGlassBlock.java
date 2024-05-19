@@ -10,7 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -21,8 +20,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-
 //TODO: multiple types of glass
 public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 	//TODO: BER instead of block model? would let me do fancy animations and variable drink sizes, and we need one anyway for garniture
@@ -30,10 +27,17 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 	public static final BooleanProperty FILLED = BooleanProperty.of("filled");
 	public static final VoxelShape SHAPE = Block.createCuboidShape(5, 0, 5, 11, 10, 11);
 
+	private final int capacity;
+
 	//TODO: cup capacity?
-	public CocktailGlassBlock(Settings settings) {
+	public CocktailGlassBlock(int capacity, Settings settings) {
 		super(settings);
+		this.capacity = capacity;
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FILLED, false));
+	}
+
+	public int getCapacity() {
+		return this.capacity;
 	}
 
 	@Nullable
@@ -53,16 +57,16 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CocktailGlassBlockEntity glass) {
 			if (stack.isOf(BarkeepItems.SHAKER) && glass.getCocktail() == null) {
-				CocktailComponent cocktail = stack.get(BarkeepComponents.COCKTAIL);
-				if (cocktail != null) {
+				CocktailComponent cocktail = stack.getOrDefault(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY);
+				if (cocktail.cocktail().isPresent()) {
 					//TODO: sound
-					glass.setCocktail(cocktail.cocktail());
+					glass.setCocktail(cocktail.cocktail().get());
 					world.setBlockState(pos, state.with(FILLED, true));
 					stack.remove(BarkeepComponents.COCKTAIL);
 					return ItemActionResult.SUCCESS;
 				}
 			} else if (stack.isEmpty() && player.isSneaking() && glass.getCocktail() != null) {
-				ItemStack giveStack = new ItemStack(BarkeepItems.TEST_COCKTAIL);
+				ItemStack giveStack = new ItemStack(BarkeepItems.ROCKS_GLASS);
 				giveStack.set(BarkeepComponents.COCKTAIL, glass.getCocktailComponent());
 				player.setStackInHand(hand, giveStack);
 				world.removeBlock(pos, false);

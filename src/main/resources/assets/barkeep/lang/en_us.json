@@ -5,7 +5,9 @@
 	"block.barkeep.three_quarter_part_jigger_cup": "¾-Part Jigger Cup",
 	"block.barkeep.part_jigger_cup": "1-Part Jigger Cup",
 	"block.barkeep.two_part_jigger_cup": "2-Part Jigger Cup",
-	"block.barkeep.test_cocktail_glass": "Cocktail Glass",
+	"block.barkeep.rocks_glass": "Rocks Glass",
+	"block.barkeep.double_rocks_glass": "Double Rocks Glass",
+	"block.barkeep.martini_glass": "Martini Glass",
 	"cocktail.barkeep.custom": "Custom Cocktail",
 	"cocktail.barkeep.paper_plane": "Paper Plane",
 	"cocktail.barkeep.sailor_senshi": "Sailor Senshi",
@@ -20,5 +22,14 @@
 	"item.barkeep.bottled_drink": "Bottle of %s",
 	"itemGroup.barkeep.equipment": "Barkeep Equipment",
 	"itemGroup.barkeep.cocktails": "Barkeep Cocktails",
-	"tooltip.barkeep.drink_amount": "  - %s part%s "
+	"tags.barkeep.cocktail_glasses": "Cocktail Glasses",
+	"tags.barkeep.garniture": "Garniture",
+	"tag.c.ice": "Ice",
+	"tooltip.barkeep.alcohol": "Alcohol content: %s",
+	"tooltip.barkeep.color": "Color: %s",
+	"tooltip.barkeep.drink_amount": "  - %s part%s ",
+	"tooltip.barkeep.flavor_profile": "Flavor profile:",
+	"tooltip.barkeep.flavor_amount": "  - %s: %s",
+	"tooltip.barkeep.ingredients": "Ingredients:",
+	"tooltip.barkeep.volume": "Volume: %s"
 }

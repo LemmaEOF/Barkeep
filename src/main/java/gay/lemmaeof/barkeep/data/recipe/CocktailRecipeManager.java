@@ -12,6 +12,7 @@ import gay.lemmaeof.barkeep.data.Cocktail;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.DrinkIngredient;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
+import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -71,7 +72,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 					ItemStack[] stacks = i.getMatchingStacks();
 					if (stacks.length > 0) sampleGarniture.add(i.getMatchingStacks()[0]);
 				}
-				sampleCocktails.put(id, new CocktailComponent(new Cocktail(sampleDrinks, recipe.preparation(), entry), sampleGarniture));
+				sampleCocktails.put(id, new CocktailComponent(Optional.of(new Cocktail(sampleDrinks, recipe.preparation(), entry)), sampleGarniture));
 			} else {
 				Barkeep.LOGGER.info("Error parsing cocktail {}: {}", id, result.error().toString());
 			}
@@ -82,8 +83,12 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 		return recipes.values().stream().filter(cocktail -> cocktail.recipe().matches(drinks, preparation)).findFirst();
 	}
 
-	public CocktailComponent getSampleCocktail(Identifier id) {
-		return sampleCocktails.get(id);
+	public ItemStack getSampleCocktail(Identifier id) {
+		CocktailRecipe recipe = getRecipe(id);
+		ItemStack stack = new ItemStack(recipe.standardGlass());
+		CocktailComponent cocktail = sampleCocktails.get(id);
+		stack.set(BarkeepComponents.COCKTAIL, cocktail);
+		return stack;
 	}
 
 	public Cocktail createCocktail(Map<Drink, Integer> drinks, CocktailPreparation preparation) {

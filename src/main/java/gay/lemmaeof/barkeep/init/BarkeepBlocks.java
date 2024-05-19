@@ -18,6 +18,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 
 public class BarkeepBlocks {
@@ -27,13 +28,9 @@ public class BarkeepBlocks {
 	public static final JiggerCupBlock THREE_QUARTER_PART_JIGGER_CUP = register("three_quarter_part_jigger_cup", new JiggerCupBlock(3, jiggerCup()));
 	public static final JiggerCupBlock PART_JIGGER_CUP = register("part_jigger_cup", new JiggerCupBlock(4, jiggerCup()));
 	public static final JiggerCupBlock TWO_PART_JIGGER_CUP = register("two_part_jigger_cup", new JiggerCupBlock(8, jiggerCup()));
-	public static final CocktailGlassBlock TEST_COCKTAIL_GLASS = register("test_cocktail_glass", new CocktailGlassBlock(
-			AbstractBlock.Settings.create()
-					.nonOpaque()
-					.breakInstantly()
-					.dynamicBounds()
-					.offset(AbstractBlock.OffsetType.XZ)
-	));
+	public static final CocktailGlassBlock ROCKS_GLASS = register("rocks_glass", new CocktailGlassBlock(7, glass()));
+	public static final CocktailGlassBlock DOUBLE_ROCKS_GLASS = register("double_rocks_glass", new CocktailGlassBlock(14, glass()));
+	public static final CocktailGlassBlock MARTINI_GLASS = register("martini_glass", new CocktailGlassBlock(6, glass()));
 	public static final DrinkingBirdBlock DRINKING_BIRD = register("drinking_bird", new DrinkingBirdBlock(AbstractBlock.Settings.create()), new Item.Settings());
 
 	public static final BlockEntityType<ShakerBlockEntity> SHAKER_BE = register("shaker", ShakerBlockEntity::new, SHAKER);
@@ -44,7 +41,7 @@ public class BarkeepBlocks {
 			PART_JIGGER_CUP,
 			TWO_PART_JIGGER_CUP)
 			;
-	public static final BlockEntityType<CocktailGlassBlockEntity> COCKTAIL_GLASS_BE = register("cocktail_glass", CocktailGlassBlockEntity::new, TEST_COCKTAIL_GLASS);
+	public static final BlockEntityType<CocktailGlassBlockEntity> COCKTAIL_GLASS_BE = register("cocktail_glass", CocktailGlassBlockEntity::new, ROCKS_GLASS, DOUBLE_ROCKS_GLASS);
 	public static final BlockEntityType<DrinkingBirdBlockEntity> DRINKING_BIRD_BE = register("drinking_bird", DrinkingBirdBlockEntity::new, DRINKING_BIRD);
 
 	public static void init() {
@@ -63,6 +60,15 @@ public class BarkeepBlocks {
 		T ret = Registry.register(Registries.BLOCK, new Identifier(Barkeep.MODID, name), block);
 		Registry.register(Registries.ITEM, new Identifier(Barkeep.MODID, name), new BlockItem(ret, settings));
 		return ret;
+	}
+
+	private static AbstractBlock.Settings glass() {
+		return AbstractBlock.Settings.create()
+				.nonOpaque()
+				.breakInstantly()
+				.dynamicBounds()
+				.offset(AbstractBlock.OffsetType.XZ)
+				.sounds(BlockSoundGroup.GLASS);
 	}
 
 	private static AbstractBlock.Settings jiggerCup() {

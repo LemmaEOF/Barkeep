@@ -18,10 +18,17 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class JiggerCupItem extends SneakyBlockItem {
+	private final JiggerCupBlock cup;
 	private final int size;
+
 	public JiggerCupItem(JiggerCupBlock block, Settings settings) {
 		super(block, settings);
+		this.cup = block;
 		this.size = block.getSize();
+	}
+
+	public JiggerCupBlock getCup() {
+		return cup;
 	}
 
 	public int getSize() {

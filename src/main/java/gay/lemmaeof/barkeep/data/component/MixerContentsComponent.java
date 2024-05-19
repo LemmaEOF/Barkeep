@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 
 //TODO: muddling
 public record MixerContentsComponent(Map<RegistryEntry<Drink>, Integer> drinks, boolean iced) implements TooltipAppender {
+	public static final MixerContentsComponent EMPTY = new MixerContentsComponent(Map.of(), false);
 	public static final Codec<MixerContentsComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codecs.strictUnboundedMap(Drink.REGISTRY_ENTRY_CODEC, Codecs.POSITIVE_INT).fieldOf("drinks").forGetter(MixerContentsComponent::drinks),
 			Codec.BOOL.fieldOf("iced").forGetter(MixerContentsComponent::iced)

@@ -3,18 +3,22 @@ package gay.lemmaeof.barkeep.item;
 import gay.lemmaeof.barkeep.block.CocktailGlassBlock;
 import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
 import gay.lemmaeof.barkeep.data.Cocktail;
+import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
-import gay.lemmaeof.barkeep.init.BarkeepItems;
-import net.minecraft.block.Block;
+import gay.lemmaeof.barkeep.init.BarkeepTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -24,9 +28,28 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CocktailItem extends SneakyBlockItem {
-	public CocktailItem(Block block, Settings settings) {
+public class CocktailGlassItem extends SneakyBlockItem {
+	private final CocktailGlassBlock glass;
+
+	public CocktailGlassItem(CocktailGlassBlock block, Settings settings) {
 		super(block, settings);
+		this.glass = block;
+	}
+
+	public void setCocktail(ItemStack stack, Cocktail cocktail) {
+		stack.set(BarkeepComponents.COCKTAIL, getCocktailComponent(stack).withCocktail(cocktail));
+	}
+
+	public void addGarnish(ItemStack stack, ItemStack garnish) {
+		stack.set(BarkeepComponents.COCKTAIL, getCocktailComponent(stack).withGarnish(garnish));
+	}
+
+	public int getCapacity() {
+		return glass.getCapacity();
+	}
+
+	public CocktailGlassBlock getGlass() {
+		return glass;
 	}
 
 	@Override
@@ -46,6 +69,17 @@ public class CocktailItem extends SneakyBlockItem {
 	}
 
 	@Override
+	public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
+		if (otherStack.isIn(BarkeepTags.GARNITURE)) {
+			//TODO: sound
+			ItemStack garnishStack = otherStack.split(1);
+			addGarnish(stack, garnishStack);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.DRINK;
 	}
@@ -57,7 +91,7 @@ public class CocktailItem extends SneakyBlockItem {
 			for (StatusEffectInstance effect : cocktail.getEffects()) {
 				user.addStatusEffect(new StatusEffectInstance(effect.getEffectType(), effect.getDuration()));
 			}
-			stack.remove(BarkeepComponents.COCKTAIL);
+			stack.set(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY);
 			return stack;
 		}
 		return super.finishUsing(stack, world, user);
@@ -86,28 +120,36 @@ public class CocktailItem extends SneakyBlockItem {
 		return super.getName(stack);
 	}
 
+	private CocktailComponent getCocktailComponent(ItemStack stack) {
+		return stack.getOrDefault(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY);
+	}
+
 	private boolean hasCocktail(ItemStack stack) {
-		return stack.contains(BarkeepComponents.COCKTAIL);
+		return getCocktailComponent(stack).cocktail().isPresent();
 	}
 
 	private Cocktail getCocktail(ItemStack stack) {
-		return stack.get(BarkeepComponents.COCKTAIL).cocktail();
+		return getCocktailComponent(stack).cocktail().get();
 	}
 
 	private List<ItemStack> getGarniture(ItemStack stack) {
-		return stack.get(BarkeepComponents.COCKTAIL).garniture();
+		return getCocktailComponent(stack).garniture();
 	}
 
 	@Override
 	protected boolean postPlacement(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
-		if (BarkeepItems.TEST_COCKTAIL.hasCocktail(stack)) {
-			BlockEntity be = world.getBlockEntity(pos);
-			if (be instanceof CocktailGlassBlockEntity glass) {
-				glass.setCocktail(BarkeepItems.TEST_COCKTAIL.getCocktail(stack));
-				world.setBlockState(pos, state.with(CocktailGlassBlock.FILLED, true));
-				return true;
-			}
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof CocktailGlassBlockEntity g) {
+			g.setCocktailComponent(getCocktailComponent(stack));
+			world.setBlockState(pos, state.with(CocktailGlassBlock.FILLED, hasCocktail(stack)));
+			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+		super.appendTooltip(stack, context, tooltip, type);
+		getCocktailComponent(stack).appendTooltip(context, tooltip::add, type);
 	}
 }

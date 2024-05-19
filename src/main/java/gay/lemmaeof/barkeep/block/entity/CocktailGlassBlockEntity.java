@@ -13,7 +13,9 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CocktailGlassBlockEntity extends ComponentSavingBlockEntity {
 
@@ -24,14 +26,15 @@ public class CocktailGlassBlockEntity extends ComponentSavingBlockEntity {
 	public Cocktail getCocktail() {
 		CocktailComponent comp = getCocktailComponent();
 		if (comp == null) return null;
-		return comp.cocktail();
+		return comp.cocktail().orElse(null);
 	}
 
 	public void setCocktail(Cocktail cocktail) {
-		setCocktailComponent(new CocktailComponent(cocktail, getGarniture()));
+		setCocktailComponent(new CocktailComponent(Optional.of(cocktail), getGarniture()));
 	}
 
 	public List<ItemStack> getGarniture() {
+		if (getCocktailComponent() == null) return new ArrayList<>();
 		return getCocktailComponent().garniture();
 	}
 

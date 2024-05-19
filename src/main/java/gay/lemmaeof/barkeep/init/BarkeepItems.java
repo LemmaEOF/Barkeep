@@ -2,6 +2,7 @@ package gay.lemmaeof.barkeep.init;
 
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
+import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.impl.BottleDrinkContainer;
@@ -9,7 +10,7 @@ import gay.lemmaeof.barkeep.impl.JiggerCupDrinkContainer;
 import gay.lemmaeof.barkeep.item.BottledDrinkItem;
 import gay.lemmaeof.barkeep.item.JiggerCupItem;
 import gay.lemmaeof.barkeep.item.ShakerItem;
-import gay.lemmaeof.barkeep.item.CocktailItem;
+import gay.lemmaeof.barkeep.item.CocktailGlassItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -21,7 +22,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class BarkeepItems {
-	public static final CocktailItem TEST_COCKTAIL = register("test_cocktail", new CocktailItem(BarkeepBlocks.TEST_COCKTAIL_GLASS, new Item.Settings()));
+	public static final CocktailGlassItem ROCKS_GLASS = register("rocks_glass", new CocktailGlassItem(BarkeepBlocks.ROCKS_GLASS, glass()));
+	public static final CocktailGlassItem DOUBLE_ROCKS_GLASS = register("double_rocks_glass", new CocktailGlassItem(BarkeepBlocks.DOUBLE_ROCKS_GLASS, glass()));
+	public static final CocktailGlassItem MARTINI_GLASS = register("martini_glass", new CocktailGlassItem(BarkeepBlocks.MARTINI_GLASS, glass()));
 	public static final ShakerItem SHAKER = register("shaker", new ShakerItem(BarkeepBlocks.SHAKER, new Item.Settings().maxCount(1)));
 	public static final JiggerCupItem QUARTER_PART_JIGGER_CUP = register("quarter_part_jigger_cup", new JiggerCupItem(BarkeepBlocks.QUARTER_PART_JIGGER_CUP, new Item.Settings().maxCount(1)));
 	public static final JiggerCupItem HALF_PART_JIGGER_CUP = register("half_part_jigger_cup", new JiggerCupItem(BarkeepBlocks.HALF_PART_JIGGER_CUP, new Item.Settings().maxCount(1)));
@@ -47,19 +50,20 @@ public class BarkeepItems {
 				entries.add(BOTTLED_APEROL);
 				entries.add(BOTTLED_BOURBON);
 				entries.add(BOTTLED_LEMON_JUICE);
-				entries.add(TEST_COCKTAIL);
+				entries.add(ROCKS_GLASS);
+				entries.add(DOUBLE_ROCKS_GLASS);
+				entries.add(MARTINI_GLASS);
 				entries.add(BarkeepBlocks.DRINKING_BIRD);
 			})
 			.build());
 
+	//TODO: make this a martini or such later!
 	public static final ItemGroup COCKTAILS = Registry.register(Registries.ITEM_GROUP, new Identifier(Barkeep.MODID, "cocktails"), FabricItemGroup.builder()
 			.displayName(Text.translatable("itemGroup.barkeep.cocktails"))
-			.icon(() -> new ItemStack(TEST_COCKTAIL))
+			.icon(() -> new ItemStack(ROCKS_GLASS))
 			.entries((context, entries) -> {
 				for (Identifier id : CocktailRecipeManager.INSTANCE.getCocktailIds()) {
-					ItemStack stack = new ItemStack(TEST_COCKTAIL);
-					stack.set(BarkeepComponents.COCKTAIL, CocktailRecipeManager.INSTANCE.getSampleCocktail(id));
-					entries.add(stack);
+					entries.add(CocktailRecipeManager.INSTANCE.getSampleCocktail(id));
 				}
 			})
 			.build());
@@ -72,28 +76,16 @@ public class BarkeepItems {
 				PART_JIGGER_CUP,
 				TWO_PART_JIGGER_CUP
 		);
-		DrinkContainer.ITEM_LOOKUP.registerForItems((stack, manager) -> new DrinkContainer() {
-			@Override
-			public Drink getDrink() {
-				return manager.get(BarkeepRegistries.DRINKS).get(new Identifier(Barkeep.MODID, "water"));
-			}
-
-			@Override
-			public int getVolume() {
-				return 12;
-			}
-
-			@Override
-			public int tryPour(int quarterParts) {
-				return Math.min(quarterParts, getVolume());
-			}
-		}, Items.WATER_BUCKET);
 		DrinkContainer.ITEM_LOOKUP.registerForItems(BottleDrinkContainer::new,
 				BOTTLED_AMARO_NONINO,
 				BOTTLED_APEROL,
 				BOTTLED_BOURBON,
 				BOTTLED_LEMON_JUICE
 		);
+	}
+
+	private static Item.Settings glass() {
+		return new Item.Settings().component(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY);
 	}
 
 	private static <T extends Item> T register(String name, T item) {

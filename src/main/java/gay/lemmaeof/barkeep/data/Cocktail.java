@@ -52,8 +52,6 @@ public class Cocktail {
 
 		//volume weighted by color strengths
 		float colorVolume = 0;
-		//alcohol content in half-parts bc that's more balanced for status effects
-		float currentFlavorStrength = 0;
 		//raw quarter amounts for each flavor note
 		Map<FlavorNote, Integer> flavorWeights = new HashMap<>();
 		//color amounts by strength and volume
@@ -67,7 +65,6 @@ public class Cocktail {
 			//increase volumes and alcohol content
 			volume += units;
 			alcohol += (units/4f) * (drink.proof() / 200f);
-			currentFlavorStrength += (units/4f) * (drink.proof() / 100f);
 			if (drink.colorStrength() > 0) {
 				colorVolume += units * drink.colorStrength();
 				colorWeights.put(drink.color(), colorWeights.getOrDefault(drink.color(), 0f) + units * drink.colorStrength());
@@ -95,15 +92,17 @@ public class Cocktail {
 		//take just the <x> most present flavor notes for effects,
 		//<x> being the number of half-ounces of alcohol rounded up
 		//I tried before with full ounces of alcohol but that made getting more effects *really hard*
-		List<FlavorNote> allNotes = new ArrayList<>(List.of(FlavorNote.values()));
-		allNotes.sort(Comparator.comparing(note -> flavorProfile.getOrDefault(note, 0)));
-		for (int i = 0; i < Math.min(Math.ceil(currentFlavorStrength), 8); i++) {
-			FlavorNote note = allNotes.get(i);
-			if (flavorWeights.containsKey(note)) {
-				//30 seconds per quarter of that flavor note - this makes 'em last *long!*
-				//TODO: look into figuring out balance for that
-				effects.add(new StatusEffectInstance(note.getEffect(), 600 * flavorWeights.get(note)));
-			}
+		List<FlavorNote> drinkNotes = Arrays.stream(FlavorNote.values())
+				.filter(flavorWeights::containsKey)
+				.sorted(
+						Comparator.comparingInt(note -> -1 * flavorProfile.getOrDefault(note, 0))
+				)
+				.toList();
+		for (int i = 0; i < Math.min(Math.ceil(alcohol * 2), drinkNotes.size()); i++) {
+			FlavorNote note = drinkNotes.get(i);
+			//30 seconds per quarter of that flavor note - this makes 'em last *long!*
+			//TODO: look into figuring out balance for that
+			effects.add(new StatusEffectInstance(note.getEffect(), 600 * flavorWeights.get(note)));
 		}
 		//*now* do effect overrides!
 		if (recipe != null) {

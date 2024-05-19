@@ -17,6 +17,7 @@
 			"parts": 0.75
 		}
 	],
+	"standard_glass": "barkeep:martini_glass",
 	"preparation": "shaken",
 	"color": "#af756c"
 }

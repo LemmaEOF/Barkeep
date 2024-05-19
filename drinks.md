@@ -24,7 +24,7 @@ This list isn't final and may change at any time - I just need to have an idea o
   - Triple sec
   - Blue curaçao?
 - Lemon juice
-- Lime juice 
+- Lime juice
 - Vermouth (both sweet and dry?)
 - Vodka (from wheat or potatoes)
 - Bitters
@@ -40,3 +40,4 @@ This list isn't final and may change at any time - I just need to have an idea o
 - Limes
 - Grapes
 - Maraschino Cherries
+- Mint

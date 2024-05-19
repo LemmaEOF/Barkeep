@@ -3,15 +3,15 @@ package gay.lemmaeof.barkeep.item;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.block.ShakerBlock;
 import gay.lemmaeof.barkeep.data.Cocktail;
-import gay.lemmaeof.barkeep.data.recipe.CocktailPreparation;
-import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
-import gay.lemmaeof.barkeep.data.recipe.CocktailRecipe;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.data.component.MixerContentsComponent;
+import gay.lemmaeof.barkeep.data.recipe.CocktailPreparation;
+import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepSounds;
 import gay.lemmaeof.barkeep.init.BarkeepTags;
+import gay.lemmaeof.barkeep.util.TextUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.LivingEntity;
@@ -23,19 +23,34 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
+import net.minecraft.util.ClickType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ShakerItem extends SneakyBlockItem {
 	public ShakerItem(ShakerBlock block, Settings settings) {
 		super(block, settings);
+	}
+
+	@Override
+	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
+		ItemStack otherStack = slot.getStack();
+		Optional<Cocktail> cocktail = stack.getOrDefault(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY).cocktail();
+		if (cocktail.isPresent() && otherStack.getItem() instanceof CocktailGlassItem glass) {
+			if (glass.getCapacity() >= cocktail.get().getVolume()) {
+				//TODO: sound
+				glass.setCocktail(otherStack, cocktail.get());
+				stack.remove(BarkeepComponents.COCKTAIL);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -89,11 +104,11 @@ public class ShakerItem extends SneakyBlockItem {
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (!world.isClient) {
-			boolean iced = stack.get(BarkeepComponents.MIXER_CONTENTS).iced();
+			boolean iced = stack.getOrDefault(BarkeepComponents.MIXER_CONTENTS, MixerContentsComponent.EMPTY).iced();
 			Cocktail cocktail = CocktailRecipeManager.INSTANCE.createCocktail(getDrinks(stack), iced? CocktailPreparation.SHAKEN : CocktailPreparation.DRY_SHAKEN);
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), BarkeepSounds.SHAKER_OPEN, SoundCategory.PLAYERS, 0.5F, user.getWorld().random.nextFloat() * 0.1F + 0.9F);
 			stack.set(BarkeepComponents.MIXER_CONTENTS, MixerContentsComponent.empty());
-			stack.set(BarkeepComponents.COCKTAIL, new CocktailComponent(cocktail, new ArrayList<>()));
+			stack.set(BarkeepComponents.COCKTAIL, new CocktailComponent(Optional.of(cocktail), new ArrayList<>()));
 			return stack;
 		}
 		return super.finishUsing(stack, world, user);
@@ -114,22 +129,11 @@ public class ShakerItem extends SneakyBlockItem {
 			for (Drink drink : drinks.keySet()) {
 				//TODO: this is very much only designed for english rn, figure out a way to do proper pluralization later
 				int quarters = drinks.get(drink);
-				String parts = getPartNumber(quarters);
+				String parts = TextUtils.getPartNumber(quarters);
 				String plural = quarters <= 4? "" : "s";
 				tooltip.add(Text.translatable("tooltip.barkeep.drink_amount", parts, plural).append(Text.translatable(drink.getTranslationKey(manager))));
 			}
 		}
-	}
-
-	private String getPartNumber(int quarters) {
-		int whole = quarters / 4;
-		String fraction = switch(quarters % 4) {
-			case 1 -> "¼";
-			case 2 -> "½";
-			case 3 -> "¾";
-			default -> "";
-		};
-		return whole > 0? whole + fraction : fraction;
 	}
 
 	@Override
@@ -138,9 +142,7 @@ public class ShakerItem extends SneakyBlockItem {
 	}
 
 	private Map<Drink, Integer> getDrinks(ItemStack stack) {
-		MixerContentsComponent comp = stack.get(BarkeepComponents.MIXER_CONTENTS);
-		if (comp == null) return new HashMap<>();
-		return comp.getDrinks();
+		return stack.getOrDefault(BarkeepComponents.MIXER_CONTENTS, MixerContentsComponent.EMPTY).getDrinks();
 	}
 
 	//TODO: switch to wrapperlookup when I figure out how to make that not suck (might be impossible it sucks)
@@ -151,6 +153,6 @@ public class ShakerItem extends SneakyBlockItem {
 	}
 
 	private boolean hasDrinks(ItemStack stack) {
-		return (stack.contains(BarkeepComponents.MIXER_CONTENTS) && !stack.get(BarkeepComponents.MIXER_CONTENTS).getDrinks().isEmpty());
+		return!stack.getOrDefault(BarkeepComponents.MIXER_CONTENTS, MixerContentsComponent.EMPTY).getDrinks().isEmpty();
 	}
 }
