@@ -41,11 +41,17 @@ This list isn't final and may change at any time - I just need to have an idea o
 
 ## Ingredients and Garniture
 - Lemons
+  - Find citron trees naturally
 - Oranges
+  - Dye citron saplings orange
 - Limes
+  - Dye citron saplings lime
 - Grapes
 - Maraschino Cherries
+  - Bonemeal cherry leaves to make a section into fruiting cherry leaves
 - Mint
+  - Find in the wild? Kill a creeper with a hoe?
+  - Spreading?
 - Corn(?)
   - Uuuuuggggghhhhh
   - Corn is such a pluripotent crop I'd need to add so much

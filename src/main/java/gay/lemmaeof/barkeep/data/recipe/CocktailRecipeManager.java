@@ -17,6 +17,7 @@ import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
@@ -117,4 +118,5 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 	public Identifier getFabricId() {
 		return new Identifier(Barkeep.MODID, "cocktails");
 	}
+
 }

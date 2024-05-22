@@ -2,6 +2,6 @@
 	"parent": "minecraft:item/generated",
 	"textures": {
 		"layer0": "barkeep:item/temp_bourbon",
-		"layer1": "barkeep:item/temp_drink_bottle"
+		"layer1": "barkeep:item/drink_bottle"
 	}
 }

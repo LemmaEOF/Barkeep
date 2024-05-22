@@ -1,15 +1,16 @@
 {
-  "required": true,
-  "package": "gay.lemmaeof.barkeep.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [
-	"MixinDataPackContents"
-  ],
-  "injectors": {
-	"defaultRequire": 1
-  },
-  "client": [
-	"client.MixinBipedEntityModel",
-	"client.MixinPlayerEntityRenderer"
-  ]
+	"required": true,
+	"package": "gay.lemmaeof.barkeep.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"MixinDataPackContents",
+		"MixinRegistryLoader"
+	],
+	"client": [
+		"client.MixinBipedEntityModel",
+		"client.MixinPlayerEntityRenderer"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

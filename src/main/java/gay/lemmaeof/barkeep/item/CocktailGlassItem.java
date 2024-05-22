@@ -54,7 +54,7 @@ public class CocktailGlassItem extends SneakyBlockItem {
 
 	@Override
 	protected boolean shouldPlace(ItemUsageContext context) {
-		if (!context.getStack().contains(BarkeepComponents.COCKTAIL)) return true;
+		if (context.getStack().get(BarkeepComponents.COCKTAIL) == CocktailComponent.EMPTY) return true;
 		return super.shouldPlace(context);
 	}
 
@@ -124,11 +124,11 @@ public class CocktailGlassItem extends SneakyBlockItem {
 		return stack.getOrDefault(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY);
 	}
 
-	private boolean hasCocktail(ItemStack stack) {
+	public boolean hasCocktail(ItemStack stack) {
 		return getCocktailComponent(stack).cocktail().isPresent();
 	}
 
-	private Cocktail getCocktail(ItemStack stack) {
+	public Cocktail getCocktail(ItemStack stack) {
 		return getCocktailComponent(stack).cocktail().get();
 	}
 

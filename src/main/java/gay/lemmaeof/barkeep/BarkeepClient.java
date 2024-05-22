@@ -9,6 +9,7 @@ import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepItems;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
+import gay.lemmaeof.barkeep.item.BottledDrinkItem;
 import gay.lemmaeof.barkeep.item.CocktailGlassItem;
 import gay.lemmaeof.barkeep.item.JiggerCupItem;
 import net.fabricmc.api.ClientModInitializer;
@@ -33,13 +34,18 @@ public class BarkeepClient implements ClientModInitializer {
 		setupGlasses(
 				BarkeepItems.ROCKS_GLASS,
 				BarkeepItems.DOUBLE_ROCKS_GLASS,
-				BarkeepItems.MARTINI_GLASS);
+				BarkeepItems.MARTINI_GLASS
+		);
 		setupJiggerCups(
 				BarkeepItems.QUARTER_PART_JIGGER_CUP,
 				BarkeepItems.HALF_PART_JIGGER_CUP,
 				BarkeepItems.THREE_QUARTER_PART_JIGGER_CUP,
 				BarkeepItems.PART_JIGGER_CUP,
 				BarkeepItems.TWO_PART_JIGGER_CUP
+		);
+		//TODO: gonna need more of these yeah?
+		setupDrinkBottles(
+				BarkeepItems.DRINK_BOTTLE
 		);
 	}
 
@@ -93,6 +99,24 @@ public class BarkeepClient implements ClientModInitializer {
 					return 0xFFFFFF;
 				},
 				cups
+		);
+	}
+
+	private void setupDrinkBottles(BottledDrinkItem... bottles) {
+//		JiggerCupBlock[] blocks = new JiggerCupBlock[cups.length];
+		for (int i = 0; i < bottles.length; i++) {
+			BottledDrinkItem bottle = bottles[i];
+//			blocks[i] = cup.getCup();
+			ModelPredicateProviderRegistry.register(bottle, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
+		}
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+					if (mc.world != null && stack.contains(BarkeepComponents.DRINK_CONTAINER) && tintIndex == 1) {
+						Drink drink = mc.world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
+						if (drink != null) return drink.color().getRgb();
+					}
+					return 0xFFFFFF;
+				},
+				bottles
 		);
 	}
 }

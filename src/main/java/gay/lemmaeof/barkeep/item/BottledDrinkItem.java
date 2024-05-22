@@ -1,7 +1,6 @@
 package gay.lemmaeof.barkeep.item;
 
 import gay.lemmaeof.barkeep.data.Drink;
-import gay.lemmaeof.barkeep.data.component.DrinkContainerComponent;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.minecraft.item.Item;
@@ -11,17 +10,16 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 
 public class BottledDrinkItem extends Item {
-	private final RegistryKey<Drink> drink;
 	private final int maxCapacity;
 
-	public BottledDrinkItem(RegistryKey<Drink> drink, int maxCapacity, Settings settings) {
-		super(settings.component(BarkeepComponents.DRINK_CONTAINER, new DrinkContainerComponent(drink, maxCapacity)));
-		this.drink = drink;
+	public BottledDrinkItem(int maxCapacity, Settings settings) {
+		super(settings);
 		this.maxCapacity = maxCapacity;
 	}
 
-	public Drink getDrink(DynamicRegistryManager manager) {
-		return manager.get(BarkeepRegistries.DRINKS).get(drink);
+	public Drink getDrink(ItemStack stack, DynamicRegistryManager manager) {
+		if (!stack.contains(BarkeepComponents.DRINK_CONTAINER)) return null;
+		return manager.get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
 	}
 
 	public int getMaxCapacity() {
@@ -44,6 +42,8 @@ public class BottledDrinkItem extends Item {
 
 	@Override
 	public Text getName(ItemStack stack) {
+		if (!stack.contains(BarkeepComponents.DRINK_CONTAINER)) return super.getName();
+		RegistryKey<Drink> drink = stack.get(BarkeepComponents.DRINK_CONTAINER).drink();
 		return Text.translatable("item.barkeep.bottled_drink", Text.translatable(drink.getValue().toTranslationKey("drink")));
 	}
 

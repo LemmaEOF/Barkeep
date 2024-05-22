@@ -10,7 +10,7 @@ import net.minecraft.util.math.random.Random;
 public class FruityLeavesBlock extends LeavesBlock {
 	private final Block fruit;
 
-	public FruityLeavesBlock(Settings settings, Block fruit) {
+	public FruityLeavesBlock(Block fruit, Settings settings) {
 		super(settings);
 		this.fruit = fruit;
 	}
@@ -18,7 +18,7 @@ public class FruityLeavesBlock extends LeavesBlock {
 	@Override
 	protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		super.randomTick(state, world, pos, random);
-		if (world.getBlockState(pos) == state) {
+		if (world.getBlockState(pos) == state && !state.get(LeavesBlock.PERSISTENT) && !state.get(LeavesBlock.WATERLOGGED)) {
 			if (random.nextInt(3) == 0 && world.getBlockState(pos.down()).isAir()) {
 				world.setBlockState(pos.down(), fruit.getDefaultState());
 			}

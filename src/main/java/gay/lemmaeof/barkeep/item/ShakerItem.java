@@ -42,7 +42,7 @@ public class ShakerItem extends SneakyBlockItem {
 	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
 		ItemStack otherStack = slot.getStack();
 		Optional<Cocktail> cocktail = stack.getOrDefault(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY).cocktail();
-		if (cocktail.isPresent() && otherStack.getItem() instanceof CocktailGlassItem glass) {
+		if (cocktail.isPresent() && otherStack.getItem() instanceof CocktailGlassItem glass && !glass.hasCocktail(otherStack)) {
 			if (glass.getCapacity() >= cocktail.get().getVolume()) {
 				//TODO: sound
 				glass.setCocktail(otherStack, cocktail.get());

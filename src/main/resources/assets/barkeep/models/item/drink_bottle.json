@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "barkeep:item/drink_bottle"
+	},
+	"overrides": [
+		{
+			"predicate": { "barkeep:filled":  1 },
+			"model": "barkeep:item/drink_bottle_full"
+		}
+	]
+}

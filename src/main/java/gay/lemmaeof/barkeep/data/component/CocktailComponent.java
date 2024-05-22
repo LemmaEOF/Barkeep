@@ -52,7 +52,7 @@ public record CocktailComponent(Optional<Cocktail> cocktail, List<ItemStack> gar
 					String parts = TextUtils.getPartNumber(quarters);
 					String plural = quarters <= 4 ? "" : "s";
 					Identifier id = new Identifier(drink.getIdAsString());
-					tooltip.accept(Text.translatable("tooltip.barkeep.drink_amount", parts, plural).append(Text.translatable(id.toTranslationKey("drink"))).formatted(Formatting.GRAY));
+					tooltip.accept(Text.translatable("tooltip.barkeep.drink_amount", parts, plural).append(Text.translatable(Drink.getTranslationKey(drink))).formatted(Formatting.GRAY));
 				}
 				tooltip.accept(Text.translatable("tooltip.barkeep.volume", TextUtils.getPartNumber(c.getVolume())).formatted(Formatting.GRAY));
 				tooltip.accept(Text.translatable("tooltip.barkeep.alcohol", c.getAlcohol()).formatted(Formatting.GRAY));

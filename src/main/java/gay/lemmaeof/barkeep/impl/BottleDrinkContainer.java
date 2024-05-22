@@ -3,6 +3,7 @@ package gay.lemmaeof.barkeep.impl;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.item.BottledDrinkItem;
+import gay.lemmaeof.barkeep.item.FixedBottledDrinkItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
 
@@ -23,7 +24,7 @@ public class BottleDrinkContainer implements DrinkContainer {
 
 	@Override
 	public Drink getDrink() {
-		return bottle.getDrink(manager);
+		return bottle.getDrink(stack, manager);
 	}
 
 	@Override
