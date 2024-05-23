@@ -22,6 +22,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.DataComponentType;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 
 import java.util.Optional;
 
@@ -64,21 +65,21 @@ public class BarkeepClient implements ClientModInitializer {
 		}
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), blocks);
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-					if (world == null) return 0xFFFFFF;
+					if (world == null) return 0xFFFFFFFF;
 					if (tintIndex == 1 && world.getBlockEntity(pos) instanceof CocktailGlassBlockEntity glass) {
-						if (glass.getCocktail() != null) return glass.getCocktail().getColor();
-						return 0xFFFFFF;
+						if (glass.getCocktail() != null) return ColorHelper.Argb.fullAlpha(glass.getCocktail().getColor());
+						return 0xFFFFFFFF;
 					}
-					return 0xFFFFFF;
+					return 0xFFFFFFFF;
 				},
 				blocks
 		);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 					Optional<Cocktail> cocktail = stack.getOrDefault(BarkeepComponents.COCKTAIL, CocktailComponent.EMPTY).cocktail();
 					if (tintIndex == 1 && cocktail.isPresent()) {
-						return cocktail.get().getColor();
+						return ColorHelper.Argb.fullAlpha(cocktail.get().getColor());
 					}
-					return 0xFFFFFF;
+					return 0xFFFFFFFF;
 				},
 				glasses
 		);
@@ -94,9 +95,9 @@ public class BarkeepClient implements ClientModInitializer {
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 					if (mc.world != null && stack.contains(BarkeepComponents.DRINK_CONTAINER) && tintIndex == 1) {
 						Drink drink = mc.world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
-						if (drink != null) return drink.color().getRgb();
+						if (drink != null) return ColorHelper.Argb.fullAlpha(drink.color().getRgb());
 					}
-					return 0xFFFFFF;
+					return 0xFFFFFFFF;
 				},
 				cups
 		);
@@ -110,11 +111,11 @@ public class BarkeepClient implements ClientModInitializer {
 			ModelPredicateProviderRegistry.register(bottle, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
 		}
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-					if (mc.world != null && stack.contains(BarkeepComponents.DRINK_CONTAINER) && tintIndex == 1) {
+					if (mc.world != null && stack.contains(BarkeepComponents.DRINK_CONTAINER) && tintIndex == 0) {
 						Drink drink = mc.world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
-						if (drink != null) return drink.color().getRgb();
+						if (drink != null) return ColorHelper.Argb.fullAlpha(drink.color().getRgb());
 					}
-					return 0xFFFFFF;
+					return 0xFFFFFFFF;
 				},
 				bottles
 		);

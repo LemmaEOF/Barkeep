@@ -1,7 +1,7 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "barkeep:item/drink_bottle",
-		"layer1": "barkeep:item/bottled_drink_overlay"
+		"layer0": "barkeep:item/bottled_drink_overlay",
+		"layer1": "barkeep:item/drink_bottle"
 	}
 }
