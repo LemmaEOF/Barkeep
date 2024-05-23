@@ -74,7 +74,7 @@ public class Cocktail {
 			}
 		}
 		//throw it off to mixbox!
-		color = ColorUtil.getDrinkColor(colorWeights, colorVolume);
+		color = ColorUtil.getMixedColor(colorWeights, colorVolume);
 		for (FlavorNote note : flavorWeights.keySet()) {
 			flavorProfile.put(note, (int) Math.floor((float) flavorWeights.get(note) / (float) volume * 100));
 		}

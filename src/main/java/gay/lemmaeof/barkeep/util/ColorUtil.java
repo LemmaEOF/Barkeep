@@ -1,20 +1,34 @@
 package gay.lemmaeof.barkeep.util;
 
 import com.scrtwpns.Mixbox;
+import gay.lemmaeof.barkeep.BarkeepClient;
+import gay.lemmaeof.barkeep.data.Drink;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.TextColor;
 
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 public class ColorUtil {
-	public static int getDrinkColor(Map<TextColor, Float> colorWeights) {
+	private static final Supplier<ToIntFunction<RegistryKey<Drink>>> CLIENT_COLOR_GETTER = () -> {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			return BarkeepClient::getDrinkColor;
+		}
+		return key -> 0xFFFFFF;
+	};
+
+	public static int getMixedColor(Map<TextColor, Float> colorWeights) {
 		float colorVolume = 0;
 		for (float weight : colorWeights.values()) {
 			colorVolume += weight;
 		}
-		return getDrinkColor(colorWeights, colorVolume);
+		return getMixedColor(colorWeights, colorVolume);
 	}
 
-	public static int getDrinkColor(Map<TextColor, Float> colorWeights, float colorVolume) {
+	public static int getMixedColor(Map<TextColor, Float> colorWeights, float colorVolume) {
 		if (colorVolume == 0) return 0xFFFFFF;
 		float[] colorMix = new float[Mixbox.LATENT_SIZE];
 		for (TextColor color : colorWeights.keySet()) {
@@ -27,4 +41,10 @@ public class ColorUtil {
 		return Mixbox.latentToRgb(colorMix);
 	}
 
+	public static int getClientDrinkColor(RegistryKey<Drink> drinkKey) {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			return CLIENT_COLOR_GETTER.get().applyAsInt(drinkKey);
+		}
+		return 0xFFFFFF;
+	}
 }

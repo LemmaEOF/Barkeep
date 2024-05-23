@@ -3,6 +3,7 @@ package gay.lemmaeof.barkeep.item;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
+import gay.lemmaeof.barkeep.util.ColorUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -57,5 +58,12 @@ public class BottledDrinkItem extends Item {
 		return Math.round((float)getRemainingVolume(stack) * 13.0F / (float)getMaxCapacity());
 	}
 
-	//TODO: item bar color based on the drink - difficult due to needing to access the dynamic registry manager and client-side stuff
+	@Override
+	public int getItemBarColor(ItemStack stack) {
+		if (stack.contains(BarkeepComponents.DRINK_CONTAINER)) {
+			return ColorUtil.getClientDrinkColor(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
+		}
+		return super.getItemBarColor(stack);
+	}
+
 }

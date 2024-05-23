@@ -21,6 +21,7 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.DataComponentType;
 import net.minecraft.item.Item;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 
@@ -29,6 +30,10 @@ import java.util.Optional;
 public class BarkeepClient implements ClientModInitializer {
 	private static final Identifier FILLED_ID = new Identifier(Barkeep.MODID, "filled");
 	MinecraftClient mc = MinecraftClient.getInstance();
+
+	public static int getDrinkColor(RegistryKey<Drink> drinkKey) {
+		return ColorHelper.Argb.fullAlpha(MinecraftClient.getInstance().world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(drinkKey).color().getRgb());
+	}
 
 	@Override
 	public void onInitializeClient() {
