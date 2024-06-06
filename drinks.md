@@ -10,6 +10,8 @@ This list isn't final and may change at any time - I just need to have an idea o
 - Manhattan
 - Old Fashioned
   - With whisky instead of bourbon?
+- Sidecar
+  - Sidecart instead?
 
 ## Drinks
 - Malt drinks (generally, base ingredient for other stuff)
