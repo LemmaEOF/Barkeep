@@ -13,11 +13,11 @@ import gay.lemmaeof.barkeep.init.BarkeepSounds;
 import gay.lemmaeof.barkeep.init.BarkeepTags;
 import gay.lemmaeof.barkeep.util.TextUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
@@ -97,7 +97,7 @@ public class ShakerItem extends SneakyBlockItem {
 	}
 
 	@Override
-	public int getMaxUseTime(ItemStack stack) {
+	public int getMaxUseTime(ItemStack stack, LivingEntity user) {
 		return 60;
 	}
 

@@ -35,10 +35,10 @@ public class BarkeepItems {
 
 	//bottled drinks!
 	public static final BottledDrinkItem DRINK_BOTTLE = register("drink_bottle", new BottledDrinkItem(100, new Item.Settings().maxCount(1)));
-	public static final FixedBottledDrinkItem BOTTLED_AMARO_NONINO = register("bottled_amaro_nonino", new FixedBottledDrinkItem(Drink.key(new Identifier(Barkeep.MODID, "amaro_nonino")), 104, new Item.Settings().maxCount(1)));
-	public static final FixedBottledDrinkItem BOTTLED_APEROL = register("bottled_aperol", new FixedBottledDrinkItem(Drink.key(new Identifier(Barkeep.MODID, "aperol")), 104, new Item.Settings().maxCount(1)));
-	public static final FixedBottledDrinkItem BOTTLED_BOURBON = register("bottled_bourbon", new FixedBottledDrinkItem(Drink.key(new Identifier(Barkeep.MODID, "bourbon")), 104, new Item.Settings().maxCount(1)));
-	public static final FixedBottledDrinkItem BOTTLED_LEMON_JUICE = register("bottled_lemon_juice", new FixedBottledDrinkItem(Drink.key(new Identifier(Barkeep.MODID, "lemon_juice")), 27, new Item.Settings().maxCount(1)));
+	public static final FixedBottledDrinkItem BOTTLED_AMARO_NONINO = register("bottled_amaro_nonino", new FixedBottledDrinkItem(Drink.key(Identifier.of(Barkeep.MODID, "amaro_nonino")), 104, new Item.Settings().maxCount(1)));
+	public static final FixedBottledDrinkItem BOTTLED_APEROL = register("bottled_aperol", new FixedBottledDrinkItem(Drink.key(Identifier.of(Barkeep.MODID, "aperol")), 104, new Item.Settings().maxCount(1)));
+	public static final FixedBottledDrinkItem BOTTLED_BOURBON = register("bottled_bourbon", new FixedBottledDrinkItem(Drink.key(Identifier.of(Barkeep.MODID, "bourbon")), 104, new Item.Settings().maxCount(1)));
+	public static final FixedBottledDrinkItem BOTTLED_LEMON_JUICE = register("bottled_lemon_juice", new FixedBottledDrinkItem(Drink.key(Identifier.of(Barkeep.MODID, "lemon_juice")), 27, new Item.Settings().maxCount(1)));
 
 	//ingredients!
 	//TODO: should these fruits be blocks/blockitems?
@@ -48,7 +48,7 @@ public class BarkeepItems {
 	public static final Item CHERRY = register("cherry", new Item(new Item.Settings()));
 
 
-	public static final ItemGroup EQUIPMENT = Registry.register(Registries.ITEM_GROUP, new Identifier(Barkeep.MODID, "equipment"), FabricItemGroup.builder()
+	public static final ItemGroup EQUIPMENT = Registry.register(Registries.ITEM_GROUP, Identifier.of(Barkeep.MODID, "equipment"), FabricItemGroup.builder()
 			.displayName(Text.translatable("itemGroup.barkeep.equipment"))
 			.icon(() -> new ItemStack(SHAKER))
 			.entries((context, entries) -> {
@@ -70,7 +70,7 @@ public class BarkeepItems {
 			.build());
 
 	//TODO: make this a martini or such later!
-	public static final ItemGroup COCKTAILS = Registry.register(Registries.ITEM_GROUP, new Identifier(Barkeep.MODID, "cocktails"), FabricItemGroup.builder()
+	public static final ItemGroup COCKTAILS = Registry.register(Registries.ITEM_GROUP, Identifier.of(Barkeep.MODID, "cocktails"), FabricItemGroup.builder()
 			.displayName(Text.translatable("itemGroup.barkeep.cocktails"))
 			.icon(() -> new ItemStack(ROCKS_GLASS))
 			.entries((context, entries) -> {
@@ -102,6 +102,6 @@ public class BarkeepItems {
 	}
 
 	private static <T extends Item> T register(String name, T item) {
-		return Registry.register(Registries.ITEM, new Identifier(Barkeep.MODID, name), item);
+		return Registry.register(Registries.ITEM, Identifier.of(Barkeep.MODID, name), item);
 	}
 }

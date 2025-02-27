@@ -14,7 +14,7 @@ public class BarkeepSounds {
 	public static void init() {}
 
 	private static SoundEvent register(String name) {
-		Identifier id = new Identifier(Barkeep.MODID, name);
+		Identifier id = Identifier.of(Barkeep.MODID, name);
 		return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
 	}
 }

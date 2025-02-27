@@ -116,7 +116,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 
 	@Override
 	public Identifier getFabricId() {
-		return new Identifier(Barkeep.MODID, "cocktails");
+		return Identifier.of(Barkeep.MODID, "cocktails");
 	}
 
 }

@@ -6,11 +6,11 @@ import gay.lemmaeof.barkeep.data.Cocktail;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.FlavorNote;
 import gay.lemmaeof.barkeep.util.TextUtils;
-import net.minecraft.client.item.TooltipType;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.TooltipAppender;
+import net.minecraft.item.tooltip.TooltipAppender;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -51,7 +51,7 @@ public record CocktailComponent(Optional<Cocktail> cocktail, List<ItemStack> gar
 					int quarters = c.getDrinkEntries().get(drink);
 					String parts = TextUtils.getPartNumber(quarters);
 					String plural = quarters <= 4 ? "" : "s";
-					Identifier id = new Identifier(drink.getIdAsString());
+					Identifier id = Identifier.of(drink.getIdAsString());
 					tooltip.accept(Text.translatable("tooltip.barkeep.drink_amount", parts, plural).append(Text.translatable(Drink.getTranslationKey(drink))).formatted(Formatting.GRAY));
 				}
 				tooltip.accept(Text.translatable("tooltip.barkeep.volume", TextUtils.getPartNumber(c.getVolume())).formatted(Formatting.GRAY));

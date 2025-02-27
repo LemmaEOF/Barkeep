@@ -49,16 +49,16 @@ public class BarkeepBlocks {
 	}
 
 	private static <T extends Block> T register(String name, T block) {
-		return Registry.register(Registries.BLOCK, new Identifier(Barkeep.MODID, name), block);
+		return Registry.register(Registries.BLOCK, Identifier.of(Barkeep.MODID, name), block);
 	}
 
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.BlockEntityFactory<T> factory, Block... blocks) {
-		return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Barkeep.MODID, name), BlockEntityType.Builder.create(factory, blocks).build(null));
+		return Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(Barkeep.MODID, name), BlockEntityType.Builder.create(factory, blocks).build(null));
 	}
 
 	private static <T extends Block> T register(String name, T block, Item.Settings settings) {
-		T ret = Registry.register(Registries.BLOCK, new Identifier(Barkeep.MODID, name), block);
-		Registry.register(Registries.ITEM, new Identifier(Barkeep.MODID, name), new BlockItem(ret, settings));
+		T ret = Registry.register(Registries.BLOCK, Identifier.of(Barkeep.MODID, name), block);
+		Registry.register(Registries.ITEM, Identifier.of(Barkeep.MODID, name), new BlockItem(ret, settings));
 		return ret;
 	}
 

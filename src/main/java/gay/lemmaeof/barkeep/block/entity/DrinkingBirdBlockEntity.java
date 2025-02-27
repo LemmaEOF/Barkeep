@@ -25,7 +25,7 @@ public class DrinkingBirdBlockEntity extends BlockEntity {
 			BlockPos forwardPos = pos.offset(state.get(DrinkingBirdBlock.FACING));
 			BlockState forwardState = world.getBlockState(forwardPos);
 			if (forwardState.getBlock() instanceof ButtonBlock button && forwardState.get(WallMountedBlock.FACE) == BlockFace.FLOOR) {
-				button.powerOn(forwardState, world, forwardPos);
+				button.powerOn(forwardState, world, forwardPos, null);
 			}
 			be.currentTicks = 0;
 		}

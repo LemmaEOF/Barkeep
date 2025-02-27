@@ -6,6 +6,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -15,7 +16,7 @@ public class BarkeepRecipes {
 
 	public static void init() {}
 
-	private static <C extends Inventory, T extends Recipe<C>> RecipeSerializer<T> register(String name, RecipeSerializer<T> serializer) {
-		return Registry.register(Registries.RECIPE_SERIALIZER, new Identifier(Barkeep.MODID, name), serializer);
+	private static <C extends RecipeInput, T extends Recipe<C>> RecipeSerializer<T> register(String name, RecipeSerializer<T> serializer) {
+		return Registry.register(Registries.RECIPE_SERIALIZER, Identifier.of(Barkeep.MODID, name), serializer);
 	}
 }

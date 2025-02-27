@@ -19,8 +19,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.component.DataComponentType;
-import net.minecraft.item.Item;
+import net.minecraft.component.ComponentType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
@@ -28,7 +27,7 @@ import net.minecraft.util.math.ColorHelper;
 import java.util.Optional;
 
 public class BarkeepClient implements ClientModInitializer {
-	private static final Identifier FILLED_ID = new Identifier(Barkeep.MODID, "filled");
+	private static final Identifier FILLED_ID = Identifier.of(Barkeep.MODID, "filled");
 	MinecraftClient mc = MinecraftClient.getInstance();
 
 	public static int getDrinkColor(RegistryKey<Drink> drinkKey) {
@@ -55,7 +54,7 @@ public class BarkeepClient implements ClientModInitializer {
 		);
 	}
 
-	private ClampedModelPredicateProvider filled(DataComponentType<?> key) {
+	private ClampedModelPredicateProvider filled(ComponentType<?> key) {
 		return (stack, world, entity, seed) -> stack.contains(key)? 1 : 0;
 	}
 

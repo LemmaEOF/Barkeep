@@ -20,14 +20,14 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 public class BarkeepRegistries {
-	public static final RegistryKey<Registry<Drink>> DRINKS = RegistryKey.ofRegistry(new Identifier(Barkeep.MODID, "drinks"));
+	public static final RegistryKey<Registry<Drink>> DRINKS = RegistryKey.ofRegistry(Identifier.of(Barkeep.MODID, "drinks"));
 
 	public static void init () {
 		DynamicRegistries.registerSynced(DRINKS, Drink.CODEC);
 		DynamicRegistrationCallback.event(BarkeepRegistries.DRINKS).register(registry -> {
 			for (Identifier id : Registries.POTION.getIds()) {
 				if (Registries.POTION.get(id) == Potions.WATER.value()) {
-					Registry.register(registry, new Identifier("water"), new Drink(TextColor.fromRgb(0x385DC6), 0, 0, List.of(), List.of()));
+					Registry.register(registry, Identifier.of("water"), new Drink(TextColor.fromRgb(0x385DC6), 0, 0, List.of(), List.of()));
 				} else {
 					Registry.register(registry, potionId(id), fromPotion(Registries.POTION.get(id)));
 				}
@@ -51,6 +51,6 @@ public class BarkeepRegistries {
 	}
 
 	private static Identifier potionId(Identifier old) {
-		return new Identifier(old.getNamespace(), old.getPath() + "_potion");
+		return Identifier.of(old.getNamespace(), old.getPath() + "_potion");
 	}
 }

@@ -46,7 +46,7 @@ public record Drink(TextColor color, float colorStrength, int proof, List<Flavor
 
 	public Identifier getId(DynamicRegistryManager manager) {
 		Identifier id = manager.get(BarkeepRegistries.DRINKS).getId(this);
-		if (id == null) return new Identifier("water");
+		if (id == null) return Identifier.of("water");
 		return id;
 	}
 

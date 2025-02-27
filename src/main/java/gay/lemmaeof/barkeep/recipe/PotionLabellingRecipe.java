@@ -14,6 +14,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
@@ -26,10 +27,10 @@ public class PotionLabellingRecipe extends SpecialCraftingRecipe {
 	}
 
 	@Override
-	public boolean matches(RecipeInputInventory inv, World world) {
+	public boolean matches(CraftingRecipeInput inv, World world) {
 		ItemStack potion = ItemStack.EMPTY;
 		ItemStack paper = ItemStack.EMPTY;
-		for (ItemStack stack : inv.getHeldStacks()) {
+		for (ItemStack stack : inv.getStacks()) {
 			if (stack.getItem() == Items.POTION) {
 				PotionContentsComponent comp = stack.get(DataComponentTypes.POTION_CONTENTS);
 				if (comp != null && comp.potion().isPresent()) potion = stack;
@@ -39,15 +40,15 @@ public class PotionLabellingRecipe extends SpecialCraftingRecipe {
 	}
 
 	@Override
-	public ItemStack craft(RecipeInputInventory inv, RegistryWrapper.WrapperLookup lookup) {
+	public ItemStack craft(CraftingRecipeInput inv, RegistryWrapper.WrapperLookup lookup) {
 		ItemStack res = new ItemStack(BarkeepItems.DRINK_BOTTLE);
-		for (ItemStack stack : inv.getHeldStacks()) {
+		for (ItemStack stack : inv.getStacks()) {
 			if (stack.getItem() == Items.POTION) {
 				PotionContentsComponent comp = stack.get(DataComponentTypes.POTION_CONTENTS);
 				if (comp != null && comp.potion().isPresent()) {
 					Identifier potKey = comp.potion().get().getKey().get().getValue();
 					RegistryKey<Drink> drinkKey = RegistryKey.of(BarkeepRegistries.DRINKS,
-							new Identifier(potKey.getNamespace(), potKey.getPath() + "_potion"));
+							Identifier.of(potKey.getNamespace(), potKey.getPath() + "_potion"));
 					res.set(BarkeepComponents.DRINK_CONTAINER, new DrinkContainerComponent(drinkKey, 100));
 					break;
 				}

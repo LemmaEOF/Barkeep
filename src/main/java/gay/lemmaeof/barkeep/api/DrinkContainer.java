@@ -22,7 +22,7 @@ import net.minecraft.util.Identifier;
  * Why use fake unit names instead of real ones? <a href="https://en.wikipedia.org/wiki/Alcohol_measurements">You tell me!</a>
  */
 public interface DrinkContainer {
-	Identifier LOOKUP_ID = new Identifier(Barkeep.MODID, "drink_container");
+	Identifier LOOKUP_ID = Identifier.of(Barkeep.MODID, "drink_container");
 	BlockApiLookup<DrinkContainer, DynamicRegistryManager> BLOCK_LOOKUP = BlockApiLookup.get(
 			LOOKUP_ID,
 			DrinkContainer.class,
