@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+//TODO: implement
 public class JiggerCupBlockEntity extends BlockEntity implements DrinkContainer {
 	private Identifier currentDrink;
 	private int currentVolume;

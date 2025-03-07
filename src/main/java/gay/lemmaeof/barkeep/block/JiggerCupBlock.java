@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+//TODO: filled property
 public class JiggerCupBlock extends Block implements BlockEntityProvider {
 	private final int size;
 	public JiggerCupBlock(int size, Settings settings) {

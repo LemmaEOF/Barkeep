@@ -52,6 +52,8 @@ public class BarkeepClient implements ClientModInitializer {
 		setupDrinkBottles(
 				BarkeepItems.DRINK_BOTTLE
 		);
+		ModelPredicateProviderRegistry.register(BarkeepItems.SHAKER, FILLED_ID,
+				filled(BarkeepComponents.COCKTAIL));
 	}
 
 	private ClampedModelPredicateProvider filled(ComponentType<?> key) {

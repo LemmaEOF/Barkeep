@@ -18,12 +18,12 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 //TODO: limit garniture?
+//FIXME: cocktail recies aren't persisting through reloads for some reason?? investigate
 public record CocktailComponent(Optional<Cocktail> cocktail, List<ItemStack> garniture) implements TooltipAppender {
 	public static final CocktailComponent EMPTY = new CocktailComponent(Optional.empty(), List.of());
 	public static final Codec<CocktailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
