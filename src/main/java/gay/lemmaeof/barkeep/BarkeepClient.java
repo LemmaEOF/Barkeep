@@ -98,6 +98,7 @@ public class BarkeepClient implements ClientModInitializer {
 			blocks[i] = cup.getCup();
 			ModelPredicateProviderRegistry.register(cup, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
 		}
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), blocks);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 					if (mc.world != null && stack.contains(BarkeepComponents.DRINK_CONTAINER) && tintIndex == 1) {
 						Drink drink = mc.world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());
