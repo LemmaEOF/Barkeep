@@ -73,7 +73,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 					ItemStack[] stacks = i.getMatchingStacks();
 					if (stacks.length > 0) sampleGarniture.add(i.getMatchingStacks()[0]);
 				}
-				sampleCocktails.put(id, new CocktailComponent(Optional.of(new Cocktail(sampleDrinks, recipe.preparation(), entry)), sampleGarniture));
+				sampleCocktails.put(id, new CocktailComponent(Optional.of(new Cocktail(sampleDrinks, recipe.preparation(), entry, Optional.of(entry.id()))), sampleGarniture));
 			} else {
 				Barkeep.LOGGER.info("Error parsing cocktail {}: {}", id, result.error().toString());
 			}
@@ -99,7 +99,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 		for (Drink drink : drinks.keySet()) {
 			drinkEntries.put(registry.getEntry(drink), drinks.get(drink));
 		}
-		return new Cocktail(drinkEntries, preparation, recipe.orElse(null));
+		return new Cocktail(drinkEntries, preparation, recipe.orElse(null), recipe.map(CocktailRecipeEntry::id));
 	}
 
 	public CocktailRecipeEntry getRecipeEntry(Identifier id) {

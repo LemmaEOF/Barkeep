@@ -2,11 +2,13 @@ package gay.lemmaeof.barkeep.item;
 
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.block.JiggerCupBlock;
+import gay.lemmaeof.barkeep.block.entity.JiggerCupBlockEntity;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.component.DrinkContainerComponent;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -51,6 +53,11 @@ public class JiggerCupItem extends SneakyBlockItem {
 
 	@Override
 	protected boolean postPlacement(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof JiggerCupBlockEntity j && stack.contains(BarkeepComponents.DRINK_CONTAINER)) {
+			j.setComponent(stack.get(BarkeepComponents.DRINK_CONTAINER));
+			world.setBlockState(pos, state.with(JiggerCupBlock.FILLED, true));
+		}
 		return super.postPlacement(pos, world, player, stack, state);
 	}
 }

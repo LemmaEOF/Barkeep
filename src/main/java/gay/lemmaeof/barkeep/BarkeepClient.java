@@ -3,6 +3,7 @@ package gay.lemmaeof.barkeep;
 import gay.lemmaeof.barkeep.block.CocktailGlassBlock;
 import gay.lemmaeof.barkeep.block.JiggerCupBlock;
 import gay.lemmaeof.barkeep.block.entity.CocktailGlassBlockEntity;
+import gay.lemmaeof.barkeep.block.entity.JiggerCupBlockEntity;
 import gay.lemmaeof.barkeep.data.Cocktail;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
@@ -99,6 +100,21 @@ public class BarkeepClient implements ClientModInitializer {
 			ModelPredicateProviderRegistry.register(cup, FILLED_ID, filled(BarkeepComponents.DRINK_CONTAINER));
 		}
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), blocks);
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+					if (world == null) {
+						Barkeep.LOGGER.info("Pos {}: world null", pos);
+						return 0xFFFFFFFF;
+					}
+					if (tintIndex == 1 && world.getBlockEntity(pos) instanceof JiggerCupBlockEntity cup) {
+						if (cup.getDrink() != null) return ColorHelper.Argb.fullAlpha(cup.getDrink().color().getRgb());
+						Barkeep.LOGGER.info("Pos {}: drink null", pos);
+						return 0xFFFFFFFF;
+					}
+					Barkeep.LOGGER.info("Pos {}: wrong tintindex ({}) or no BE", pos, tintIndex);
+					return 0xFFFFFFFF;
+				},
+				blocks
+		);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 					if (mc.world != null && stack.contains(BarkeepComponents.DRINK_CONTAINER) && tintIndex == 1) {
 						Drink drink = mc.world.getRegistryManager().get(BarkeepRegistries.DRINKS).get(stack.get(BarkeepComponents.DRINK_CONTAINER).drink());

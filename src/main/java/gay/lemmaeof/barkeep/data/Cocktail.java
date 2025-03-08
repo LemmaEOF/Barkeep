@@ -29,6 +29,7 @@ public class Cocktail {
 	private final Map<RegistryEntry<Drink>, Integer> drinkEntries;
 	private final CocktailPreparation preparation;
 	private final CocktailRecipeEntry recipe;
+	private final Identifier recipeId;
 	private int color;
 	private int volume = 0;
 	private float alcohol;
@@ -39,16 +40,17 @@ public class Cocktail {
 
 	//Optional for making codecs convenient
 	public Cocktail(Map<RegistryEntry<Drink>, Integer> drinkEntries, CocktailPreparation preparation, Optional<Identifier> recipe) {
-		this(drinkEntries, preparation, recipe.map(identifier -> CocktailRecipeManager.INSTANCE.getRecipeEntry(identifier)).orElse(null));
+		this(drinkEntries, preparation, recipe.map(identifier -> CocktailRecipeManager.INSTANCE.getRecipeEntry(identifier)).orElse(null), recipe);
 	}
 
 	//wagh erasure means I can't make this also an Optional - nullable it is!
 	//I'd have this also take in the Map<Drink, Integer> but you've still gotta call this() first in a ctor and you can't functional your way through map transforms afaik
-	public Cocktail(Map<RegistryEntry<Drink>, Integer> drinkEntries, CocktailPreparation preparation, @Nullable CocktailRecipeEntry recipe) {
+	public Cocktail(Map<RegistryEntry<Drink>, Integer> drinkEntries, CocktailPreparation preparation, @Nullable CocktailRecipeEntry recipe, Optional<Identifier> recipeId) {
 		this.drinks = new HashMap<>();
 		this.drinkEntries = drinkEntries;
 		this.preparation = preparation;
 		this.recipe = recipe;
+		this.recipeId = recipeId.orElse(null);
 
 		//volume weighted by color strengths
 		float colorVolume = 0;
@@ -112,6 +114,7 @@ public class Cocktail {
 	}
 
 	public Optional<Identifier> getRecipeId() {
+		if (recipeId != null) return Optional.of(recipeId);
 		if (recipe == null) return Optional.empty();
 		else return Optional.of(recipe.id());
 	}

@@ -1,7 +1,10 @@
 {
 	"variants": {
-		"": {
+		"filled=false": {
 			"model": "barkeep:item/half_part_jigger_cup"
+		},
+		"filled=true": {
+			"model": "barkeep:item/half_part_jigger_cup_full"
 		}
 	}
 }

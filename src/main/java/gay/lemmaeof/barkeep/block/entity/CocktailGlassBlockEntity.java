@@ -12,6 +12,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class CocktailGlassBlockEntity extends ComponentSavingBlockEntity {
 		super(BarkeepBlocks.COCKTAIL_GLASS_BE, pos, state);
 	}
 
+	@Nullable
 	public Cocktail getCocktail() {
 		CocktailComponent comp = getCocktailComponent();
 		if (comp == null) return null;

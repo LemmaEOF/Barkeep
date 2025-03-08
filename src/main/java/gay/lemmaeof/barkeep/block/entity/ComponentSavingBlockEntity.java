@@ -22,4 +22,10 @@ public class ComponentSavingBlockEntity extends BlockEntity {
 		super.writeNbt(nbt, registryLookup);
 		CODEC.encode(this.getComponents(), registryLookup.getOps(NbtOps.INSTANCE), nbt).resultOrPartial(error -> Barkeep.LOGGER.error("Failed to save components: {}", error));
 	}
+
+	@Override
+	protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.readNbt(nbt, registryLookup);
+		this.setComponents(CODEC.decode(registryLookup.getOps(NbtOps.INSTANCE), nbt).resultOrPartial(error -> Barkeep.LOGGER.error("Failed to load components: {}", error)).orElseThrow().getFirst());
+	}
 }
