@@ -28,7 +28,7 @@ public abstract class MixinPlayerEntityRenderer extends LivingEntityRenderer<Abs
 		upperArm.yaw = (float) ((Math.sin(progress) * 0.3f) + 0.7F) * (arm == Arm.RIGHT? 1 : -1);
 		upperArm.pitch = (float) (Math.sin(progress) * 0.3f) - 1.5f;
 		lowerArm.yaw = arm == Arm.RIGHT? -0.8F : 0.8F;
-		lowerArm.pitch = (float) (Math.sin(progress) * 0.3f) - 0.65f;
+		lowerArm.pitch = (float) (Math.sin(progress) * 0.3f) - 0.85f;
 	};
 
 	public MixinPlayerEntityRenderer(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
