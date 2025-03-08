@@ -102,15 +102,12 @@ public class BarkeepClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), blocks);
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
 					if (world == null) {
-						Barkeep.LOGGER.info("Pos {}: world null", pos);
 						return 0xFFFFFFFF;
 					}
 					if (tintIndex == 1 && world.getBlockEntity(pos) instanceof JiggerCupBlockEntity cup) {
 						if (cup.getDrink() != null) return ColorHelper.Argb.fullAlpha(cup.getDrink().color().getRgb());
-						Barkeep.LOGGER.info("Pos {}: drink null", pos);
 						return 0xFFFFFFFF;
 					}
-					Barkeep.LOGGER.info("Pos {}: wrong tintindex ({}) or no BE", pos, tintIndex);
 					return 0xFFFFFFFF;
 				},
 				blocks
