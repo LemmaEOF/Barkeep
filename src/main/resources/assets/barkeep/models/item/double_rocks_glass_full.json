@@ -2,6 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "barkeep:items/glass_rocks",
+		"1": "minecraft:blocks/water_still",
 		"particle": "barkeep:items/glass_rocks"
 	},
 	"elements": [
@@ -52,6 +53,36 @@
 				"south": {"uv": [0, 0, 4, 5], "texture": "#0"},
 				"west": {"uv": [0, 0, 4, 5], "texture": "#0"}
 			}
+		},
+		{
+			"name": "liquid",
+			"from": [6.3, 0.025, 6.3],
+			"to": [9.7, 4, 9.7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 7]},
+			"color": 7,
+			"faces": {
+				"north": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"east": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"south": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"west": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"up": {"uv": [0, 5, 4, 9], "texture": "#1", "tintindex":1},
+				"down": {"uv": [0, 9, 4, 13], "texture": "#1", "tintindex":1}
+			}
+		},
+		{
+			"name": "liquid",
+			"from": [6.05, 2.275, 6.05],
+			"to": [9.95, 5.25, 9.95],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.25, 2.25, 7.25]},
+			"color": 7,
+			"faces": {
+				"north": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"east": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"south": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"west": {"uv": [0, 0, 4, 5], "texture": "#1", "tintindex":1},
+				"up": {"uv": [0, 5, 4, 9], "texture": "#1", "tintindex":1},
+				"down": {"uv": [0, 9, 4, 13], "texture": "#1", "tintindex":1}
+			}
 		}
 	],
 	"display": {
@@ -84,11 +115,5 @@
 		"head": {
 			"translation": [0, 14.25, 0]
 		}
-	},
-	"overrides": [
-		{
-			"predicate": { "barkeep:filled":  1 },
-			"model": "barkeep:item/double_rocks_glass_full"
-		}
-	]
+	}
 }

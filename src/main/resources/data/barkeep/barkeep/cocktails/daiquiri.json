@@ -1,0 +1,18 @@
+{
+	"drinks": [
+		{
+			"drinks": "barkeep:white_rum",
+			"parts": 2
+		},
+		{
+			"drinks": "barkeep:lime_juice",
+			"parts": 1
+		},
+		{
+			"drinks": "barkeep:syrup",
+			"parts": 0.5
+		}
+	],
+	"preferred_glass": "barkeep:coupe_glass",
+	"preparation": "shaken"
+}

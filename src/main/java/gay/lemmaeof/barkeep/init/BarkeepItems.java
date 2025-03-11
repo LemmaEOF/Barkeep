@@ -21,7 +21,8 @@ public class BarkeepItems {
 	//cocktail glasses!
 	public static final CocktailGlassItem ROCKS_GLASS = register("rocks_glass", new CocktailGlassItem(BarkeepBlocks.ROCKS_GLASS, glass()));
 	public static final CocktailGlassItem DOUBLE_ROCKS_GLASS = register("double_rocks_glass", new CocktailGlassItem(BarkeepBlocks.DOUBLE_ROCKS_GLASS, glass()));
-	public static final CocktailGlassItem MARTINI_GLASS = register("martini_glass", new CocktailGlassItem(BarkeepBlocks.MARTINI_GLASS, glass()));
+	public static final CocktailGlassItem MARGARITA_GLASS = register("margarita_glass", new CocktailGlassItem(BarkeepBlocks.MARGARITA_GLASS, glass()));
+	public static final CocktailGlassItem COUPE_GLASS = register("coupe_glass", new CocktailGlassItem(BarkeepBlocks.COUPE_GLASS, glass()));
 
 	//mixing equipment!
 	public static final ShakerItem SHAKER = register("shaker", new ShakerItem(BarkeepBlocks.SHAKER, new Item.Settings().maxCount(1)));
@@ -64,7 +65,8 @@ public class BarkeepItems {
 				entries.add(BOTTLED_LEMON_JUICE);
 				entries.add(ROCKS_GLASS);
 				entries.add(DOUBLE_ROCKS_GLASS);
-				entries.add(MARTINI_GLASS);
+				entries.add(MARGARITA_GLASS);
+				entries.add(COUPE_GLASS);
 				entries.add(BarkeepBlocks.DRINKING_BIRD);
 			})
 			.build());
@@ -79,6 +81,8 @@ public class BarkeepItems {
 				}
 			})
 			.build());
+
+
 
 	public static void init() {
 		DrinkContainer.ITEM_LOOKUP.registerForItems(JiggerCupDrinkContainer::new,

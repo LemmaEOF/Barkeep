@@ -40,7 +40,8 @@ public class BarkeepClient implements ClientModInitializer {
 		setupGlasses(
 				BarkeepItems.ROCKS_GLASS,
 				BarkeepItems.DOUBLE_ROCKS_GLASS,
-				BarkeepItems.MARTINI_GLASS
+				BarkeepItems.MARGARITA_GLASS,
+				BarkeepItems.COUPE_GLASS
 		);
 		setupJiggerCups(
 				BarkeepItems.QUARTER_PART_JIGGER_CUP,

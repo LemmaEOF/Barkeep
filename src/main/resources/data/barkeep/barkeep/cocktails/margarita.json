@@ -1,0 +1,22 @@
+{
+	"drinks": [
+		{
+			"drinks": "barkeep:silver_tequila",
+			"parts": 1.5
+		},
+		{
+			"drinks": "barkeep:lime_juice",
+			"parts": 1.5
+		},
+		{
+			"drinks": "barkeep:cointreau",
+			"parts": 1
+		},
+		{
+			"drinks": "barkeep:syrup",
+			"parts": 0.5
+		}
+	],
+	"preferred_glass": "barkeep:margarita_glass",
+	"preparation": "shaken"
+}

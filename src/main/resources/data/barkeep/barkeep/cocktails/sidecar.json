@@ -1,0 +1,18 @@
+{
+	"drinks": [
+		{
+			"drinks": "barkeep:brandy",
+			"parts": 1.5
+		},
+		{
+			"drinks": "barkeep:cointreau",
+			"parts": 0.75
+		},
+		{
+			"drinks": "barkeep:lemon_juice",
+			"parts": 0.75
+		}
+	],
+	"standard_glass": "barkeep:coupe_glass",
+	"preparation": "shaken"
+}

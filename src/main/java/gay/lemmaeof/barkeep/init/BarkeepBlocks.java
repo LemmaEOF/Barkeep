@@ -30,7 +30,8 @@ public class BarkeepBlocks {
 	public static final JiggerCupBlock TWO_PART_JIGGER_CUP = register("two_part_jigger_cup", new JiggerCupBlock(8, jiggerCup()));
 	public static final CocktailGlassBlock ROCKS_GLASS = register("rocks_glass", new CocktailGlassBlock(28, glass()));
 	public static final CocktailGlassBlock DOUBLE_ROCKS_GLASS = register("double_rocks_glass", new CocktailGlassBlock(56, glass()));
-	public static final CocktailGlassBlock MARTINI_GLASS = register("martini_glass", new CocktailGlassBlock(24, glass()));
+	public static final CocktailGlassBlock MARGARITA_GLASS = register("margarita_glass", new CocktailGlassBlock(24, glass()));
+	public static final CocktailGlassBlock COUPE_GLASS = register("coupe_glass", new CocktailGlassBlock(24, glass()));
 	public static final DrinkingBirdBlock DRINKING_BIRD = register("drinking_bird", new DrinkingBirdBlock(AbstractBlock.Settings.create()), new Item.Settings());
 
 	public static final BlockEntityType<ShakerBlockEntity> SHAKER_BE = register("shaker", ShakerBlockEntity::new, SHAKER);

@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"filled=false": {"model": "barkeep:item/coupe_glass"},
+		"filled=true": {"model": "barkeep:item/coupe_glass_full"}
+	}
+}

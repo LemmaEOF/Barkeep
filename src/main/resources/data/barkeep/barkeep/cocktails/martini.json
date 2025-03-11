@@ -1,0 +1,15 @@
+{
+	"drinks": [
+		{
+			"drinks": "barkeep:gin",
+			"parts": 2
+		},
+		{
+			"drinks": "barkeep:vermouth",
+			"parts": 0.5
+		}
+	],
+	"preferred_glass": "barkeep:coupe_glass",
+	
+	"preparation": "shaken"
+}
