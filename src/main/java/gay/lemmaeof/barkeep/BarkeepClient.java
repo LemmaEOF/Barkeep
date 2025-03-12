@@ -7,14 +7,19 @@ import gay.lemmaeof.barkeep.block.entity.JiggerCupBlockEntity;
 import gay.lemmaeof.barkeep.data.Cocktail;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
+import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepItems;
+import gay.lemmaeof.barkeep.init.BarkeepPackets;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.item.BottledDrinkItem;
 import gay.lemmaeof.barkeep.item.CocktailGlassItem;
 import gay.lemmaeof.barkeep.item.JiggerCupItem;
+import gay.lemmaeof.barkeep.networking.SynchronizeCocktailsS2CPacket;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
@@ -56,6 +61,16 @@ public class BarkeepClient implements ClientModInitializer {
 		);
 		ModelPredicateProviderRegistry.register(BarkeepItems.SHAKER, FILLED_ID,
 				filled(BarkeepComponents.COCKTAIL));
+
+		ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((client, world) -> {
+			if (world != null) {
+				CocktailRecipeManager.CLIENT_INSTANCE = new CocktailRecipeManager(world.getRegistryManager());
+			}
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(SynchronizeCocktailsS2CPacket.ID, (payload, context) -> context.client().execute(() -> {
+			if (CocktailRecipeManager.CLIENT_INSTANCE != null) CocktailRecipeManager.CLIENT_INSTANCE.loadFromPacket(payload.recipeMap);
+		}));
 	}
 
 	private ClampedModelPredicateProvider filled(ComponentType<?> key) {

@@ -40,7 +40,7 @@ public class Cocktail {
 
 	//Optional for making codecs convenient
 	public Cocktail(Map<RegistryEntry<Drink>, Integer> drinkEntries, CocktailPreparation preparation, Optional<Identifier> recipe) {
-		this(drinkEntries, preparation, recipe.map(identifier -> CocktailRecipeManager.INSTANCE.getRecipeEntry(identifier)).orElse(null), recipe);
+		this(drinkEntries, preparation, recipe.map(identifier -> CocktailRecipeManager.CLIENT_INSTANCE != null? CocktailRecipeManager.CLIENT_INSTANCE.getRecipeEntry(identifier) : CocktailRecipeManager.INSTANCE.getRecipeEntry(identifier)).orElse(null), recipe);
 	}
 
 	//wagh erasure means I can't make this also an Optional - nullable it is!

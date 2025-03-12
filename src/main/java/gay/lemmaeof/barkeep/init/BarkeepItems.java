@@ -54,7 +54,6 @@ public class BarkeepItems {
 	public static final Item ORANGE = register("orange", new Item(new Item.Settings()));
 	public static final Item CHERRY = register("cherry", new Item(new Item.Settings()));
 
-
 	public static final ItemGroup EQUIPMENT = Registry.register(Registries.ITEM_GROUP, Identifier.of(Barkeep.MODID, "equipment"), FabricItemGroup.builder()
 			.displayName(Text.translatable("itemGroup.barkeep.equipment"))
 			.icon(() -> new ItemStack(SHAKER))
@@ -77,13 +76,14 @@ public class BarkeepItems {
 			})
 			.build());
 
-	//TODO: make this a martini or such later!
 	public static final ItemGroup COCKTAILS = Registry.register(Registries.ITEM_GROUP, Identifier.of(Barkeep.MODID, "cocktails"), FabricItemGroup.builder()
 			.displayName(Text.translatable("itemGroup.barkeep.cocktails"))
-			.icon(() -> CocktailRecipeManager.INSTANCE.getSampleCocktail(Identifier.of(Barkeep.MODID, "margarita")))
+			.icon(() -> CocktailRecipeManager.CLIENT_INSTANCE != null? CocktailRecipeManager.CLIENT_INSTANCE.getSampleCocktail(Identifier.of(Barkeep.MODID, "margarita"))
+					: CocktailRecipeManager.INSTANCE.getSampleCocktail(Identifier.of(Barkeep.MODID, "margarita")))
 			.entries((context, entries) -> {
-				for (Identifier id : CocktailRecipeManager.INSTANCE.getCocktailIds()) {
-					entries.add(CocktailRecipeManager.INSTANCE.getSampleCocktail(id));
+				CocktailRecipeManager manager = CocktailRecipeManager.CLIENT_INSTANCE != null? CocktailRecipeManager.CLIENT_INSTANCE : CocktailRecipeManager.INSTANCE;
+				for (Identifier id : manager.getCocktailIds()) {
+					entries.add(manager.getSampleCocktail(id));
 				}
 			})
 			.build());

@@ -3,9 +3,11 @@ package gay.lemmaeof.barkeep.init;
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.FlavorNote;
+import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.hook.DynamicRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -14,6 +16,7 @@ import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Identifier;
 
@@ -33,6 +36,7 @@ public class BarkeepRegistries {
 				}
 			}
 		});
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new CocktailRecipeManager.ReloadWrapper());
 	}
 
 	private static Drink fromPotion(Potion potion) {

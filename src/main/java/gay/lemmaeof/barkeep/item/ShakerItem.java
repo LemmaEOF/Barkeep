@@ -23,10 +23,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
-import net.minecraft.util.ClickType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -131,7 +128,10 @@ public class ShakerItem extends SneakyBlockItem {
 				int quarters = drinks.get(drink);
 				String parts = TextUtils.getPartNumber(quarters);
 				String plural = quarters <= 4? "" : "s";
-				tooltip.add(Text.translatable("tooltip.barkeep.drink_amount", parts, plural).append(Text.translatable(drink.getTranslationKey(manager))));
+				tooltip.add(Text.translatable("tooltip.barkeep.drink_amount", parts, plural).append(Text.translatable(drink.getTranslationKey(manager))).formatted(Formatting.GRAY));
+			}
+			if (stack.getOrDefault(BarkeepComponents.MIXER_CONTENTS, MixerContentsComponent.EMPTY).iced()) {
+				tooltip.add(Text.translatable("tooltip.barkeep.iced").formatted(Formatting.GRAY));
 			}
 		}
 	}

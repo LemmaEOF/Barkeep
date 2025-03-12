@@ -19,5 +19,6 @@ public class Barkeep implements ModInitializer {
 		BarkeepSounds.init();
 		BarkeepTags.init();
 		BarkeepRecipes.init();
+		BarkeepPackets.init();
 	}
 }

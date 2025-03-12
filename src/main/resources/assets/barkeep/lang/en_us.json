@@ -103,6 +103,7 @@
 	"tooltip.barkeep.drink_amount": "  - %s part%s ",
 	"tooltip.barkeep.flavor_profile": "Flavor profile:",
 	"tooltip.barkeep.flavor_amount": "  - %s: %s",
+	"tooltip.barkeep.iced": "Iced",
 	"tooltip.barkeep.ingredients": "Ingredients:",
 	"tooltip.barkeep.volume": "Volume: %s"
 }
