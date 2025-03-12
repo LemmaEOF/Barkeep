@@ -9,18 +9,34 @@
 
 	"block.barkeep.rocks_glass": "Rocks Glass",
 	"block.barkeep.double_rocks_glass": "Double Rocks Glass",
-	"block.barkeep.martini_glass": "Martini Glass",
+	"block.barkeep.margarita_glass": "Margarita Glass",
+	"block.barkeep.coupe_glass": "Coupe Glass",
 
 	"cocktail.barkeep.custom": "Custom Cocktail",
+	"cocktail.barkeep.daiquiri": "Daiquiri",
+	"cocktail.barkeep.manhattan": "Manhattan",
+	"cocktail.barkeep.margarita": "Margarita",
+	"cocktail.barkeep.martini": "Martini",
+	"cocktail.barkeep.old_fashioned": "Old Fashioned",
 	"cocktail.barkeep.paper_plane": "Paper Plane",
 	"cocktail.barkeep.sailor_senshi": "Sailor Senshi",
+	"cocktail.barkeep.sidecar": "Sidecar",
 
 	"drink.barkeep.aperol": "Aperol",
 	"drink.barkeep.amaro_nonino": "Amaro Nonino",
+	"drink.barkeep.bitters": "Bitters",
 	"drink.barkeep.blue_raspberry_syrup": "Blue Raspberry Syrup",
 	"drink.barkeep.bourbon": "Bourbon",
+	"drink.barkeep.brandy": "Brandy",
+	"drink.barkeep.gin": "Gin",
 	"drink.barkeep.lemon_juice": "Lemon Juice",
+	"drink.barkeep.lime_juice": "Lime Juice",
 	"drink.barkeep.ramune": "Ramume",
+	"drink.barkeep.silver_tequila": "Silver Tequila",
+	"drink.barkeep.syrup": "Syrup",
+	"drink.barkeep.triple_sec": "Triple Sec",
+	"drink.barkeep.vermouth": "Vermouth",
+	"drink.barkeep.whiskey": "Whiskey",
 	"drink.barkeep.water": "Water",
 	"drink.barkeep.white_rum": "White Rum",
 
@@ -76,6 +92,7 @@
 
 	"itemGroup.barkeep.equipment": "Barkeep Equipment",
 	"itemGroup.barkeep.cocktails": "Barkeep Cocktails",
+	"itemGroup.barkeep.drinks": "Barkeep Drinks",
 
 	"tag.item.barkeep.cocktail_glasses": "Cocktail Glasses",
 	"tag.item.barkeep.garniture": "Garniture",

@@ -42,7 +42,8 @@ public class BarkeepBlocks {
 			PART_JIGGER_CUP,
 			TWO_PART_JIGGER_CUP)
 			;
-	public static final BlockEntityType<CocktailGlassBlockEntity> COCKTAIL_GLASS_BE = register("cocktail_glass", CocktailGlassBlockEntity::new, ROCKS_GLASS, DOUBLE_ROCKS_GLASS);
+	//mojang just use a tag for this blease
+	public static final BlockEntityType<CocktailGlassBlockEntity> COCKTAIL_GLASS_BE = register("cocktail_glass", CocktailGlassBlockEntity::new, ROCKS_GLASS, DOUBLE_ROCKS_GLASS, MARGARITA_GLASS, COUPE_GLASS);
 	public static final BlockEntityType<DrinkingBirdBlockEntity> DRINKING_BIRD_BE = register("drinking_bird", DrinkingBirdBlockEntity::new, DRINKING_BIRD);
 
 	public static void init() {

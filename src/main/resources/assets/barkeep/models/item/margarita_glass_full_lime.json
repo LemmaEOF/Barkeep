@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "barkeep:items/margarita",
-		"1": "minecraft:blocks/water_still",
-		"particle": "barkeep:items/margarita"
+		"0": "barkeep:item/margarita",
+		"1": "minecraft:block/water_still",
+		"particle": "barkeep:item/margarita"
 	},
 	"elements": [
 		{

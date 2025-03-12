@@ -1,9 +1,0 @@
-{
-  "parent": "barkeep:block/mason_jar",
-  "overrides": [
-    {
-      "predicate": { "barkeep:filled":  1 },
-      "model": "barkeep:block/mason_jar_full"
-    }
-  ]
-}

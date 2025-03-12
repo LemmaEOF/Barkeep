@@ -1,12 +1,16 @@
 {
 	"drinks": [
 		{
-			"drinks": "barkeep:gin",
+			"drinks": "barkeep:whiskey",
 			"parts": 2
 		},
 		{
 			"drinks": "barkeep:vermouth",
-			"parts": 0.5
+			"parts": 1
+		},
+		{
+			"drinks": "barkeep:bitters",
+			"parts": 0.25
 		}
 	],
 	"standard_glass": "barkeep:coupe_glass",

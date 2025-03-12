@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "barkeep:items/margarita",
-		"particle": "barkeep:items/margarita"
+		"0": "barkeep:item/margarita",
+		"particle": "barkeep:item/margarita"
 	},
 	"elements": [
 		{

@@ -3,6 +3,7 @@ package gay.lemmaeof.barkeep.init;
 import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.api.DrinkContainer;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
+import gay.lemmaeof.barkeep.data.component.DrinkContainerComponent;
 import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeManager;
 import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.impl.BottleDrinkContainer;
@@ -14,8 +15,13 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class BarkeepItems {
 	//cocktail glasses!
@@ -74,10 +80,32 @@ public class BarkeepItems {
 	//TODO: make this a martini or such later!
 	public static final ItemGroup COCKTAILS = Registry.register(Registries.ITEM_GROUP, Identifier.of(Barkeep.MODID, "cocktails"), FabricItemGroup.builder()
 			.displayName(Text.translatable("itemGroup.barkeep.cocktails"))
-			.icon(() -> new ItemStack(ROCKS_GLASS))
+			.icon(() -> CocktailRecipeManager.INSTANCE.getSampleCocktail(Identifier.of(Barkeep.MODID, "margarita")))
 			.entries((context, entries) -> {
 				for (Identifier id : CocktailRecipeManager.INSTANCE.getCocktailIds()) {
 					entries.add(CocktailRecipeManager.INSTANCE.getSampleCocktail(id));
+				}
+			})
+			.build());
+
+	public static final ItemGroup DRINKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(Barkeep.MODID, "drinks"), FabricItemGroup.builder()
+			.displayName(Text.translatable("itemGroup.barkeep.drinks"))
+			.icon(() -> new ItemStack(DRINK_BOTTLE))
+			.entries((context, entries) -> {
+				Optional<RegistryEntryLookup<Drink>> lookupOpt = context.lookup().createRegistryLookup().getOptional(BarkeepRegistries.DRINKS);
+				if (lookupOpt.isPresent()) {
+					RegistryEntryLookup<Drink> lookup = lookupOpt.get();
+					if (lookup instanceof RegistryWrapper<Drink> registry) {
+						registry.streamKeys().forEach(key -> {
+							ItemStack stack = new ItemStack(DRINK_BOTTLE);
+							stack.set(BarkeepComponents.DRINK_CONTAINER, new DrinkContainerComponent(key, 100));
+							entries.add(stack);
+						});
+					} else {
+						Barkeep.LOGGER.error("Someone tampered with the registry lookup the creative menu gets?! expected a RegistryWrapper, instead got {}", lookup.getClass().getName());
+					}
+				} else {
+					Barkeep.LOGGER.error("No drink registry lookup was found! Where is it?!");
 				}
 			})
 			.build());

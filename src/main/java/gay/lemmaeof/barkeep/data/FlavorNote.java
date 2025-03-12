@@ -22,7 +22,8 @@ public enum FlavorNote implements StringIdentifiable {
 	SPICY("spicy", StatusEffects.FIRE_RESISTANCE),
 	UMAMI("umami", StatusEffects.SATURATION),
 	DRY("dry", StatusEffects.JUMP_BOOST),
-	SPARKLING("sparkling", StatusEffects.WATER_BREATHING);
+	SPARKLING("sparkling", StatusEffects.WATER_BREATHING),
+	SMOKY("smoky", StatusEffects.STRENGTH);
 
 	public static final Codec<FlavorNote> CODEC = StringIdentifiable.createCodec(FlavorNote::values);
 	private static final Map<String, FlavorNote> BY_NAME = Arrays.stream(values())

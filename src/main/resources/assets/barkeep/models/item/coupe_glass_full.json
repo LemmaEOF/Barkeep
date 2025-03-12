@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "barkeep:items/coupe",
-		"1": "minecraft:blocks/water_still",
-		"particle": "barkeep:items/coupe"
+		"0": "barkeep:item/coupe",
+		"1": "minecraft:block/water_still",
+		"particle": "barkeep:item/coupe"
 	},
 	"elements": [
 		{

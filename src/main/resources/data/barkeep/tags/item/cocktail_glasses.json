@@ -3,6 +3,7 @@
   "values": [
     "barkeep:rocks_glass",
     "barkeep:double_rocks_glass",
-    "barkeep:martini_glass"
+    "barkeep:margarita_glass",
+    "barkeep:coupe_glass"
   ]
 }

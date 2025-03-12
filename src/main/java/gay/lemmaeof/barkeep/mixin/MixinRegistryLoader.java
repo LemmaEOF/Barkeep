@@ -14,7 +14,7 @@ import java.util.Map;
 @SuppressWarnings({"unchecked"})
 @Mixin(RegistryLoader.class)
 public class MixinRegistryLoader {
-	@Inject(method = "loadFromResource(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/RegistryOps$RegistryInfoGetter;Lnet/minecraft/registry/MutableRegistry;Lcom/mojang/serialization/Decoder;Ljava/util/Map;)V", at = @At("HEAD"))
+	@Inject(method = "loadFromResource(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/RegistryOps$RegistryInfoGetter;Lnet/minecraft/registry/MutableRegistry;Lcom/mojang/serialization/Decoder;Ljava/util/Map;)V", at = @At("TAIL"))
 	private static <E> void hookRegistration(ResourceManager manager, RegistryOps.RegistryInfoGetter infoGetter, MutableRegistry<E> registry, Decoder<E> decoder, Map<RegistryKey<?>, Exception> errors, CallbackInfo info) {
 		DynamicRegistrationCallback.event((RegistryKey<Registry<E>>) registry.getKey()).invoker().onRegistration(registry);
 	}

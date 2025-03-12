@@ -9,7 +9,7 @@
 			"parts": 1.5
 		},
 		{
-			"drinks": "barkeep:cointreau",
+			"drinks": "barkeep:triple_sec",
 			"parts": 1
 		},
 		{
@@ -17,6 +17,6 @@
 			"parts": 0.5
 		}
 	],
-	"preferred_glass": "barkeep:margarita_glass",
+	"standard_glass": "barkeep:margarita_glass",
 	"preparation": "shaken"
 }

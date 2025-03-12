@@ -1,6 +1,6 @@
 {
   "variants": {
     "filled=false": {"model": "barkeep:item/margarita_glass"},
-    "filled=true": {"model": "barkeep:item/margarita_glass_full"}
+    "filled=true": {"model": "barkeep:item/margarita_glass_full_lime"}
   }
 }

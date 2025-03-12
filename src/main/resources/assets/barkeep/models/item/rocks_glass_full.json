@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "barkeep:items/glass_rocks",
-		"1": "minecraft:blocks/water_still",
-		"particle": "barkeep:items/barkeep:items/glass_rocks"
+		"0": "barkeep:item/glass_rocks",
+		"1": "minecraft:block/water_still",
+		"particle": "barkeep:item/glass_rocks"
 	},
 	"elements": [
 		{
