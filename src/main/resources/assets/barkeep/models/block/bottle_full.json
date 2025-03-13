@@ -2,6 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "barkeep:block/bottle",
+		"1": "minecraft:block/water_still",
 		"particle": "barkeep:block/bottle"
 	},
 	"elements": [
@@ -41,6 +42,21 @@
 				"west": {"uv": [14, 0, 15, 2], "texture": "#0"},
 				"up": {"uv": [14, 0, 15, 1], "texture": "#0"},
 				"down": {"uv": [14, 0, 15, 1], "texture": "#0"}
+			}
+		},
+		{
+			"name": "liquid",
+			"from": [6, 1, 6],
+			"to": [10, 7, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6, 1, 6]},
+			"color": 7,
+			"faces": {
+				"north": {"uv": [0, 0, 4, 6], "texture": "#1", "tintindex": 1},
+				"east": {"uv": [0, 0, 4, 6], "texture": "#1", "tintindex": 1},
+				"south": {"uv": [0, 0, 4, 6], "texture": "#1", "tintindex": 1},
+				"west": {"uv": [0, 0, 4, 6], "texture": "#1", "tintindex": 1},
+				"up": {"uv": [0, 0, 4, 4], "texture": "#1", "tintindex": 1},
+				"down": {"uv": [0, 0, 4, 4], "texture": "#1", "tintindex": 1}
 			}
 		}
 	]

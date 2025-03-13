@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "barkeep:block/bottle",
-		"particle": "barkeep:block/bottle"
+		"0": "barkeep:block/bottle_label",
+		"particle": "barkeep:block/bottle_label"
 	},
 	"elements": [
 		{
