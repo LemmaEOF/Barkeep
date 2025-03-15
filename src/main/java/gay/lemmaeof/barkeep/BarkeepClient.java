@@ -62,11 +62,11 @@ public class BarkeepClient implements ClientModInitializer {
 		ModelPredicateProviderRegistry.register(BarkeepItems.SHAKER, FILLED_ID,
 				filled(BarkeepComponents.COCKTAIL));
 
-		ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((client, world) -> {
-			if (world != null) {
-				CocktailRecipeManager.CLIENT_INSTANCE = new CocktailRecipeManager(world.getRegistryManager());
-			}
-		});
+//		ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((client, world) -> {
+//			if (world != null) {
+//				CocktailRecipeManager.CLIENT_INSTANCE = new CocktailRecipeManager(world.getRegistryManager());
+//			}
+//		});
 
 		ClientPlayNetworking.registerGlobalReceiver(SynchronizeCocktailsS2CPacket.ID, (payload, context) -> context.client().execute(() -> {
 			if (CocktailRecipeManager.CLIENT_INSTANCE != null) CocktailRecipeManager.CLIENT_INSTANCE.loadFromPacket(payload.recipeMap);

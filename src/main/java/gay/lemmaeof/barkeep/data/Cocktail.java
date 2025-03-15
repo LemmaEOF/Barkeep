@@ -2,6 +2,7 @@ package gay.lemmaeof.barkeep.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import gay.lemmaeof.barkeep.Barkeep;
 import gay.lemmaeof.barkeep.data.recipe.CocktailPreparation;
 import gay.lemmaeof.barkeep.data.recipe.CocktailRecipe;
 import gay.lemmaeof.barkeep.data.recipe.CocktailRecipeEntry;
@@ -40,7 +41,16 @@ public class Cocktail {
 
 	//Optional for making codecs convenient
 	public Cocktail(Map<RegistryEntry<Drink>, Integer> drinkEntries, CocktailPreparation preparation, Optional<Identifier> recipe) {
-		this(drinkEntries, preparation, recipe.map(identifier -> CocktailRecipeManager.CLIENT_INSTANCE != null? CocktailRecipeManager.CLIENT_INSTANCE.getRecipeEntry(identifier) : CocktailRecipeManager.INSTANCE.getRecipeEntry(identifier)).orElse(null), recipe);
+		this(drinkEntries, preparation, recipe.map(identifier -> {
+			if (CocktailRecipeManager.CLIENT_INSTANCE != null) {
+				return CocktailRecipeManager.CLIENT_INSTANCE.getRecipeEntry(identifier);
+			} else if (CocktailRecipeManager.INSTANCE != null) {
+				return CocktailRecipeManager.INSTANCE.getRecipeEntry(identifier);
+			} else {
+				Barkeep.LOGGER.error("SERIOUS SOUNDNESS ERROR: Something is trying to decerialize a cocktail recipe ({}) while this side doesn't have an active cocktail manager! Something has gone VERY wrong!", identifier);
+				return null;
+			}
+		}).orElse(null), recipe);
 	}
 
 	//wagh erasure means I can't make this also an Optional - nullable it is!
@@ -78,6 +88,8 @@ public class Cocktail {
 		//throw it off to mixbox!
 		color = ColorUtil.getMixedColor(colorWeights, colorVolume);
 		for (FlavorNote note : flavorWeights.keySet()) {
+			//TODO: I've decided that double-input flavor notes are legal which can put this over 100 (especially w/ syrup)
+			//figure out mitigating that maybe?
 			flavorProfile.put(note, (int) Math.floor((float) flavorWeights.get(note) / (float) volume * 100));
 		}
 		//process overrides! (except for status effects, those are later)

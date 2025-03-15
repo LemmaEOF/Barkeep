@@ -8,6 +8,7 @@
 	],
 	"client": [
 		"client.MixinBipedEntityModel",
+		"client.MixinClientPlayNetworkHandler",
 		"client.MixinPlayerEntityRenderer"
 	],
 	"injectors": {

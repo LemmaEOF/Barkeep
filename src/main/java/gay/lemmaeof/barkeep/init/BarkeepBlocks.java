@@ -32,7 +32,7 @@ public class BarkeepBlocks {
 	public static final CocktailGlassBlock DOUBLE_ROCKS_GLASS = register("double_rocks_glass", new CocktailGlassBlock(56, glass()));
 	public static final CocktailGlassBlock MARGARITA_GLASS = register("margarita_glass", new CocktailGlassBlock(24, glass()));
 	public static final CocktailGlassBlock COUPE_GLASS = register("coupe_glass", new CocktailGlassBlock(24, glass()));
-	public static final DrinkingBirdBlock DRINKING_BIRD = register("drinking_bird", new DrinkingBirdBlock(AbstractBlock.Settings.create()), new Item.Settings());
+//	public static final DrinkingBirdBlock DRINKING_BIRD = register("drinking_bird", new DrinkingBirdBlock(AbstractBlock.Settings.create()), new Item.Settings());
 
 	public static final BlockEntityType<ShakerBlockEntity> SHAKER_BE = register("shaker", ShakerBlockEntity::new, SHAKER);
 	public static final BlockEntityType<JiggerCupBlockEntity> JIGGER_CUP_BE = register("jigger_cup", JiggerCupBlockEntity::new,
@@ -44,7 +44,7 @@ public class BarkeepBlocks {
 			;
 	//mojang just use a tag for this blease
 	public static final BlockEntityType<CocktailGlassBlockEntity> COCKTAIL_GLASS_BE = register("cocktail_glass", CocktailGlassBlockEntity::new, ROCKS_GLASS, DOUBLE_ROCKS_GLASS, MARGARITA_GLASS, COUPE_GLASS);
-	public static final BlockEntityType<DrinkingBirdBlockEntity> DRINKING_BIRD_BE = register("drinking_bird", DrinkingBirdBlockEntity::new, DRINKING_BIRD);
+//	public static final BlockEntityType<DrinkingBirdBlockEntity> DRINKING_BIRD_BE = register("drinking_bird", DrinkingBirdBlockEntity::new, DRINKING_BIRD);
 
 	public static void init() {
 

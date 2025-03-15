@@ -49,10 +49,10 @@ public class BarkeepItems {
 
 	//ingredients!
 	//TODO: should these fruits be blocks/blockitems?
-	public static final Item LEMON = register("lemon", new Item(new Item.Settings()));
-	public static final Item LIME = register("lime", new Item(new Item.Settings()));
-	public static final Item ORANGE = register("orange", new Item(new Item.Settings()));
-	public static final Item CHERRY = register("cherry", new Item(new Item.Settings()));
+//	public static final Item LEMON = register("lemon", new Item(new Item.Settings()));
+//	public static final Item LIME = register("lime", new Item(new Item.Settings()));
+//	public static final Item ORANGE = register("orange", new Item(new Item.Settings()));
+//	public static final Item CHERRY = register("cherry", new Item(new Item.Settings()));
 
 	public static final ItemGroup EQUIPMENT = Registry.register(Registries.ITEM_GROUP, Identifier.of(Barkeep.MODID, "equipment"), FabricItemGroup.builder()
 			.displayName(Text.translatable("itemGroup.barkeep.equipment"))
@@ -72,7 +72,7 @@ public class BarkeepItems {
 				entries.add(DOUBLE_ROCKS_GLASS);
 				entries.add(MARGARITA_GLASS);
 				entries.add(COUPE_GLASS);
-				entries.add(BarkeepBlocks.DRINKING_BIRD);
+//				entries.add(BarkeepBlocks.DRINKING_BIRD);
 			})
 			.build());
 
