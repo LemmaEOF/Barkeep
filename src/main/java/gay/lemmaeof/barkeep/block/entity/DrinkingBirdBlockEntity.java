@@ -16,7 +16,7 @@ public class DrinkingBirdBlockEntity extends BlockEntity {
 	private int currentTicks = 0;
 
 	public DrinkingBirdBlockEntity(BlockPos pos, BlockState state) {
-		super(BarkeepBlocks.DRINKING_BIRD_BE, pos, state);
+		super(/*BarkeepBlocks.DRINKING_BIRD_BE*/null, pos, state);
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, DrinkingBirdBlockEntity be) {

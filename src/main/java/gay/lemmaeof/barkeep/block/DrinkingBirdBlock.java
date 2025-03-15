@@ -53,6 +53,6 @@ public class DrinkingBirdBlock extends BlockWithEntity {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return validateTicker(type, BarkeepBlocks.DRINKING_BIRD_BE, DrinkingBirdBlockEntity::tick);
+		return validateTicker(type, /*BarkeepBlocks.DRINKING_BIRD_BE*/null, DrinkingBirdBlockEntity::tick);
 	}
 }
