@@ -69,7 +69,7 @@ public class CocktailGlassBlock extends Block implements BlockEntityProvider {
 			} else if (stack.isIn(BarkeepTags.GARNITURE)) {
 				glass.addGarnish(stack.split(1));
 				return ItemActionResult.SUCCESS;
-			} else if (stack.isEmpty() && player.isSneaking() && glass.getCocktail() != null) {
+			} else if (stack.isEmpty() && player.isSneaking() && glass.getCocktail() != null && player.canModifyAt(world, pos)) {
 				ItemStack giveStack = new ItemStack(this.asItem());
 				giveStack.set(BarkeepComponents.COCKTAIL, glass.getCocktailComponent());
 				player.setStackInHand(hand, giveStack);

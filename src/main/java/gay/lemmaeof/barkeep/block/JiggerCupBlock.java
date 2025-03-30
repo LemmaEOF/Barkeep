@@ -68,7 +68,7 @@ public class JiggerCupBlock extends Block implements BlockEntityProvider {
 					world.setBlockState(pos, state.with(FILLED, true));
 					return ItemActionResult.SUCCESS;
 				}
-			} else if (stack.isEmpty() && player.isSneaking() && cup.getDrink() != null) {
+			} else if (stack.isEmpty() && player.isSneaking() && cup.getDrink() != null && player.canModifyAt(world, pos)) {
 				ItemStack giveStack = new ItemStack(this.asItem());
 				giveStack.set(BarkeepComponents.DRINK_CONTAINER, cup.getComponent());
 				player.setStackInHand(hand, giveStack);
