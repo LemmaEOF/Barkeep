@@ -1,14 +1,21 @@
 package gay.lemmaeof.barkeep.item;
 
 import gay.lemmaeof.barkeep.data.Drink;
+import gay.lemmaeof.barkeep.data.FlavorNote;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.util.ColorUtil;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PotionItem;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+
+import java.util.List;
 
 public class BottledDrinkItem extends Item {
 	private final int maxCapacity;
@@ -46,6 +53,20 @@ public class BottledDrinkItem extends Item {
 		if (!stack.contains(BarkeepComponents.DRINK_CONTAINER)) return super.getName();
 		RegistryKey<Drink> drink = stack.get(BarkeepComponents.DRINK_CONTAINER).drink();
 		return Text.translatable("item.barkeep.bottled_drink", Text.translatable(drink.getValue().toTranslationKey("drink")));
+	}
+
+	@Override
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+		super.appendTooltip(stack, context, tooltip, type);
+		Drink drink = getDrink(stack, (DynamicRegistryManager) context.getRegistryLookup());
+		tooltip.add(Text.translatable("tooltip.barkeep.flavor_notes").formatted(Formatting.GRAY));
+		for (FlavorNote note : drink.flavorNotes()) {
+			tooltip.add(Text.literal("  - ").append(Text.translatable("tooltip.barkeep.flavor_note_" + note.asString())).formatted(Formatting.GRAY));
+		}
+		if (!drink.effects().isEmpty()) {
+			tooltip.add(Text.translatable("tooltip.barkeep.effects").formatted(Formatting.GRAY));
+			PotionContentsComponent.buildTooltip(drink.effects(), tooltip::add, 1, context.getUpdateTickRate());
+		}
 	}
 
 	@Override

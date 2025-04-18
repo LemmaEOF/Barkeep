@@ -106,7 +106,6 @@ public class Cocktail {
 		//take just the <x> most present flavor notes for effects,
 		//<x> being the number of half-ounces of alcohol rounded up
 		//I tried before with full ounces of alcohol but that made getting more effects *really hard*
-		//TODO: drink effects
 		List<FlavorNote> drinkNotes = flavorWeights.keySet().stream()
 				.sorted(
 						Comparator.comparingInt(note -> -1 * flavorProfile.getOrDefault(note, 0))
@@ -117,6 +116,12 @@ public class Cocktail {
 			//30 seconds per quarter of that flavor note - this makes 'em last *long!*
 			//TODO: look into figuring out balance for that
 			effects.add(new StatusEffectInstance(note.getEffect(), 600 * flavorWeights.get(note)));
+		}
+		//TODO: drink effects that don't suck as much, this is a hotfix lmao
+		for (Drink drink : drinks.keySet()) {
+			for (StatusEffectInstance effect : drink.effects()) {
+				effects.add(new StatusEffectInstance(effect.getEffectType(), effect.getDuration()*drinks.get(drink), effect.getAmplifier()));
+			}
 		}
 		//*now* do effect overrides!
 		if (recipe != null) {
