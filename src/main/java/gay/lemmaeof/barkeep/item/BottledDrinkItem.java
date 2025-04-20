@@ -59,13 +59,15 @@ public class BottledDrinkItem extends Item {
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		super.appendTooltip(stack, context, tooltip, type);
 		Drink drink = getDrink(stack, (DynamicRegistryManager) context.getRegistryLookup());
-		tooltip.add(Text.translatable("tooltip.barkeep.flavor_notes").formatted(Formatting.GRAY));
-		for (FlavorNote note : drink.flavorNotes()) {
-			tooltip.add(Text.literal("  - ").append(Text.translatable("tooltip.barkeep.flavor_note_" + note.asString())).formatted(Formatting.GRAY));
-		}
-		if (!drink.effects().isEmpty()) {
-			tooltip.add(Text.translatable("tooltip.barkeep.effects").formatted(Formatting.GRAY));
-			PotionContentsComponent.buildTooltip(drink.effects(), tooltip::add, 1, context.getUpdateTickRate());
+		if (drink != null) {
+			tooltip.add(Text.translatable("tooltip.barkeep.flavor_notes").formatted(Formatting.GRAY));
+			for (FlavorNote note : drink.flavorNotes()) {
+				tooltip.add(Text.literal("  - ").append(Text.translatable("tooltip.barkeep.flavor_note_" + note.asString())).formatted(Formatting.GRAY));
+			}
+			if (!drink.effects().isEmpty()) {
+				tooltip.add(Text.translatable("tooltip.barkeep.effects").formatted(Formatting.GRAY));
+				PotionContentsComponent.buildTooltip(drink.effects(), tooltip::add, 1, context.getUpdateTickRate());
+			}
 		}
 	}
 

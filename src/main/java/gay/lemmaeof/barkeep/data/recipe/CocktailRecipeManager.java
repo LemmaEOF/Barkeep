@@ -13,6 +13,7 @@ import gay.lemmaeof.barkeep.data.Drink;
 import gay.lemmaeof.barkeep.data.DrinkIngredient;
 import gay.lemmaeof.barkeep.data.component.CocktailComponent;
 import gay.lemmaeof.barkeep.init.BarkeepComponents;
+import gay.lemmaeof.barkeep.init.BarkeepItems;
 import gay.lemmaeof.barkeep.init.BarkeepRegistries;
 import gay.lemmaeof.barkeep.networking.SynchronizeCocktailsS2CPacket;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -101,6 +102,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 
 	public ItemStack getSampleCocktail(Identifier id) {
 		CocktailRecipe recipe = getRecipe(id);
+		if (recipe == null) return new ItemStack(BarkeepItems.MARGARITA_GLASS);
 		ItemStack stack = new ItemStack(recipe.standardGlass());
 		CocktailComponent cocktail = sampleCocktails.get(id);
 		stack.set(BarkeepComponents.COCKTAIL, cocktail);
@@ -122,6 +124,7 @@ public class CocktailRecipeManager extends JsonDataLoader implements Identifiabl
 	}
 
 	public CocktailRecipe getRecipe(Identifier id) {
+		if (!recipes.containsKey(id)) return null;
 		return recipes.get(id).recipe();
 	}
 
